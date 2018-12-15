@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-class HomePage extends Component {
+class OrderPage extends Component {
   render() {
     return (
-      <div className="container">
-        首页
+      <div>
+        订单
       </div>
     );
   }
 }
 
-export default HomePage;
+export default OrderPage;
