@@ -144,6 +144,7 @@ class MinePage extends Component {
       <div className={styles.button}>
         <div>{text}</div>
         <img
+          className={styles.arrowImage}
           src={require('../../../../assets/images/arrow-right.png')}
           alt="箭头"
         />
