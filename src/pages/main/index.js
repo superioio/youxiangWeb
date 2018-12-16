@@ -9,7 +9,7 @@ class MainPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 'orderTab',
+      selectedTab: 'homeTab',
     };
   }
 

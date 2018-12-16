@@ -1,0 +1,37 @@
+.container {
+  flex: 1;
+  background-color: white;
+}
+.producList {
+  background-color: #999999;
+}
+.product {
+  height: 160px;
+  margin-bottom: 10px;
+  background-color: white;
+}
+.leftImage {
+  height: 150px;
+  width: 130px;
+}
+.rightText {
+  margin-left: 20px;
+}
+.titleText {
+  font-size: 20px;
+  font-weight: bold;
+  padding-bottom: 10px;
+  margin-top: 20px;
+}
+.nameText {
+  border-bottom: 1px dashed #000;;
+}
+.descText {
+  font-size: 16px;
+  color: rgb(155, 147, 147);
+}
+.priceText {
+  font-size: 16px;
+  margin-top: 20px;
+  color: red
+}

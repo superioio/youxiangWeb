@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import {Flex, Toast} from 'antd-mobile';
-import globalVal from '../../../../utils/global_val';
+import globalVal from '@/utils/global_val';
 import styles from './styles.module.css';
 import {getOrderListByStatus} from './api';
-import {getStatus} from '../../../../utils';
-import {getStatusCode} from '../../../../utils';
-import {dateFormat} from '../../../../utils';
+import {dateFormat, getStatusCode, getStatus} from '@/utils';
 import { withRouter } from 'react-router-dom';
 
 class OrderPage extends Component {
@@ -16,18 +14,24 @@ class OrderPage extends Component {
       orders: [],
       selectTab: 'unpaid',
     };
-    // this.didFocusListener = this.props.navigation.addListener(
-    //     'didFocus',
-    //     this.didFocus,
-    // );
   }
+
+  // #region 生命周期
 
   componentDidMount() {
     this.didFocus();
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selected) {
+      this.didFocus();
+    }
+  }
+  // #endregion
+
+  // #region 私有方法
 
   didFocus = async () => {
-    if (globalVal.userInfo.customerId == -1) {
+    if (globalVal.userInfo.customerId === -1) {
       this.setState({
         isLogined: false,
       });
@@ -45,6 +49,9 @@ class OrderPage extends Component {
     }
     ;
   }
+  // #endregion
+
+
 
   componentWillUnmount() {
     //this.didFocusListener.remove();
@@ -92,16 +99,16 @@ class OrderPage extends Component {
   renderTabsHeader() {
     const {selectTab} = this.state;
     return (<Flex className={styles.tabsHeader}>
-      {this.renderTabButton('待付款', "unpaid", "unpaid" == selectTab)}
-      {this.renderTabButton('待服务', "paid", "paid" == selectTab)}
-      {this.renderTabButton('已完成', "completed", "completed" == selectTab)}
-      {this.renderTabButton('已取消', "cancel", "cancel" == selectTab)}
-      {this.renderTabButton('全部', "all", "all" == selectTab)}
+      {this.renderTabButton('待付款', "unpaid", "unpaid" === selectTab)}
+      {this.renderTabButton('待服务', "paid", "paid" === selectTab)}
+      {this.renderTabButton('已完成', "completed", "completed" === selectTab)}
+      {this.renderTabButton('已取消', "cancel", "cancel" === selectTab)}
+      {this.renderTabButton('全部', "all", "all" === selectTab)}
     </Flex>);
   }
 
   onOrderPress(order) {
-    const isUnpaid = this.state.selectTab == "unpaid" ? true : false;
+    const isUnpaid = this.state.selectTab === "unpaid" ;
     alert("order" + order.name);
     // this.props.navigation.navigate('OrderDetail', { order: order, isPay: false, isUnpaid: isUnpaid })
   }

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Flex, Carousel, Toast } from 'antd-mobile';
 import styles from './styles.module.css';
 import { getCategoryList, getProductList, getCityList } from './api';
-import globalVal from '../../../../utils/global_val';
+import globalVal from '@/utils/global_val';
+import {withRouter} from "react-router-dom";
 
 class HomePage extends Component {
   // #region 构造器
@@ -63,6 +64,8 @@ class HomePage extends Component {
   }
 
   onProductPress(id, name) {
+  //  this.props.history.push({ pathname:'/ProductlList',state:{productCategoryId: id, name: name } });
+    this.props.history.push('/ProductlList');
     // this.props.navigation.navigate('ProductList', { productCategoryId: id, name: name })
   }
 
@@ -234,4 +237,4 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage;
+export default withRouter(HomePage);

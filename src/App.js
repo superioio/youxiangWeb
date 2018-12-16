@@ -4,6 +4,7 @@ import MainPage from './pages/main';
 import LoginPage from './pages/account/LoginPage';
 import RegPage from './pages/account/RegPage';
 import ForgotPassPage from './pages/account/ForgotPassPage';
+import ProductList from './pages/detail/Product/ProductList';
 
 import 'antd-mobile/dist/antd-mobile.css';
 import './App.css';
@@ -17,6 +18,7 @@ class App extends Component {
           <Route path="/LoginPage" exact component={LoginPage} />
           <Route path="RegPage" exact component={RegPage} />
           <Route path="/ForgotPassPage" exact component={ForgotPassPage} />
+          <Route path="/ProductList" exact component={ProductList} />
         </div>
       </Router>
     );
