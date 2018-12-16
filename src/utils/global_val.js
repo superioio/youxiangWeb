@@ -7,7 +7,7 @@ const globalVal = {
     name: '北京',
   },
   userInfo: {
-    customerId: 8,
+    customerId: -1,
     customerName: '张军',
     customerMobile: '183888888',
     sessionId: '',
