@@ -1,13 +1,12 @@
 
 .container{
-    flex: 1;
     /*paddingTop: STATUSBAR_HEIGHT;*/
     background-color: white;
 }
 .cityContainer {
     height: 36px;
     justify-content: center;
-    align-items: center;
+    text-align: center;
 }
 .adContainer {
     height: 190px;
@@ -20,7 +19,7 @@
 }
 
 .cityButton {
-    flex-direction: row;
+  top:50%;
 }
 .cityButtonImage {
     width: 15px;
@@ -35,7 +34,6 @@
 }
 
 .menu {
-    flex: 1;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
