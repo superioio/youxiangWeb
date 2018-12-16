@@ -61,7 +61,7 @@ class MainPage extends Component {
               });
             }}
           >
-            <MinePage />
+            <MinePage selected={this.state.selectedTab === 'mineTab'} />
           </TabBar.Item>
         </TabBar>
       </div >

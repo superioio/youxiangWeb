@@ -1,0 +1,47 @@
+.container {
+  height: 100%;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  background-color: white;
+}
+
+.headerLeft {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.headerImage {
+  height: 60px;
+  width: 60px;
+}
+
+.customerNameText {
+  font-size: 20px;
+  line-height: 25px;
+}
+.headerText {
+  line-height: 20px;
+}
+
+.loginButton {
+  display: flex;
+  flex:1;
+  align-items: center;
+}
+.headerLoginText {
+  font-size: 20px;
+}
+
+
+.buttonList {
+
+}
+
+.button {
+
+}
