@@ -13,6 +13,12 @@ class MainPage extends Component {
     };
   }
 
+  onChangeSelectedTab = (selectedTab) => {
+    this.setState({
+      selectedTab,
+    });
+  }
+
   render() {
     return (
       <div className={styles.container}>
@@ -27,11 +33,7 @@ class MainPage extends Component {
             icon={<div className={styles.homeTabIcon} />}
             selectedIcon={<div className={styles.homeTabSelectedIcon} />}
             selected={this.state.selectedTab === 'homeTab'}
-            onPress={() => {
-              this.setState({
-                selectedTab: 'homeTab',
-              });
-            }}
+            onPress={() => { this.onChangeSelectedTab('homeTab') }}
           >
             <HomePage />
           </TabBar.Item>
@@ -41,11 +43,7 @@ class MainPage extends Component {
             icon={<div className={styles.orderTabIcon} />}
             selectedIcon={<div className={styles.orderTabSelectedIcon} />}
             selected={this.state.selectedTab === 'orderTab'}
-            onPress={() => {
-              this.setState({
-                selectedTab: 'orderTab',
-              });
-            }}
+            onPress={() => { this.onChangeSelectedTab('orderTab') }}
           >
             <OrderPage />
           </TabBar.Item>
@@ -55,13 +53,12 @@ class MainPage extends Component {
             icon={<div className={styles.mineTabIcon} />}
             selectedIcon={<div className={styles.mineTabSelectedIcon} />}
             selected={this.state.selectedTab === 'mineTab'}
-            onPress={() => {
-              this.setState({
-                selectedTab: 'mineTab',
-              });
-            }}
+            onPress={() => { this.onChangeSelectedTab('mineTab') }}
           >
-            <MinePage selected={this.state.selectedTab === 'mineTab'} />
+            <MinePage
+              selected={this.state.selectedTab === 'mineTab'}
+              changeSelectedTab={(selectedTab) => { this.onChangeSelectedTab(selectedTab) }}
+            />
           </TabBar.Item>
         </TabBar>
       </div >
