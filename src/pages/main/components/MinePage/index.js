@@ -79,7 +79,7 @@ class MinePage extends Component {
     }
     switch (index) {
       case 0:
-        this.props.history.push('OrderPage');
+        this.props.changeSelectedTab('orderTab');
         break;
       case 1:
         this.props.history.push('/MyCardAndDiscount', { tag: "代金券", isPay: false });
