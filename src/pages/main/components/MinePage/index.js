@@ -1,17 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Toast } from 'antd-mobile';
+import globalVal from '@/utils/global_val';
 import styles from './styles.module.css';
-
-const globalVal = {
-  userInfo: {
-    customerId: 8,
-    customerName: '张军',
-    customerMobile: '183888888',
-    sessionId: '',
-    lastLoginTime: Date.now(),
-  },
-}
 
 class MinePage extends Component {
   // #region 构造器
