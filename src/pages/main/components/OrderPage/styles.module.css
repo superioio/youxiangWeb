@@ -1,0 +1,91 @@
+.container {
+    display: flex;
+    /*padding-top: STATUSBAR_HEIGHT;*/
+    background-color: white;
+}
+.header {
+    height: 35px;
+    justify-content: center;
+    align-items: center;
+}
+.headerText {
+    font-size: 20px;
+}
+.tabsHeader {
+    height: 35px;
+    align-items: flex-end;
+    background-color: rgb(232, 233, 235)
+}
+.tabButton {
+    height: 23px;
+}
+
+.tabContent {
+    background-color: rgb(225, 222, 222);
+}
+.tabContentItem {
+    border-top-color: #999999;
+    border-top-width: 1px;
+    border-bottom-color: #999999;
+    border-bottom-width: 1px;
+    background-color: white;
+    margin-bottom: 5px;
+
+    padding: 20px;
+}
+.tabContentHeader {
+    flex-direction: row;
+    justifyContent: space-between;
+    marginBottom: 10;
+}
+.tabContentStatus {
+    color: rgb(195, 32, 32);
+}
+.tabContentImage {
+    width: 77px;
+    height: 86px;
+}
+.tabContentBody {
+    flex-direction: row;
+}
+.tabContentLeft {
+    background-color: rgb(234, 233, 233);
+}
+.tabContentRight {
+    margin-left: 10px;
+    border: solid 1px #999999;
+    background-color: rgb(234, 233, 233);
+
+    padding: 10px;
+}
+.tabContentText {
+    line-height: 22px;
+}
+
+.tabBarIcon {
+    width: 21px;
+    height: 21px;
+}
+.unLogin {
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+.unLoginLabel {
+    color: #999999;
+    font-size: 18px;
+}
+.unLoginButton {
+    height: 35px;
+    width: 100px;
+    border: solid 1px #f18036;
+    border-radius: 4px;
+    margin-top: 14px;
+
+    justify-content: center;
+    align-items: center;
+}
+.unLoginText {
+    color: #f18036;
+    font-size: 16px;
+}

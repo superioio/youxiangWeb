@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { Flex,Toast } from 'antd-mobile';
-//import Swiper from 'react-native-swiper';
 import Swiper from 'swiper/dist/js/swiper.js'
 import 'swiper/dist/css/swiper.min.css'
-//import SplashScreen from 'react-native-splash-screen';
 import styles from './styles.module.css';
 import { getCategoryList, getProductList, getCityList } from './api';
 import globalVal from '../../../../utils/global_val';
-//import Toast from '../../../../utils/Toast';
-//import loadingUtil from '../../../utils/loadingUtil';
 
 class HomePage extends Component {
     // #region 构造器
@@ -43,7 +39,7 @@ class HomePage extends Component {
         });
 
        // SplashScreen.hide();
-        Toast.loading("请稍后...", 30)
+        Toast.loading("请稍后...", 30);
       //  loadingUtil.showLoading();
         const allCategoryList = await getCategoryList();
         allCategoryList.sort((pre, cur) => pre.priority - cur.priority);
