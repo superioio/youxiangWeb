@@ -1,9 +1,9 @@
 .container {
-    display: flex;
     /*padding-top: STATUSBAR_HEIGHT;*/
     background-color: white;
 }
 .header {
+    width : 100%;
     height: 35px;
     justify-content: center;
     align-items: center;
@@ -12,15 +12,18 @@
     font-size: 20px;
 }
 .tabsHeader {
-    height: 35px;
+    width : 100%;
+    height: 40px;
     align-items: flex-end;
     background-color: rgb(232, 233, 235)
 }
 .tabButton {
     height: 23px;
+    text-align: center;
 }
 
 .tabContent {
+    width : 100%;
     background-color: rgb(225, 222, 222);
 }
 .tabContentItem {
@@ -35,28 +38,32 @@
 }
 .tabContentHeader {
     flex-direction: row;
-    justifyContent: space-between;
-    marginBottom: 10;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 .tabContentStatus {
     color: rgb(195, 32, 32);
+    align-items: flex-end;
 }
 .tabContentImage {
     width: 77px;
     height: 86px;
 }
 .tabContentBody {
-    flex-direction: row;
-}
+
+ }
 .tabContentLeft {
     background-color: rgb(234, 233, 233);
+    align-items: flex-start;
 }
 .tabContentRight {
     margin-left: 10px;
     border: solid 1px #999999;
     background-color: rgb(234, 233, 233);
-
+    align-items: flex-end;
     padding: 10px;
+    width:100%;
+    height: 100%;
 }
 .tabContentText {
     line-height: 22px;

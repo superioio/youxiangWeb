@@ -20,7 +20,7 @@ class HomePage extends Component {
 
   async componentDidMount() {
     // SplashScreen.hide();
-    Toast.loading("请稍后...", 30)
+    Toast.loading("请稍后...", 3)
     //  loadingUtil.showLoading();
     const allCategoryList = await getCategoryList();
     allCategoryList.sort((pre, cur) => pre.priority - cur.priority);
