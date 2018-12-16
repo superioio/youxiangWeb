@@ -64,8 +64,7 @@ class HomePage extends Component {
   }
 
   onProductPress(id, name) {
-  //  this.props.history.push({ pathname:'/ProductlList',state:{productCategoryId: id, name: name } });
-    this.props.history.push('/ProductlList');
+    this.props.history.push({ pathname:'/ProductList',state:{productCategoryId: id, name: name } });
     // this.props.navigation.navigate('ProductList', { productCategoryId: id, name: name })
   }
 

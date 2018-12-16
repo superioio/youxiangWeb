@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Toast} from "antd-mobile";
+import {Flex, Icon, NavBar, Toast} from "antd-mobile";
 import { getProductList } from './api'
 import globalVal from '@/utils/global_val';
 import styles from './styles.module.css';
@@ -29,7 +29,7 @@ class ProductList extends Component {
     return (<div className={styles.producList}>
       {list.map((item, index) =>
           <div key={index} >
-            <div onPress={() => this.onProductPress(item)} className={styles.product}>
+            <Flex onClick={() => this.onProductPress(item)} className={styles.product}>
               <img
                   className={styles.leftImage}
                   src={globalVal.imgUrl + item.thumbnailUrl} />
@@ -38,7 +38,7 @@ class ProductList extends Component {
                 <div className={styles.nameText}>{item.description}</div>
                 <div className={styles.priceText}>{item.productPriceList[0].price + "元/" + item.unitName}</div>
               </div>
-            </div>
+            </Flex>
           </div>
       )}</div>);
   }
@@ -51,6 +51,11 @@ class ProductList extends Component {
   render() {
     return (
         <div className={styles.container}>
+          <NavBar
+              mode="light"
+              icon={<Icon type="left" />}
+              onLeftClick={() => this.props.history.goBack()}
+          >{this.props.location.state.name}</NavBar>
             {this.renderList(this.state.list)}
         </div>
     );
