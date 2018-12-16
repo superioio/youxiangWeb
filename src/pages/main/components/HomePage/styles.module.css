@@ -19,7 +19,6 @@
 }
 
 .cityButton {
-  top:50%;
 }
 .cityButtonImage {
     width: 15px;
@@ -50,7 +49,6 @@
     background-color: white;
 }
 .menuButtonText {
-    margin-top: 10px;
     font-size: 16px;
     width: 100%;
 }

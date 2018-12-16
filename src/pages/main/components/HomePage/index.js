@@ -79,7 +79,8 @@ class HomePage extends Component {
 
     // #region 响应方法
 
-    onCityPress = () => {
+    onCityPress(){
+        alert("city");
         // this.props.navigation.navigate('CitySelector', {
         //     refresh: (city) => {
         //         globalVal.selectCity = city;
@@ -91,10 +92,12 @@ class HomePage extends Component {
     }
 
     onProductPress(id, name) {
+        alert("onProductPress" + id + name);
        // this.props.navigation.navigate('ProductList', { productCategoryId: id, name: name })
     }
 
     onProductDetailPress(productDetail) {
+        alert("productDetail" + productDetail.name);
       //  this.props.navigation.navigate('ProductDetail', { productDetail: productDetail })
     }
 
@@ -126,7 +129,7 @@ class HomePage extends Component {
 
     // #region render方法
 
-    renderCityButton() {
+    renderCityButton = () => {
         const { selectCity } = this.state;
         return (
             <div className={styles.cityButton} onClick={this.onCityPress}>
@@ -141,7 +144,7 @@ class HomePage extends Component {
         );
     }
 
-    renderCarouse() {
+    renderCarouse = () => {
         return (
             <div className="swiper-container">
                 <div className="swiper-wrapper">
@@ -169,7 +172,7 @@ class HomePage extends Component {
         {/*</Swiper>);*/}
     }
 
-    renderMenu() {
+    renderMenu = () => {
         const { categoryList } = this.state;
 
         return (<Flex  justify="center" className={styles.menu}>
@@ -191,7 +194,7 @@ class HomePage extends Component {
         );
     }
 
-    renderCategroyItem(categoryGroup) {
+    renderCategroyItem = (categoryGroup) => {
         const { category, productList } = categoryGroup;
         return (<div>
 
@@ -235,9 +238,9 @@ class HomePage extends Component {
   render() {
     return (
           <div className={styles.container}>
-                  <div className={styles.cityContainer}>
+                  <Flex className={styles.cityContainer}>
                       {this.renderCityButton()}
-                  </div>
+                  </Flex>
                   <div className={styles.adContainer}>
                       {/* 轮播广告 */}
                       {this.renderCarouse()}
