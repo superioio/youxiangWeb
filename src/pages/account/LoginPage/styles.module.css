@@ -4,3 +4,34 @@
 
   height: 100%;
 }
+
+.title {
+  font-size: 30px;
+}
+
+.phoneNumContain {
+  display:flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+.phoneNumInputContain{
+  flex: 1;
+  border-bottom: 1px solid #cccccc;
+}
+.phoneNumButton{
+  width: 110px;
+}
+.vetifyCodeInputContain {
+  margin-top: 10px;
+  border-bottom: 1px solid #cccccc;
+}
+
+.loginButton {
+  margin-top: 20px;
+}
+
+.switchLoginWay {
+  margin-top: 20px;
+  color: #666666;
+  text-align: center;
+}

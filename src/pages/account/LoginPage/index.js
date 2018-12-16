@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Toast, Button, InputItem } from 'antd-mobile';
 import { createForm } from 'rc-form';
+import { login, getVerifyCode } from './api';
 import globalVal from '@/utils/global_val';
 import styles from './styles.module.css';
 
@@ -20,8 +21,6 @@ class LoginPage extends Component {
     this.state = {
       isPhoneLogin: true,
       timing: 60,
-      phoneNum: '',
-      vetifyCode: '',
       password: '',
       bizId: ''
     };
@@ -32,7 +31,36 @@ class LoginPage extends Component {
 
   onLogin = () => {
     console.log('this.props.form.getFieldsValue()', this.props.form.getFieldsValue());
+  }
 
+  onGetVCode = async () => {
+    const { getFieldProps } = this.props.form;
+    const phoneNum = getFieldProps('phoneNum').value;
+    if (!phoneNum) {
+      Toast.info('请先填写电话号码', 1);
+      return;
+    }
+
+    if (this.state.timing === 60) {
+      this.countDown();
+      console.log('getVerifyCode', getVerifyCode);
+      const bizId = await getVerifyCode(phoneNum.split(' ').join(''));
+      this.setState({
+        bizId: bizId
+      });
+    }
+  }
+  countDown() {
+    if (this.state.timing === 0) {
+      this.setState({
+        timing: 60,
+      })
+    } else {
+      this.setState({
+        timing: this.state.timing - 1,
+      });
+      setTimeout(this.countDown.bind(this), 1000);
+    }
   }
 
   // #endregion
@@ -44,19 +72,23 @@ class LoginPage extends Component {
     return (<div>
       <div className={styles.title}>登录</div>
       <div className={styles.phoneNumContain}>
-        <InputItem
-          {...getFieldProps('phoneNum')}
-          type="phone"
-          placeholder="请输入手机号"
-          clear
-          moneyKeyboardAlign="left"
-          moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-        />
-        <Button className={styles.phoneNumButton} onClick={() => this.onGetVCode()}>
-          <div> {this.state.timing === 60 ? '获取验证码' : this.state.timing + 's'}</div>
+        <div className={styles.phoneNumInputContain}>
+          <InputItem
+            {...getFieldProps('phoneNum')}
+            type="phone"
+            placeholder="请输入手机号"
+            clear
+            moneyKeyboardAlign="left"
+            moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+          />
+        </div>
+        <Button onClick={this.onGetVCode}>
+          <div className={styles.phoneNumButton}>
+            {this.state.timing === 60 ? '获取验证码' : this.state.timing + 's'}
+          </div>
         </Button>
       </div>
-      <div className={styles.phoneNumContain}>
+      <div className={styles.vetifyCodeInputContain}>
         <InputItem
           {...getFieldProps('vetifyCode')}
           type="number"
@@ -68,16 +100,16 @@ class LoginPage extends Component {
       </div>
       <Button
         className={styles.loginButton}
+        type="primary"
         onClick={this.onLogin}
       >
-        <div className={styles.loginButtonText}>登录</div>
+        登录
       </Button>
-      <div className={styles.switchLoginWay}>
-        <Button
-          on={this.onSwitchLoginWay}
-        >
-          <div className={styles.switchLoginWayText}>账号密码登录</div>
-        </Button>
+      <div
+        className={styles.switchLoginWay}
+        onClick={this.onSwitchLoginWay}
+      >
+        账号密码登录
       </div>
     </div>);
   }

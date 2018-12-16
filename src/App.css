@@ -13,3 +13,7 @@
     transform: rotate(360deg);
   }
 }
+
+.am-button-primary {
+  background-color: #f18036;
+}
