@@ -78,23 +78,23 @@ class OrderPage extends Component {
     }
 
     renderTabButton(text, tab, isSelected) {
-        return (<div className={[styles.tabButton, isSelected && {
+        return (<Flex.Item className={[styles.tabButton, isSelected && {
             borderBottomColor: 'rgb(241, 128, 54)',
             borderBottomWidth: 4,
         }]} onClick={() => this.onTabPress(text, tab)}>
             <span>{text}</span>
-        </div >);
+        </Flex.Item >);
     }
 
     renderTabsHeader() {
         const { selectTab } = this.state;
-        return (<div className={styles.tabsHeader}>
+        return (<Flex className={styles.tabsHeader}>
             {this.renderTabButton('待付款', "unpaid", "unpaid" == selectTab)}
             {this.renderTabButton('待服务', "paid", "paid" == selectTab)}
             {this.renderTabButton('已完成', "completed", "completed" == selectTab)}
             {this.renderTabButton('已取消', "cancel", "cancel" == selectTab)}
             {this.renderTabButton('全部', "all", "all" == selectTab)}
-        </div>);
+        </Flex>);
     }
 
     onOrderPress(order) {
@@ -150,7 +150,7 @@ class OrderPage extends Component {
             <div className={styles.container}>
                 {this.renderHeader()}
                 {this.renderTabsHeader()}
-                {this.renderTabsContent()}
+               {this.renderTabsContent()}
             </div>
         );
     }
