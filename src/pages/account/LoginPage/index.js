@@ -53,7 +53,7 @@ class LoginPage extends Component {
           moneyKeyboardWrapProps={moneyKeyboardWrapProps}
         />
         <Button className={styles.phoneNumButton} onClick={() => this.onGetVCode()}>
-          <div> {this.state.timing == 60 ? '获取验证码' : this.state.timing + 's'}</div>
+          <div> {this.state.timing === 60 ? '获取验证码' : this.state.timing + 's'}</div>
         </Button>
       </div>
       <div className={styles.phoneNumContain}>
@@ -89,7 +89,7 @@ class LoginPage extends Component {
   render() {
     const { isPhoneLogin } = this.state;
     return (
-      <div style={styles.container}>
+      <div className={styles.container}>
         {isPhoneLogin
           ? this.renderPhoneLogin() : this.renderAccountLogin()}
       </div>
