@@ -1,4 +1,4 @@
- import { sessionStorage } from "react";
+// import { sessionStorage } from "react";
 
 const globalVal = {
   cityList: [],

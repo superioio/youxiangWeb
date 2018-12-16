@@ -1,16 +1,14 @@
 import axios from 'axios';
 // import Toast from '../Toast';
 
-let token = '';
-
 var instance = axios.create({
   timeout: 5000,
   headers: {
     'X-Custom-Header': 'foobar',
-      "Access-Control-Allow-Headers":"Authorization,Origin, X-Requested-With, Content-Type, Accept"
+    "Access-Control-Allow-Headers": "Authorization,Origin, X-Requested-With, Content-Type, Accept"
     // 'Content-Type': 'application/x-www-form-urlencoded'
   },
-    withCredentials:true,
+  withCredentials: true,
   // `transformResponse` allows changes to the response data to be made before
   // it is passed to then/catch
   transformResponse: [function (data) {
