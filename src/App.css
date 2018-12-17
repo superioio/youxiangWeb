@@ -1,6 +1,8 @@
 .App {
-  display: flex;
-  flex: 1;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
 }
 
 @keyframes App-logo-spin {
@@ -10,4 +12,8 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.am-button-primary {
+  background-color: #f18036;
 }
