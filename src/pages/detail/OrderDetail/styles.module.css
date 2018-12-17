@@ -1,0 +1,90 @@
+.container {
+  padding-left: 5%;
+  padding-right: 5%;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+}
+.header {
+  height: 35px;
+  justify-content: center;
+  align-items: center;
+}
+.headerText {
+  font-size: 20px;
+}
+.titleText {
+  font-size: 1rem;
+  padding-bottom: 10px
+}
+.nameText {
+  font-size: 0.9rem;
+  width: 30%;
+  color: rgb(155, 147, 147);
+}
+.content {
+  border-top:solid 1px #999999;
+  border-bottom:solid 1px #999999;
+  padding-bottom: 10px;
+}
+.contentRow {
+  display: flex;
+  padding-top: 10px;
+}
+.contentText {
+  font-size: 0.9rem;
+}
+.contentTextRight {
+  text-align: right;
+
+}
+.importantText {
+  color: red
+}
+.remark {
+  height: 70px;
+  border:solid 1px #999999;
+  margin: 15px;
+}
+.noBorderBottom {
+  border-bottom-width: 0;
+}
+.buttonsRow {
+  height: 3rem;
+}
+.buttonsColumn {
+
+}
+.button {
+  display:flex;
+  align-items: center;
+  background-color: rgb(217, 66, 66);
+  justify-content: center;
+  border-radius: 100px;
+  height:100%;
+}
+.cancelBtn {
+  color: rgb(217, 66, 66);
+  background-color: white;
+  border:solid 2px rgb(217, 66, 66);
+}
+.payBtn {
+  background-color: rgb(217, 66, 66);
+  color: white;
+}
+.centerText {
+
+}
+.payButton {
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 50px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border-width: 1px;
+}
+.wechatPayButton {
+  color: white;
+  background-color: rgb(16, 230,11)
+}

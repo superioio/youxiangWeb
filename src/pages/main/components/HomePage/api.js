@@ -1,4 +1,4 @@
-import axios from '../../../../utils/http'
+import axios from '@/utils/http'
 
 //获取商品大类
 export async function getCategoryList() {

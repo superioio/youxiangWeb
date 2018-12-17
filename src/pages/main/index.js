@@ -45,7 +45,10 @@ class MainPage extends Component {
             selected={this.state.selectedTab === 'orderTab'}
             onPress={() => { this.onChangeSelectedTab('orderTab') }}
           >
-            <OrderPage />
+            <OrderPage
+                selected={this.state.selectedTab === 'orderTab'}
+                changeSelectedTab={(selectedTab) => { this.onChangeSelectedTab(selectedTab) }}
+            />
           </TabBar.Item>
           <TabBar.Item
             title="我的"

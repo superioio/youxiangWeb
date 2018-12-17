@@ -145,7 +145,7 @@ class HomePage extends Component {
   renderMenu = () => {
     const { categoryList } = this.state;
 
-    return (<Flex justify="center" className={styles.menu}>
+    return (<Flex justify="between" className={styles.menu}>
       {categoryList.map((item, index) => <Flex.Item key={index}>
         <div className={styles.menuButton} onClick={() => this.onProductPress(item.id, item.name)} >
           <img

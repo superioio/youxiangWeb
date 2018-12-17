@@ -1,4 +1,4 @@
-import axios from '../../../../utils/http'
+import axios from '@/utils/http'
 
 export async function getOrderList(customerId) {
   return await axios.get('/api/orderinfo/customerlistpage', {

@@ -109,13 +109,13 @@ class OrderPage extends Component {
 
   onOrderPress(order) {
     const isUnpaid = this.state.selectTab === "unpaid" ;
-    alert("order" + order.name);
-    // this.props.navigation.navigate('OrderDetail', { order: order, isPay: false, isUnpaid: isUnpaid })
+    this.props.history.push({ pathname:'/OrderDetail',state:{ order: order, isPay: false, isUnpaid: isUnpaid
+        } });
   }
 
   renderTabsContent() {
     const {orders} = this.state;
-    if (!orders) return null;
+    if (!orders || orders.length === 0 || JSON.stringify(orders) === "{}") return null;
 
     return (<div className={styles.tabContent}>
       {orders.map((item, index) => <div key={index} className={styles.tabContentItem}>
