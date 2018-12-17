@@ -33,7 +33,7 @@ class OrderPage extends Component {
   didFocus = async () => {
     if (globalVal.userInfo.customerId === -1) {
       this.setState({
-        isLogined: false,
+        isLogined: true,
       });
     } else {
       this.setState({
