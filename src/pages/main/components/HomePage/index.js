@@ -3,7 +3,7 @@ import { Flex, Carousel, Toast } from 'antd-mobile';
 import styles from './styles.module.css';
 import { getCategoryList, getProductList, getCityList } from './api';
 import globalVal from '@/utils/global_val';
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class HomePage extends Component {
   // #region 构造器
@@ -20,16 +20,14 @@ class HomePage extends Component {
 
 
   async componentDidMount() {
-    // SplashScreen.hide();
-    Toast.loading("请稍后...", 3)
-    //  loadingUtil.showLoading();
+    Toast.loading("请稍后...", 3);
     const allCategoryList = await getCategoryList();
     allCategoryList.sort((pre, cur) => pre.priority - cur.priority);
 
     const categoryList = allCategoryList.slice(0, 4);
     const moreCategoryList = allCategoryList.slice(4);
     const moreCategoryGroupRequest = moreCategoryList.map((category) => {
-        return getProductList(category.id, category.name, globalVal.selectCity.code);
+      return getProductList(category.id, category.name, globalVal.selectCity.code);
     });
 
     const result = await Promise.all(moreCategoryGroupRequest);
@@ -64,7 +62,7 @@ class HomePage extends Component {
   }
 
   onProductPress(id, name) {
-    this.props.history.push({ pathname:'/ProductList',state:{productCategoryId: id, name: name } });
+    this.props.history.push({ pathname: '/ProductList', state: { productCategoryId: id, name: name } });
     // this.props.navigation.navigate('ProductList', { productCategoryId: id, name: name })
   }
 

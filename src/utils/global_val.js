@@ -1,4 +1,3 @@
-// import { sessionStorage } from "react";
 
 const globalVal = {
   cityList: [],
@@ -13,22 +12,15 @@ const globalVal = {
     sessionId: '',
     lastLoginTime: Date.now(),
   },
-  // async setUserInfo(value) {
-  //     sessionStorage.setItem('userInfo', JSON.stringify(value));
-  // },
-  async getUserInfo() {
-    return globalVal.userInfo;
-    // const data = await sessionStorage.getItem('userInfo');
-    // if (!data) {
-    //   return {
-    //     customerId: -1,
-    //     customerName: '',
-    //     customerMobile: '',
-    //     sessionId: '',
-    //     lastLoginTime: '',
-    //   };
-    // }
-    // return JSON.parse(data);
+  setUserInfo(value) {
+    sessionStorage.setItem('userInfo', JSON.stringify(value));
+  },
+  getUserInfo() {
+    const userInfo = sessionStorage.getItem('userInfo');
+    if (!userInfo) {
+      return {};
+    }
+    return JSON.parse(userInfo);
   },
   imgUrl: 'http://148.70.110.127:8080/static/',
 };
