@@ -3,6 +3,7 @@ import styles from './styles.module.css';
 import { datetimeFormat, getStatus } from '@/utils';
 import {cancelOrder, getPayCheck} from './api'
 import {Flex, Icon, NavBar, Toast,Modal} from "antd-mobile";
+import {withRouter} from "react-router-dom";
 
 class OrderDetail extends Component {
 
@@ -142,14 +143,7 @@ class OrderDetail extends Component {
           <NavBar
               mode="light"
               icon={<Icon type="left" />}
-              onLeftClick={() =>
-              {
-                if(this.props.location.state.isPay){
-                  this.props.history.goBack();
-                } else {
-                  this.props.history.goBack();
-                }
-              }}
+              onLeftClick={() => this.props.history.goBack()}
           >订单详情</NavBar>
             {this.renderContent(this.props.location.state.order, this.props.location.state.isPay)}
             {this.props.location.state.isPay ? this.renderPayButton() : this.renderCancelButton(this.props.location.state.isUnpaid)}
@@ -159,4 +153,4 @@ class OrderDetail extends Component {
   }
 }
 
-export default OrderDetail;
+export default  withRouter(OrderDetail) ;

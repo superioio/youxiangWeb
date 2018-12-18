@@ -21,7 +21,6 @@ class ProductList extends Component {
     this.setState({
       list: list
     });
-   // this.props.navigation.setParams({ title: this.props.navigation.state.params.name });
   }
 
 
@@ -46,6 +45,7 @@ class ProductList extends Component {
 
   //点击商品
   onProductPress(productDetail) {
+    this.props.history.push({ pathname: '/ProductDetail', state: { productDetail: productDetail } });
     //this.props.navigation.navigate('ProductDetail', { productDetail: productDetail })
   }
   render() {
@@ -62,4 +62,4 @@ class ProductList extends Component {
   }
 }
 
-export default ProductList ;
+export default withRouter(ProductList) ;

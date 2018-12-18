@@ -1,0 +1,56 @@
+.container {
+  overflow:scroll;
+  /*flex-direction: column;*/
+
+  /*justify-content: center;*/
+  /*align-items: center;*/
+  background-color: white;
+}
+.headerImgContain {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+.headerImg {
+  height: 20rem
+}
+.price {
+  align-items: flex-start;
+}
+.nameText {
+  height: 30px;
+  font-size: 16px;
+  font-weight: bold;
+}
+.priceText {
+  font-size: 16px;
+  margin-top: 20px;
+  color: red;
+}
+.descImgContainer {
+  width:100%;
+  /*height:6000px;*/
+}
+.descImg {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.place {
+  display: flex;
+  background-color: rgb(217, 66, 66);
+  color:white;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+}
+.placeText {
+  font-size: 20px
+}

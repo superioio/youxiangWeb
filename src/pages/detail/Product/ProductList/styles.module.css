@@ -6,7 +6,7 @@
 .producList {
   margin-left: 10px;
   margin-right: 10px;
-  background-color: #999999;
+  background-color: #ccc;
 }
 .product {
   height: 160px;
@@ -14,7 +14,7 @@
   background-color: white;
 }
 .leftImage {
-  height: 8rem;
+  height: 10rem;
   width: 8rem;
 
 }
