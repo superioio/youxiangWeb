@@ -90,7 +90,7 @@ class HomePage extends Component {
       globalVal.userInfo = {
         customerId: -1,
       };
-      //Toast.show('您的登录信息已过期，请重新登录');
+      Toast.info('您的登录信息已过期，请重新登录');
     }
   }
 

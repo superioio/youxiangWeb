@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {Flex, Toast} from 'antd-mobile';
+import React, { Component } from 'react';
+import { Flex, Toast } from 'antd-mobile';
 import globalVal from '@/utils/global_val';
 import styles from './styles.module.css';
-import {getOrderListByStatus} from './api';
-import {dateFormat, getStatusCode, getStatus} from '@/utils';
+import { getOrderListByStatus } from './api';
+import { dateFormat, getStatusCode, getStatus } from '@/utils';
 import { withRouter } from 'react-router-dom';
 
 class OrderPage extends Component {
@@ -19,7 +19,9 @@ class OrderPage extends Component {
   // #region 生命周期
 
   componentDidMount() {
-    this.didFocus();
+    if (this.props.selected) {
+      this.didFocus();
+    }
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.selected) {
@@ -97,7 +99,7 @@ class OrderPage extends Component {
   }
 
   renderTabsHeader() {
-    const {selectTab} = this.state;
+    const { selectTab } = this.state;
     return (<Flex className={styles.tabsHeader}>
       {this.renderTabButton('待付款', "unpaid", "unpaid" === selectTab)}
       {this.renderTabButton('待服务', "paid", "paid" === selectTab)}
@@ -108,13 +110,16 @@ class OrderPage extends Component {
   }
 
   onOrderPress(order) {
-    const isUnpaid = this.state.selectTab === "unpaid" ;
-    this.props.history.push({ pathname:'/OrderDetail',state:{ order: order, isPay: false, isUnpaid: isUnpaid
-        } });
+    const isUnpaid = this.state.selectTab === "unpaid";
+    this.props.history.push({
+      pathname: '/OrderDetail', state: {
+        order: order, isPay: false, isUnpaid: isUnpaid
+      }
+    });
   }
 
   renderTabsContent() {
-    const {orders} = this.state;
+    const { orders } = this.state;
     if (!orders || orders.length === 0 || JSON.stringify(orders) === "{}") return null;
 
     return (<div className={styles.tabContent}>
@@ -127,8 +132,8 @@ class OrderPage extends Component {
           <Flex className={styles.tabContentBody}>
             <div className={styles.tabContentLeft}>
               <img
-                  className={styles.tabContentImage}
-                  src={require('../../../../assets/images/clean1.png')}
+                className={styles.tabContentImage}
+                src={require('../../../../assets/images/clean1.png')}
               />
             </div>
             <div className={styles.tabContentRight}>
@@ -153,18 +158,18 @@ class OrderPage extends Component {
   }
 
   render() {
-    const {isLogined} = this.state;
+    const { isLogined } = this.state;
     if (!isLogined) return this.renderUnLogin();
 
     return (
-        <div className={styles.container}>
-          {this.renderHeader()}
-          {this.renderTabsHeader()}
-          {this.renderTabsContent()}
-        </div>
+      <div className={styles.container}>
+        {this.renderHeader()}
+        {this.renderTabsHeader()}
+        {this.renderTabsContent()}
+      </div>
     );
   }
 
 }
 
-export default withRouter(OrderPage) ;
+export default withRouter(OrderPage);

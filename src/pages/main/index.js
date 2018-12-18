@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { TabBar } from 'antd-mobile';
+import globalVal from '@/utils/global_val'
 import HomePage from './components/HomePage';
 import OrderPage from './components/OrderPage';
 import MinePage from './components/MinePage';
 import styles from './styles.module.css';
 
+
 class MainPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 'homeTab',
+      selectedTab: globalVal.selectedTab,
     };
   }
 
@@ -17,6 +19,7 @@ class MainPage extends Component {
     this.setState({
       selectedTab,
     });
+    globalVal.selectedTab = selectedTab;
   }
 
   render() {
@@ -46,8 +49,8 @@ class MainPage extends Component {
             onPress={() => { this.onChangeSelectedTab('orderTab') }}
           >
             <OrderPage
-                selected={this.state.selectedTab === 'orderTab'}
-                changeSelectedTab={(selectedTab) => { this.onChangeSelectedTab(selectedTab) }}
+              selected={this.state.selectedTab === 'orderTab'}
+              changeSelectedTab={(selectedTab) => { this.onChangeSelectedTab(selectedTab) }}
             />
           </TabBar.Item>
           <TabBar.Item

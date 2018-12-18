@@ -5,6 +5,7 @@ const globalVal = {
     code: '110000',
     name: '北京',
   },
+  selectedTab: 'homeTab',
   userInfo: {
     customerId: 8,
     customerName: '张军',
@@ -18,7 +19,13 @@ const globalVal = {
   getUserInfo() {
     const userInfo = sessionStorage.getItem('userInfo');
     if (!userInfo) {
-      return {};
+      return {
+        customerId: 8,
+        customerName: '张军',
+        customerMobile: '183888888',
+        sessionId: '',
+        lastLoginTime: Date.now(),
+      };
     }
     return JSON.parse(userInfo);
   },
