@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import styles from './styles.module.css';
 import { datetimeFormat, getStatus } from '@/utils';
-import {cancelOrder, getPayCheck} from './api'
-import {Flex, Icon, NavBar, Toast,Modal} from "antd-mobile";
-import {withRouter} from "react-router-dom";
+import { cancelOrder, getPayCheck } from './api'
+import { Flex, Icon, NavBar, Toast, Modal } from "antd-mobile";
+import { withRouter } from "react-router-dom";
 
 class OrderDetail extends Component {
 
@@ -11,11 +11,11 @@ class OrderDetail extends Component {
     let payVoucher = order.payVoucher * order.productPrice;//代金券支付金额
     // let payment = order.totalAmount - payVoucher - order.payRechargeCard;//需支付金额
     // payment = payment > 0 ? payment : 0;
-    return (<div className={{ flex: 1 }}>
+    return (<div className={styles.contentContain}>
       <span className={styles.titleText}>订单信息</span>
       <div className={styles.content}>
         <div className={styles.contentRow}>
-          <span  className={styles.nameText}>服务类型</span >
+          <span className={styles.nameText}>服务类型</span >
           <span className={styles.contentText}> {order.productResp.name}</span>
         </div>
         <div className={styles.contentRow}>
@@ -53,7 +53,7 @@ class OrderDetail extends Component {
           <span className={styles.contentText}> {order.workerMobile}</span>
         </div>
       </div> : <div></div>}
-      <div  className={`${styles.content} ${styles.noBorderBottom}`}>
+      <div className={`${styles.content} ${styles.noBorderBottom}`}>
         <span className={styles.titleText}>订单明细</span>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>单价</Flex.Item>
@@ -86,14 +86,14 @@ class OrderDetail extends Component {
   }
 
   onCancelPress = async () => {
-      const alert = Modal.alert;
-        alert('取消订单', '确认取消订单吗？', [
-          { text: '取消', onPress: () => {return null }},
-          {
-            text: '确认',
-            onPress: () => this.confirm,
-          },
-        ])
+    const alert = Modal.alert;
+    alert('取消订单', '确认取消订单吗？', [
+      { text: '取消', onPress: () => { return null } },
+      {
+        text: '确认',
+        onPress: () => this.confirm,
+      },
+    ])
 
     // Alert.alert('取消订单','确认取消订单吗？',
     //     [{text:"取消", onClick: ()=> { return null}},
@@ -102,7 +102,7 @@ class OrderDetail extends Component {
     // );
   }
 
-  confirm = async() => {
+  confirm = async () => {
     Toast.loading("请稍后...", 3);
     await cancelOrder(this.props.location.state.order.id);
     Toast.hide();
@@ -117,40 +117,40 @@ class OrderDetail extends Component {
 
   renderCancelButton(isUnpaid) {
     return isUnpaid ? (<Flex className={styles.buttonsRow}>
-          <Flex.Item className={`${styles.button} ${styles.cancelBtn}`} onClick={this.onCancelPress}>
-            <span className={styles.centerText}>取消订单</span>
-          </Flex.Item>
-          <Flex.Item className={`${styles.button} ${styles.payBtn}`} onClick={ this.onPayPress}>
-            <span className={styles.centerText}>支付订单</span>
-          </Flex.Item>
-        </Flex>
+      <Flex.Item className={`${styles.button} ${styles.cancelBtn}`} onClick={this.onCancelPress}>
+        <span className={styles.centerText}>取消订单</span>
+      </Flex.Item>
+      <Flex.Item className={`${styles.button} ${styles.payBtn}`} onClick={this.onPayPress}>
+        <span className={styles.centerText}>支付订单</span>
+      </Flex.Item>
+    </Flex>
     ) : null;
   }
 
   renderPayButton() {
     return (
-        <div className={styles.buttonsColumn}>
-          <Flex className={`${styles.payButton} ${styles.wechatPayButton}`} onClick={this.onWechatPayPress}>
-            <span className={styles.centerText}>微信支付</span>
-          </Flex>
-        </div>
+      <div className={styles.buttonsColumn}>
+        <Flex className={`${styles.payButton} ${styles.wechatPayButton}`} onClick={this.onWechatPayPress}>
+          <span className={styles.centerText}>微信支付</span>
+        </Flex>
+      </div>
     );
   }
 
   render() {
     return (
-        <div className={styles.container}>
-          <NavBar
-              mode="light"
-              icon={<Icon type="left" />}
-              onLeftClick={() => this.props.history.goBack()}
-          >订单详情</NavBar>
-            {this.renderContent(this.props.location.state.order, this.props.location.state.isPay)}
-            {this.props.location.state.isPay ? this.renderPayButton() : this.renderCancelButton(this.props.location.state.isUnpaid)}
+      <div className={styles.container}>
+        <NavBar
+          mode="light"
+          icon={<Icon type="left" />}
+          onLeftClick={() => this.props.history.goBack()}
+        >订单详情</NavBar>
+        {this.renderContent(this.props.location.state.order, this.props.location.state.isPay)}
+        {this.props.location.state.isPay ? this.renderPayButton() : this.renderCancelButton(this.props.location.state.isUnpaid)}
 
-        </div>
+      </div>
     );
   }
 }
 
-export default  withRouter(OrderDetail) ;
+export default withRouter(OrderDetail);

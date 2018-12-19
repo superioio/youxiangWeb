@@ -1,5 +1,5 @@
 .container {
-  overflow:scroll;
+  height: 100%;
   /*flex-direction: column;*/
 
   /*justify-content: center;*/
@@ -14,6 +14,10 @@
 }
 .headerImg {
   height: 20rem
+}
+.contentContainer{
+  height: 100%;
+  overflow: scroll;
 }
 .price {
   align-items: flex-start;
@@ -31,6 +35,7 @@
 .descImgContainer {
   width:100%;
   /*height:6000px;*/
+  margin-bottom: 50px;
 }
 .descImg {
   width: auto;

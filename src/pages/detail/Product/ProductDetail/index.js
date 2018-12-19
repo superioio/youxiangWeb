@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import {Flex, Icon, NavBar} from "antd-mobile";
+import { Flex, Icon, NavBar } from "antd-mobile";
 import styles from './styles.module.css';
 import globalVal from '@/utils/global_val';
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class ProductDetail extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class ProductDetail extends Component {
       this.props.history.push('/LoginPage');
     }
     else {
-      this.props.history.push({ pathname: '/OrderPlace', state: { product: this.state.product }});
+      this.props.history.push({ pathname: '/OrderPlace', state: { product: this.state.product } });
     }
 
   }
@@ -36,9 +36,9 @@ class ProductDetail extends Component {
     const { product } = this.state;
     return (<div className={styles.headerImgContain}>
       <img
-          className={styles.headerImg}
-          alt="商品缩略图"
-          src = {require("@/assets/images/washingMachineHeader.png")}/>
+        className={styles.headerImg}
+        alt="商品缩略图"
+        src={require("@/assets/images/washingMachineHeader.png")} />
     </div>);
   }
   renderPrice() {
@@ -48,34 +48,38 @@ class ProductDetail extends Component {
       <div className={styles.priceText}>{product.productPriceList[0].price + "元/" + product.unitName}</div>
     </div>);
   }
- // src={ globalVal.imgUrl + product.detailImgUrl }
+  // src={ globalVal.imgUrl + product.detailImgUrl }
   renderDescImg() {
     const { product } = this.state;
     return (<div className={styles.descImgContainer}>
       <img
-          className={styles.descImg}
-          alt="商品详情"
-          src = {require("@/assets/images/washingMachineDesc.png")}/>
+        className={styles.descImg}
+        alt="商品详情"
+        src={require("@/assets/images/washingMachineDesc.png")} />
     </div>);
   }
 
   render() {
+    console.log();
     return (
-        <div className={styles.container}>
-          <NavBar
-              mode="light"
-              icon={<Icon type="left" />}
-              onLeftClick={() => this.props.history.goBack()}
-          >{ this.props.location.state.productDetail.name}</NavBar>
-            {this.renderHeaderImg()}
-            {this.renderPrice()}
-            {this.renderDescImg()}
-          <div className={styles.place} onClick={this.onOrderPress}>
-            <div>
-              <span className={styles.placeText}>立即下单</span>
-            </div>
+      <div className={styles.container}>
+        <NavBar
+          mode="light"
+          icon={<Icon type="left" />}
+          onLeftClick={() => this.props.history.goBack()}
+        >{this.props.location.state.productDetail.name}</NavBar>
+
+        <div className={styles.contentContainer}>
+          {this.renderHeaderImg()}
+          {this.renderPrice()}
+          {this.renderDescImg()}
+        </div>
+        <div className={styles.place} onClick={this.onOrderPress}>
+          <div>
+            <span className={styles.placeText}>立即下单</span>
           </div>
         </div>
+      </div>
     );
   }
 }

@@ -122,5 +122,5 @@
   "devDependencies": {
     "react-app-rewired": "^1.6.2"
   },
-  "proxy": "http://admin.dev.ue-link.com"
+  "proxy": "http://admin.offline.ue-link.com"
 }

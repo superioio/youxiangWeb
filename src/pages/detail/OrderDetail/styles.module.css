@@ -21,9 +21,12 @@
   width: 30%;
   color: rgb(155, 147, 147);
 }
+.contentContain {
+  height: 800px;
+}
 .content {
-  border-top:solid 1px #999999;
-  border-bottom:solid 1px #999999;
+  border-top: solid 1px #999999;
+  border-bottom: solid 1px #999999;
   padding-bottom: 10px;
 }
 .contentRow {
