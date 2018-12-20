@@ -1,11 +1,16 @@
 .container {
+  height:100%;
+
   background-color: rgb(245, 245, 245);
+}
+.tabContent{
+  height:100%;
+  overflow: scroll;
 }
 .tabContentItem {
   display: flex;
   border-radius: 10px;
   background-color: white;
-
   margin: 5px;
   flex-direction: row;
   height: 100px;
@@ -13,6 +18,13 @@
   align-items: center;
 }
 .tabOverPayCash{
+  display: flex;
+  border-radius: 10px;
+  margin: 5px;
+  flex-direction: row;
+  height: 100px;
+  justify-content: space-evenly;
+  align-items: center;
   background-color: #cccccc
 }
 .leftTabItem {
@@ -39,7 +51,7 @@
   right: 0;
   height: 100px;
   align-items: center;
-  background-color: white
+  background-color: white;
 }
 .moreText {
   text-align: center;
@@ -83,4 +95,8 @@
   border:solid 2px #CCCCCC;
   justify-content: center;
   align-items: center;
+}
+.margin{
+  margin-bottom: 100px;
+  padding-bottom: 100px;
 }

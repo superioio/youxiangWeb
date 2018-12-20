@@ -12,7 +12,9 @@ class OrderPlace extends Component {
     super(props);
     this.state = {
       remark: '',
-      orderInfo: {},
+      orderInfo: {
+        productResp: {}
+      },
       address: {},
       product: {
         productPriceList: [{}]
@@ -50,18 +52,18 @@ class OrderPlace extends Component {
     const product = this.props.location.state.product;
     const address = await getDefaultAddress(globalVal.userInfo.customerId);
     const order = {};
-    const productResp = {};
-    productResp.id = product.id;
-    productResp.effectiveDays = product.effectiveDays;
+    const productResp = product;
+   // productResp.id = product.id;
+  //  productResp.effectiveDays = product.effectiveDays;
     productResp.price =  product.productPriceList[0].price;
-    productResp.name = product.name;
-    productResp.description = product.description;
-    productResp.unitName = product.unitName;
+   // productResp.name = product.name;
+//    productResp.description = product.description;
+  //  productResp.unitName = product.unitName;
     order.productResp = productResp;
     order.productId = product.id;
-    order.date = moment().add(product.effectiveDays, 'days').format('YYYY-MM-DD');
+    order.date = moment().add(product.effectiveDays, 'days').format();
     order.time = '';
-    order.serviceTime = (new Date()).getTime();
+    order.serviceTime = moment(`${order.date}`).unix() * 1000;
     order.customerName = address.name;
     order.customerCityCode = address.cityCode;
     order.customerCityName = address.cityName;
@@ -94,75 +96,38 @@ class OrderPlace extends Component {
 
   //从积分卡/代金券选择页面返回
   fromDiscount = () => {
-    //如果是返回，没有选择
-    if(!this.props.location.state.isChoose){
-
-    } else {
-
-    }
-
-
-
-    if(this.props.location.state.tag === '添加积分卡'){
-
+    // this.setState({
+    //   orderInfo: this.props.location.state.orderInfo,
+    //   cardInfo: this.props.location.state.cardInfoList,
+    //   voucherInfo: this.props.location.state.voucherInfoList
+    // });
+    //如果是从之前的界面返回，没有修改选择
+    if(this.props.location.state.isCancel){
       this.setState({
-        cardInfo: [],
-        voucherInfo: [],
-        saveMoneyByCard: 0,
-        saveMoneyByVoucher: 0,
-        iisChooseCard: false,
-        isChooseVoucher: false,
-        payCash: payCash,
-        rechargeCardIds: '',
-        hasPlace: false
+        payCash: this.props.location.state.payCash
       });
     } else {
-
+      if (this.props.location.tag === '添加积分卡') {
+        this.setState({
+          isChooseCard: this.props.location.state.isChoose,
+        });
+      } else {
+        this.setState({
+          isChooseVoucher: this.props.location.state.isChoose,
+        });
+      }
     }
-
-
-
-    this.setState({
-      cardInfo: [],
-      voucherInfo: [],
-      saveMoneyByCard: 0,
-      saveMoneyByVoucher: 0,
-      iisChooseCard: false,
-      isChooseVoucher: false,
-      payCash: payCash,
-      rechargeCardIds: '',
-      hasPlace: false
-    });
-  }
-
-  // productId: this.state.product.id,
-  // price: this.state.orderInfo.productPrice,//单价，主要用来计算还需要多少个代金券
-  // payCash: needPayCash,//还需支付的金额
-  // cardInfoList: this.state.cardInfo,//已经添加的积分卡
-  // voucherInfoList: this.state.voucherInfo,//已经添加的代金券
-  // orderInfo: this.state.orderInfo,//全部的订单信息 2018-12-20 add
-//selectedList, isChoose
+    //计算 代金券/积分卡 节约的金额
+    this.calculatePayCash();
+  };
 
   //从订单页返回
   orderDetail = () => {
-    let payCash = this.state.payCash;
-    payCash += this.state.saveMoneyByVoucher;//支付金额回到选择代金券之前的状态
-    payCash += this.state.saveMoneyByCard;//选择代金券，需要用户重新选择积分卡
-
-
-
     this.setState({
-      cardInfo: [],
-      voucherInfo: [],
-      saveMoneyByCard: 0,
-      saveMoneyByVoucher: 0,
-      iisChooseCard: false,
-      isChooseVoucher: false,
-      payCash: payCash,
-      rechargeCardIds: '',
-      hasPlace: false
+      payCash: this.props.location.state.orderInfo.payment,
+      orderInfo: this.props.location.state.orderInfo
     });
-  }
+  };
 
 
   // #region 相应方法
@@ -209,30 +174,21 @@ class OrderPlace extends Component {
     }
     let needPayCash;
     if (isCard) {
-      let balance = 0;
-      this.state.cardInfo.forEach(item => {
-        balance += item.balance;
-      });
-      needPayCash = this.state.payCash + balance;
+      needPayCash = this.state.payCash + this.state.saveMoneyByCard ;
     } else {
-      let balance = 0;
-      this.state.voucherInfo.forEach(item => {
-        balance += item.count * this.state.orderInfo.productPrice;
-      });
-      needPayCash = this.state.payCash + balance;
+      needPayCash = this.state.payCash + this.state.saveMoneyByVoucher;
     }
     this.props.history.push({
       pathname: '/CardAndDiscount', state: {
         isPay: true, // 是从订单页进入代金劵或积分卡界面的
         tag: tag,
-        saveMoneyByCard: this.state.saveMoneyByCard,
-        saveMoneyByVoucher: this.state.saveMoneyByVoucher,
         productId: this.state.orderInfo.productResp.id,
         price: this.state.orderInfo.productPrice,//单价，主要用来计算还需要多少个代金券
-        payCash: needPayCash,//还需支付的金额
+        needPayCash: needPayCash,//还需支付的金额 + 已选积分卡的金额（或者已选代金券的金额）
+        payCash: this.state.payCash,//还需支付的金额
         cardInfoList: this.state.cardInfo,//已经添加的积分卡
         voucherInfoList: this.state.voucherInfo,//已经添加的代金券
-        orderInfo: this.state.orderInfo,//全部的订单信息 2018-12-20 add
+        orderInfo: this.state.orderInfo//全部的订单信息
         // setCardOrVoucherInfo: (info, isChoose) => {// info : 选择的积分卡或者代金券；isChoose：是否选择了，false为不用
         //   if (!isChoose) {
         //     //把所有界面相关对象重置
@@ -282,43 +238,73 @@ class OrderPlace extends Component {
   // #endregion
 
   //计算还需要支付多少钱，同时添加代金券/积分卡 的id字符串，界面显示代金券/积分卡对应的支付金额
-  calculatePayCash(isCard, info) {
-    let amount = 0;
-    let ids = '';
-    let payCash = this.state.payCash;
-    if (isCard) {
-      payCash += this.state.saveMoneyByCard;//支付金额回到选择积分卡之前的状态
-      for (const i of info) {
-        amount += i.balance;
-        ids += i.id + ",";//积分卡ID 字符串
-      }
-      amount = payCash > amount ? amount : payCash;
-      this.setState({
-        saveMoneyByCard: amount,
-        orderInfo: {
-          ...this.state.orderInfo,
-          rechargeCardIds: ids
-        },
-      });
-    } else {
-      payCash += this.state.saveMoneyByVoucher;//支付金额回到选择代金券之前的状态
-      payCash += this.state.saveMoneyByCard;//选择代金券，需要用户重新选择积分卡
-      for (const i of info) {
-        amount += i.count * this.state.orderInfo.productPrice;
-        ids += i.id + ",";//代金券ID 字符串
-      }
-      this.setState({
-        saveMoneyByVoucher: amount,
-        orderInfo: {
-          ...this.state.orderInfo,
-          voucherIds: ids
-        },
-      });
+  // calculatePayCash(tag, info) {
+  //   let amount = 0;
+  //   let ids = '';
+  //   let payCash = this.state.payCash;
+  //   if (tag === '添加积分卡') {
+  //     payCash += this.state.saveMoneyByCard;//支付金额回到选择积分卡之前的状态
+  //     for (const i of info) {
+  //       amount += i.balance;
+  //       ids += i.id + ",";//积分卡ID 字符串
+  //     }
+  //     amount = payCash > amount ? amount : payCash;
+  //     this.setState({
+  //       saveMoneyByCard: amount,
+  //       orderInfo: {
+  //         ...this.state.orderInfo,
+  //         rechargeCardIds: ids
+  //       },
+  //     });
+  //   } else {
+  //     payCash += this.state.saveMoneyByVoucher;//支付金额回到选择代金券之前的状态
+  //     payCash += this.state.saveMoneyByCard;//选择代金券，需要用户重新选择积分卡
+  //     for (const i of info) {
+  //       amount += i.count * this.state.orderInfo.productPrice;
+  //       ids += i.id + ",";//代金券ID 字符串
+  //     }
+  //     this.setState({
+  //       saveMoneyByVoucher: amount,
+  //       orderInfo: {
+  //         ...this.state.orderInfo,
+  //         voucherIds: ids
+  //       },
+  //     });
+  //   }
+  //   payCash -= amount;
+  //   payCash = payCash < 0 ? 0 : payCash;
+  //   this.setState({
+  //     payCash: payCash
+  //   });
+  // }
+  calculatePayCash(){
+    let cardAmount = 0;
+    let voucherAmount = 0;
+    let cardIds = '';
+    let voucherIds = '';
+    let payCash = 0;
+    for (const i of this.props.location.state.cardInfoList) {
+      cardAmount += i.balance;
+      cardIds += i.id + ",";//积分卡ID 字符串
     }
-    payCash -= amount;
-    payCash = payCash < 0 ? 0 : payCash;
+
+    for (const i of this.props.location.state.voucherInfoList) {
+      voucherAmount += i.count * this.props.location.state.orderInfo.productPrice;
+      voucherIds += i.id + ",";//代金券ID 字符串
+    }
+    payCash = this.props.location.state.orderInfo.productPrice * this.props.location.state.orderInfo.count;
+    cardAmount = (payCash - voucherAmount) > cardAmount ? cardAmount : payCash - voucherAmount;
+    payCash = (payCash - cardAmount - voucherAmount) <= 0 ? 0 : (payCash - cardAmount - voucherAmount);
+
+    this.props.location.state.orderInfo.rechargeCardIds = cardIds;
+    this.props.location.state.orderInfo.voucherIds = voucherIds;
     this.setState({
-      payCash: payCash
+      saveMoneyByCard: cardAmount,
+      saveMoneyByVoucher: voucherAmount,
+      payCash: payCash,
+      orderInfo: this.props.location.state.orderInfo,
+      cardInfo: this.props.location.state.cardInfoList,
+      voucherInfo: this.props.location.state.voucherInfoList
     });
   }
 
@@ -369,7 +355,7 @@ class OrderPlace extends Component {
     return (
         <List className={styles.datePickContainer}>
           <DatePicker
-              value={new Date(date)}
+              value={minDate}
               className={styles.datePicker}
               minDate={minDate}  //最小时间
               minuteStep={30}
@@ -381,7 +367,7 @@ class OrderPlace extends Component {
                   orderInfo: {
                     ...orderInfo,
                     date,
-                    serviceTime: moment(`${date} ${time}`).unix() * 1000,
+                    serviceTime:  moment(`${date}`).unix() * 1000,
                   }
                 });
               }}
@@ -478,7 +464,7 @@ class OrderPlace extends Component {
   }
 
   renderCard() {
-    return (<div onClick={() => this.onChooseCardOrVoucherPress(true)}>
+    return (<div className={styles.card} onClick={() => this.onChooseCardOrVoucherPress(true)}>
       <div className={styles.label}>
         <span
             className={styles.greyText}>{this.state.saveMoneyByCard > 0 ? "可支付" + this.state.saveMoneyByCard + "元" : "请选择"}</span>
@@ -511,8 +497,11 @@ class OrderPlace extends Component {
           <NavBar
               mode="light"
               icon={<Icon type="left"/>}
-              onLeftClick={() => this.props.history.goBack()}
+              onLeftClick={() =>
+                  this.props.history.push({ pathname: '/ProductDetail', state: { productDetail: this.state.orderInfo.productResp}})
+              }
           >下 单</NavBar>
+          <div className={styles.contentContainer}>
           {this.renderTitle('地址')}
           {this.renderAddressButton()}
           {this.renderTitle('服务')}
@@ -524,9 +513,10 @@ class OrderPlace extends Component {
           {this.renderReMark()}
           {this.renderTitle('代金券')}
           {this.renderVoucher()}
-          {this.renderTitle('积分')}
+          {this.renderTitle('积分卡')}
           {this.renderCard()}
-          <div className={styles.place}>
+          </div>
+          <div className={styles.place} >
             <div className={styles.placeLeft}>
               <span className={styles.placeLeftText}>{"需支付: " + this.state.payCash + "元"}</span>
             </div>

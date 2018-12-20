@@ -2,6 +2,10 @@
   height: 100%;
   background-color: white;
 }
+.contentContainer{
+  height: 100%;
+  overflow: scroll;
+}
 .title {
   display: flex;
   height: 30px;
@@ -68,14 +72,14 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 50px;
+  height: 60px;
   flex-direction: row;
-
+  background-color: white;
+  align-items: center;
+  justify-content: space-between;
 }
 .placeLeft {
-  flex: 1;
-  flex-direction: row;
-  align-items: center;
+
 }
 .placeLeftText {
   font-size: 1.25rem;;
@@ -131,4 +135,7 @@
 .datePicker  {
   font-size: 0.6rem;
   min-width: 100px;
+}
+.card{
+  margin-bottom: 120px;
 }

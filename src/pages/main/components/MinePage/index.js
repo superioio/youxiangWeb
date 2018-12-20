@@ -151,7 +151,7 @@ class MinePage extends Component {
         <div className={styles.buttonList}>
           {this.renderButton('我的订单', 0)}
           {this.renderButton('代金劵', 1)}
-          {this.renderButton('充值卡', 2)}
+          {this.renderButton('积分卡', 2)}
           {this.renderButton('我的地址', 3)}
           {this.renderButton('联系客服', 4)}
           {this.renderButton('修改密码', 5)}

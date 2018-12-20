@@ -144,10 +144,12 @@ class OrderDetail extends Component {
           mode="light"
           icon={<Icon type="left" />}
           onLeftClick={() =>
+              this.props.location.state.order ?
               this.props.history.push({ pathname: '/CardAndDiscount', state:  {
                   prePage: 'orderdetail', // 是从订单页返回订单页
-                  orderInfo: this.props.location.state.order,//全部的订单信息 2018-12-20 add
-                }})}
+                  orderInfo: this.props.location.state.order,//全部的订单信息
+                }}) : this.props.history.goBack()
+          }
         >订单详情</NavBar>
         {this.renderContent(this.props.location.state.order, this.props.location.state.isPay)}
         {this.props.location.state.isPay ? this.renderPayButton() : this.renderCancelButton(this.props.location.state.isUnpaid)}

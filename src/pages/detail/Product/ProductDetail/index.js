@@ -65,7 +65,11 @@ class ProductDetail extends Component {
         <NavBar
           mode="light"
           icon={<Icon type="left" />}
-          onLeftClick={() => this.props.history.goBack()}
+          onLeftClick={() =>
+              this.props.location.state.productCategoryId ?
+              this.props.history.push({ pathname: '/ProductList', state: { productCategoryId: this.props.location.state.productCategoryId, name: this.props.location.state.name } })
+              : this.props.history.push('/')
+          }
         >{this.props.location.state.productDetail.name}</NavBar>
 
         <div className={styles.contentContainer}>

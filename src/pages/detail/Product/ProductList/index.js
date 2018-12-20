@@ -45,7 +45,7 @@ class ProductList extends Component {
 
   //点击商品
   onProductPress(productDetail) {
-    this.props.history.push({ pathname: '/ProductDetail', state: { productDetail: productDetail } });
+    this.props.history.push({ pathname: '/ProductDetail', state: { productDetail: productDetail,productCategoryId: this.props.location.state.productCategoryId, name: this.props.location.state.name } });
     //this.props.navigation.navigate('ProductDetail', { productDetail: productDetail })
   }
   render() {
@@ -54,7 +54,9 @@ class ProductList extends Component {
           <NavBar
               mode="light"
               icon={<Icon type="left" />}
-              onLeftClick={() => this.props.history.goBack()}
+              onLeftClick={() =>
+                  this.props.history.push('/')
+              }
           >{this.props.location.state.name}</NavBar>
             {this.renderList(this.state.list)}
         </div>
