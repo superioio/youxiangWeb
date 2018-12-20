@@ -7,6 +7,7 @@ import ProductList from './pages/detail/Product/ProductList';
 import ProductDetail from './pages/detail/Product/ProductDetail';
 import OrderDetail from './pages/detail/OrderDetail';
 import OrderPlace from './pages/detail/OrderPlace';
+import CitySelector from './pages/detail/CitySelector';
 
 
 import 'antd-mobile/dist/antd-mobile.css';
@@ -26,6 +27,8 @@ class App extends Component {
 
           <Route path="/OrderDetail" exact component={OrderDetail} />
           <Route path="/OrderPlace" exact component={OrderPlace} />
+
+          <Route path="/CitySelector" exact component={CitySelector} />
         </div>
       </Router>
     );

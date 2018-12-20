@@ -51,14 +51,7 @@ class HomePage extends Component {
   // #region 响应方法
 
   onCityPress = () => {
-    // this.props.navigation.navigate('CitySelector', {
-    //     refresh: (city) => {
-    //         globalVal.selectCity = city;
-    //         this.setState({
-    //             selectCity: city,
-    //         });
-    //     }
-    // });
+    this.props.history.push({ pathname: '/CitySelector' });
   }
 
   onProductPress(id, name) {

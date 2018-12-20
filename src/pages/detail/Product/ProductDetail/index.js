@@ -60,7 +60,6 @@ class ProductDetail extends Component {
   }
 
   render() {
-    console.log();
     return (
       <div className={styles.container}>
         <NavBar

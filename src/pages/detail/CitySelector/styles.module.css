@@ -1,0 +1,44 @@
+.container {
+  height: 100%;
+}
+
+.contentContain{
+  height: 100%;
+  overflow: scroll;
+}
+
+.contentInnerContain{
+  margin-bottom: 60px;
+}
+
+.contentTitle {
+  height: 26px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-top: 4px;
+ 
+}
+.contentTitleText {
+  margin-left: 20px;
+  color: #333333,
+}
+
+.contentCity {
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  align-items: center;
+  height: 36px;
+  border-bottom:1px solid #DDDDDD;
+}
+
+.contentCityText {
+  margin-left: 20px;
+  color: #333333;
+}
+
+.contentButton{
+  flex: 1;
+  padding-left: 20px;
+}
