@@ -1,0 +1,86 @@
+.container {
+  background-color: rgb(245, 245, 245);
+}
+.tabContentItem {
+  display: flex;
+  border-radius: 10px;
+  background-color: white;
+
+  margin: 5px;
+  flex-direction: row;
+  height: 100px;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.tabOverPayCash{
+  background-color: #cccccc
+}
+.leftTabItem {
+
+}
+.leftText {
+  font-size: 20px;
+  font-weight: bold;
+  color: #00CED1
+}
+.rightTabItem {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.line{
+  width:100%;
+}
+.footer {
+  position: absolute;
+  padding-top:10px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  align-items: center;
+  background-color: white
+}
+.moreText {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.exchangeBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  background-color: rgb(217, 66, 66);
+}
+.exchangeText {
+  font-weight: bold;
+  font-size: 20px;
+  color: white
+}
+.checkContain {
+  width: 42px;
+}
+.check {
+  display: flex;
+  width: 22px;
+  height: 22px;
+  border-radius: 12px;
+  background-color: #f18036;
+  border:solid 2px #CCCCCC;
+  justify-content: center;
+  align-items: center;
+}
+.checkText {
+  color: #FFFFFF;
+}
+.unCheck {
+  display: flex;
+  width: 22px;
+  height: 22px;
+  border-radius: 12px;
+  background-color: #FFFFFF;
+  border:solid 2px #CCCCCC;
+  justify-content: center;
+  align-items: center;
+}

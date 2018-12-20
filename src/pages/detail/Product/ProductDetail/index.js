@@ -27,7 +27,7 @@ class ProductDetail extends Component {
       this.props.history.push('/LoginPage');
     }
     else {
-      this.props.history.push({ pathname: '/OrderPlace', state: { product: this.state.product } });
+      this.props.history.push({ pathname: '/OrderPlace', state: { product: this.state.product,prePage: 'product' } });
     }
 
   }
