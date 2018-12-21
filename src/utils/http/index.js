@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {Toast }from "antd-mobile";
 // import Toast from '../Toast';
 
 var instance = axios.create({
@@ -21,25 +22,25 @@ var instance = axios.create({
   }],
 });
 
-// // 出错的回调
-// const errorCallback = (error) => {
-//   Toast.show(error.toString());
-//   return Promise.reject(error);
-// };
+// 出错的回调
+const errorCallback = (error) => {
+  Toast.fail(error.toString());
+  return Promise.reject(error);
+};
 
-// // 接口返回值的拦截器
-// instance.interceptors.response.use((response) => {
-//   try {
-//     const { error } = response;
-//     if (error) {
-//       throw error.message || '接口发生错误';
-//     }
-//     return response;
-//   }
-//   catch (e) {
-//     Toast.show(e);
-//     return response;
-//   }
-// }, errorCallback);
+// 接口返回值的拦截器
+instance.interceptors.response.use((response) => {
+  try {
+    const { data } = response;
+    if (JSON.parse(data).error) {
+      throw JSON.parse(data).error.message || '接口发生错误';
+    }
+    return response;
+  }
+  catch (e) {
+    //Toast.fail(e);
+    return {error: e};
+  }
+}, errorCallback);
 
 export default instance;

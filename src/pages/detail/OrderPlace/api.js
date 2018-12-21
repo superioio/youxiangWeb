@@ -30,7 +30,7 @@ export async function placeOrder(orderInfo,customerId) {
             customerMobile : orderInfo.customerMobile,
             customerName : orderInfo.customerName,
             customerRemark : orderInfo.customerRemark,
-            serviceTime : orderInfo.serviceTime,
+            serviceTime : 123123,
             voucherIds : voucherIds,
             rechargeCardIds : rechargeCardIds,
         })

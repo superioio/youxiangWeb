@@ -29,7 +29,7 @@ const globalVal = {
     }
     return JSON.parse(userInfo);
   },
-  imgUrl: 'http://admin.dev.ue-link.com/static/',
+  imgUrl: 'http://admin.offline.ue-link.com/static/',
   //imgUrl: 'http://148.70.110.127:8080/static/',
 };
 export default globalVal;

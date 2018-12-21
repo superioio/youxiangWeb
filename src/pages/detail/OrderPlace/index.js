@@ -137,6 +137,10 @@ class OrderPlace extends Component {
     Toast.loading("请稍后...", 3);
     const order = await placeOrder(this.state.orderInfo, globalVal.userInfo.customerId);
     Toast.hide();
+    if(order == null){
+      //Toast.fail("出错了");
+      return;
+    }
     let orderInfo = this.state.orderInfo;
     orderInfo.id = order.orderId;
     orderInfo.payment = order.payCash;

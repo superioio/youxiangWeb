@@ -31,14 +31,14 @@ class ProductDetail extends Component {
     }
 
   }
-  // src={ globalVal.imgUrl + product.headerImgUrl}
+  //src={require("@/assets/images/washingMachineHeader.png")}
   renderHeaderImg() {
     const { product } = this.state;
     return (<div className={styles.headerImgContain}>
       <img
         className={styles.headerImg}
         alt="商品缩略图"
-        src={require("@/assets/images/washingMachineHeader.png")} />
+        src={ globalVal.imgUrl + product.headerImgUrl}/>
     </div>);
   }
   renderPrice() {
@@ -48,14 +48,15 @@ class ProductDetail extends Component {
       <div className={styles.priceText}>{product.productPriceList[0].price + "元/" + product.unitName}</div>
     </div>);
   }
-  // src={ globalVal.imgUrl + product.detailImgUrl }
+  // src={require("@/assets/images/washingMachineDesc.png")}
   renderDescImg() {
     const { product } = this.state;
     return (<div className={styles.descImgContainer}>
       <img
         className={styles.descImg}
         alt="商品详情"
-        src={require("@/assets/images/washingMachineDesc.png")} />
+        src={ globalVal.imgUrl + product.detailImgUrl }
+       />
     </div>);
   }
 
