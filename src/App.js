@@ -9,6 +9,8 @@ import OrderDetail from './pages/detail/OrderDetail';
 import OrderPlace from './pages/detail/OrderPlace';
 import CitySelector from './pages/detail/CitySelector';
 import CardAndDiscount from './pages/detail/MinePageChild/CardAndDiscount';
+import Contact from './pages/detail/MinePageChild/Contact';
+
 
 import 'antd-mobile/dist/antd-mobile.css';
 import './App.css';
@@ -22,6 +24,7 @@ class App extends Component {
           <Route path="/LoginPage" exact component={LoginPage} />
           <Route path="/RegPage" exact component={RegPage} />
           <Route path="/CardAndDiscount" exact component={CardAndDiscount} />
+          <Route path="/Contact" exact component={Contact} />
 
           <Route path="/ProductList" exact component={ProductList} />
           <Route path="/ProductDetail" exact component={ProductDetail} />
