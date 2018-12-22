@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Flex, Icon, NavBar } from "antd-mobile";
+import { Icon, NavBar } from "antd-mobile";
 import styles from './styles.module.css';
 import globalVal from '@/utils/global_val';
 import { withRouter } from "react-router-dom";
@@ -23,11 +23,11 @@ class ProductDetail extends Component {
   }
 
   onOrderPress = () => {
-    if (globalVal.userInfo.customerId == -1) {
+    if (globalVal.userInfo.customerId === -1) {
       this.props.history.push('/LoginPage');
     }
     else {
-      this.props.history.push({ pathname: '/OrderPlace', state: { product: this.state.product,prePage: 'product' } });
+      this.props.history.push({ pathname: '/OrderPlace', state: { product: this.state.product, prePage: 'product' } });
     }
 
   }
@@ -38,7 +38,7 @@ class ProductDetail extends Component {
       <img
         className={styles.headerImg}
         alt="商品缩略图"
-        src={ globalVal.imgUrl + product.headerImgUrl}/>
+        src={globalVal.imgUrl + product.headerImgUrl} />
     </div>);
   }
   renderPrice() {
@@ -55,8 +55,8 @@ class ProductDetail extends Component {
       <img
         className={styles.descImg}
         alt="商品详情"
-        src={ globalVal.imgUrl + product.detailImgUrl }
-       />
+        src={globalVal.imgUrl + product.detailImgUrl}
+      />
     </div>);
   }
 
@@ -67,7 +67,7 @@ class ProductDetail extends Component {
           mode="light"
           icon={<Icon type="left" />}
           onLeftClick={() =>
-              this.props.location.state.productCategoryId ?
+            this.props.location.state.productCategoryId ?
               this.props.history.push({ pathname: '/ProductList', state: { productCategoryId: this.props.location.state.productCategoryId, name: this.props.location.state.name } })
               : this.props.history.push('/')
           }

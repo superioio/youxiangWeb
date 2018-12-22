@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import globalVal from '@/utils/global_val';
 import styles from './styles.module.css';
-import {getDefaultAddress, placeOrder} from './api';
-import {Toast, DatePicker, List, TextareaItem, Flex, NavBar, Icon} from "antd-mobile";
+import { getDefaultAddress, placeOrder } from './api';
+import { Toast, DatePicker, List, TextareaItem, NavBar, Icon } from "antd-mobile";
 // import TimePicker from '../../../components/TimePicker';
 import moment from 'moment';
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class OrderPlace extends Component {
   constructor(props) {
@@ -51,18 +51,18 @@ class OrderPlace extends Component {
   fromProduct = async () => {
     const product = this.props.location.state.product;
     const address = await getDefaultAddress(globalVal.userInfo.customerId);
-    if(address.error){
+    if (address.error) {
       Toast.fail(address.error);
       return;
     }
     const order = {};
     const productResp = product;
-   // productResp.id = product.id;
-  //  productResp.effectiveDays = product.effectiveDays;
-    productResp.price =  product.productPriceList[0].price;
-   // productResp.name = product.name;
-//    productResp.description = product.description;
-  //  productResp.unitName = product.unitName;
+    // productResp.id = product.id;
+    //  productResp.effectiveDays = product.effectiveDays;
+    productResp.price = product.productPriceList[0].price;
+    // productResp.name = product.name;
+    //    productResp.description = product.description;
+    //  productResp.unitName = product.unitName;
     order.productResp = productResp;
     order.productId = product.id;
     order.date = moment().add(product.effectiveDays, 'days').format();
@@ -106,7 +106,7 @@ class OrderPlace extends Component {
     //   voucherInfo: this.props.location.state.voucherInfoList
     // });
     //如果是从之前的界面返回，没有修改选择
-    if(this.props.location.state.isCancel){
+    if (this.props.location.state.isCancel) {
       this.setState({
         payCash: this.props.location.state.payCash
       });
@@ -141,7 +141,7 @@ class OrderPlace extends Component {
     Toast.loading("请稍后...", 3);
     const order = await placeOrder(this.state.orderInfo, globalVal.userInfo.customerId);
     Toast.hide();
-    if(order.error){
+    if (order.error) {
       Toast.fail(order.error);
       return;
     }
@@ -151,11 +151,11 @@ class OrderPlace extends Component {
     orderInfo.payVoucher = this.state.voucherInfo.length;
     orderInfo.payRechargeCard = this.state.saveMoneyByCard;
     orderInfo.totalAmount = orderInfo.productPrice * orderInfo.count;
-    const isPay = order.payCash == 0 ? false : true;//如果仍需要支付金额不是0 ，则显示微信支付
+    const isPay = order.payCash === 0 ? false : true;//如果仍需要支付金额不是0 ，则显示微信支付
     this.setState({
       hasPlace: true
     });
-    this.props.history.push({pathname: '/OrderDetail', state: {order: orderInfo, isPay: isPay, isUnpaid: true}});
+    this.props.history.push({ pathname: '/OrderDetail', state: { order: orderInfo, isPay: isPay, isUnpaid: true } });
     // this.props.navigation.navigate('OrderDetail', { order: orderInfo, isPay: isPay, isUnpaid: true })
   }
 
@@ -182,7 +182,7 @@ class OrderPlace extends Component {
     }
     let needPayCash;
     if (isCard) {
-      needPayCash = this.state.payCash + this.state.saveMoneyByCard ;
+      needPayCash = this.state.payCash + this.state.saveMoneyByCard;
     } else {
       needPayCash = this.state.payCash + this.state.saveMoneyByVoucher;
     }
@@ -285,7 +285,7 @@ class OrderPlace extends Component {
   //     payCash: payCash
   //   });
   // }
-  calculatePayCash(){
+  calculatePayCash() {
     let cardAmount = 0;
     let voucherAmount = 0;
     let cardIds = '';
@@ -325,7 +325,7 @@ class OrderPlace extends Component {
   }
 
   renderAddressButton(text) {
-    const {orderInfo} = this.state;
+    const { orderInfo } = this.state;
     return (<div onClick={() => this.onAddrPress()}>
       <div className={styles.addressButton}>
         <div className={styles.itemLeft}>
@@ -339,16 +339,16 @@ class OrderPlace extends Component {
           </div>
         </div>
         <img
-            className={styles.arrowImage}
-            alt='添加地址'
-            src={require('../../../assets/images/arrow-right.png')}
+          className={styles.arrowImage}
+          alt='添加地址'
+          src={require('../../../assets/images/arrow-right.png')}
         />
       </div>
     </div>);
   }
 
   renderUnitPriceLabel() {
-    const {orderInfo} = this.state;
+    const { orderInfo } = this.state;
     return (<div className={styles.label}>
       <span>单价：</span>
       <span>{orderInfo.productResp.price + "元/" + orderInfo.productResp.unitName}</span>
@@ -356,38 +356,38 @@ class OrderPlace extends Component {
   }
 
   renderVisitDateButton() {
-    const {orderInfo} = this.state;
-    const {date, time} = orderInfo;
+    const { orderInfo } = this.state;
+    // const { date, time } = orderInfo;
     const today = new Date();
     const minDate = new Date(today.setDate(today.getDate() + orderInfo.productResp.effectiveDays));
     return (
-        <List className={styles.datePickContainer}>
-          <DatePicker
-              value={minDate}
-              className={styles.datePicker}
-              minDate={minDate}  //最小时间
-              minuteStep={30}
-              format="YYYY-MM-DD  HH:mm"
-              mode="datetime"
-              extra="Optional"
-              onChange={(date) => {
-                this.setState({
-                  orderInfo: {
-                    ...orderInfo,
-                    date,
-                    serviceTime:  moment(`${date}`).unix() * 1000,
-                  }
-                });
-              }}
-          >
-            <List.Item arrow="horizontal">上门时间:</List.Item>
-          </DatePicker></List>
+      <List className={styles.datePickContainer}>
+        <DatePicker
+          value={minDate}
+          className={styles.datePicker}
+          minDate={minDate}  //最小时间
+          minuteStep={30}
+          format="YYYY-MM-DD  HH:mm"
+          mode="datetime"
+          extra="Optional"
+          onChange={(date) => {
+            this.setState({
+              orderInfo: {
+                ...orderInfo,
+                date,
+                serviceTime: moment(`${date}`).unix() * 1000,
+              }
+            });
+          }}
+        >
+          <List.Item arrow="horizontal">上门时间:</List.Item>
+        </DatePicker></List>
     );
   }
 
   renderVisitTimeButton = () => {
-    const {orderInfo} = this.state;
-    const {date, time} = orderInfo;
+    // const { orderInfo } = this.state;
+    // const { date, time } = orderInfo;
     return (<div>
       <div className={styles.label}>
         <span>上门时间：</span>
@@ -409,35 +409,18 @@ class OrderPlace extends Component {
   }
 
   renderNumberButton() {
-    const {orderInfo} = this.state;
+    const { orderInfo } = this.state;
     return (
-        <div className={styles.label}>
-          <span>{"数量(" + orderInfo.productResp.unitName + ") : "}</span>
-          <div className={styles.flexDirectionRow}>
-            <div onClick={() => {
-              let count = orderInfo.count;
-              if (count === orderInfo.lastNum) {
-                return null;
-              } else {
-                count -= 1;
-                const payCash = this.state.payCash - this.state.orderInfo.productPrice;
-                this.setState({
-                  orderInfo: {
-                    ...this.state.orderInfo,
-                    count: count,
-                  },
-                  payCash: payCash
-                });
-              }
-            }}>
-              <div className={styles.numberButton}>
-                <span>-</span>
-              </div>
-            </div>
-            <span className={styles.numberText}>{orderInfo.count}</span>
-            <div onClick={() => {
-              const count = this.state.orderInfo.count + 1;
-              const payCash = this.state.payCash + this.state.orderInfo.productPrice;
+      <div className={styles.label}>
+        <span>{"数量(" + orderInfo.productResp.unitName + ") : "}</span>
+        <div className={styles.flexDirectionRow}>
+          <div onClick={() => {
+            let count = orderInfo.count;
+            if (count === orderInfo.lastNum) {
+              return null;
+            } else {
+              count -= 1;
+              const payCash = this.state.payCash - this.state.orderInfo.productPrice;
               this.setState({
                 orderInfo: {
                   ...this.state.orderInfo,
@@ -445,28 +428,45 @@ class OrderPlace extends Component {
                 },
                 payCash: payCash
               });
-            }}>
-              <div className={styles.numberButton}>
-                <span>+</span>
-              </div>
+            }
+          }}>
+            <div className={styles.numberButton}>
+              <span>-</span>
             </div>
           </div>
-        </div>);
+          <span className={styles.numberText}>{orderInfo.count}</span>
+          <div onClick={() => {
+            const count = this.state.orderInfo.count + 1;
+            const payCash = this.state.payCash + this.state.orderInfo.productPrice;
+            this.setState({
+              orderInfo: {
+                ...this.state.orderInfo,
+                count: count,
+              },
+              payCash: payCash
+            });
+          }}>
+            <div className={styles.numberButton}>
+              <span>+</span>
+            </div>
+          </div>
+        </div>
+      </div>);
   }
 
   renderReMark() {
     return (<div>
       <TextareaItem
-          className={styles.remark}
-          placeholder="备注信息"
-          rows={2}
-          onChange={(remark) => this.setState({
-            orderInfo: {
-              ...this.state.orderInfo,
-              customerRemark: remark,
-            }
-          })}
-          value={this.state.orderInfo.customerRemark}
+        className={styles.remark}
+        placeholder="备注信息"
+        rows={2}
+        onChange={(remark) => this.setState({
+          orderInfo: {
+            ...this.state.orderInfo,
+            customerRemark: remark,
+          }
+        })}
+        value={this.state.orderInfo.customerRemark}
       />
     </div>);
   }
@@ -475,11 +475,11 @@ class OrderPlace extends Component {
     return (<div className={styles.card} onClick={() => this.onChooseCardOrVoucherPress(true)}>
       <div className={styles.label}>
         <span
-            className={styles.greyText}>{this.state.saveMoneyByCard > 0 ? "可支付" + this.state.saveMoneyByCard + "元" : "请选择"}</span>
+          className={styles.greyText}>{this.state.saveMoneyByCard > 0 ? "可支付" + this.state.saveMoneyByCard + "元" : "请选择"}</span>
         <img
-            className={styles.arrowImage}
-            alt='积分卡'
-            src={require('@/assets/images/arrow-right.png')}
+          className={styles.arrowImage}
+          alt='积分卡'
+          src={require('@/assets/images/arrow-right.png')}
         />
       </div>
     </div>);
@@ -489,11 +489,11 @@ class OrderPlace extends Component {
     return (<div onClick={() => this.onChooseCardOrVoucherPress(false)}>
       <div className={styles.label}>
         <span
-            className={styles.greyText}>{this.state.saveMoneyByVoucher > 0 ? "已节省" + this.state.saveMoneyByVoucher + "元" : "请选择"}</span>
+          className={styles.greyText}>{this.state.saveMoneyByVoucher > 0 ? "已节省" + this.state.saveMoneyByVoucher + "元" : "请选择"}</span>
         <img
-            className={styles.arrowImage}
-            alt='代金券'
-            src={require('@/assets/images/arrow-right.png')}
+          className={styles.arrowImage}
+          alt='代金券'
+          src={require('@/assets/images/arrow-right.png')}
         />
       </div>
     </div>);
@@ -501,15 +501,15 @@ class OrderPlace extends Component {
 
   render() {
     return (
-        <div className={styles.container}>
-          <NavBar
-              mode="light"
-              icon={<Icon type="left"/>}
-              onLeftClick={() =>
-                  this.props.history.push({ pathname: '/ProductDetail', state: { productDetail: this.state.orderInfo.productResp}})
-              }
-          >下 单</NavBar>
-          <div className={styles.contentContainer}>
+      <div className={styles.container}>
+        <NavBar
+          mode="light"
+          icon={<Icon type="left" />}
+          onLeftClick={() =>
+            this.props.history.push({ pathname: '/ProductDetail', state: { productDetail: this.state.orderInfo.productResp } })
+          }
+        >下 单</NavBar>
+        <div className={styles.contentContainer}>
           {this.renderTitle('地址')}
           {this.renderAddressButton()}
           {this.renderTitle('服务')}
@@ -523,21 +523,21 @@ class OrderPlace extends Component {
           {this.renderVoucher()}
           {this.renderTitle('积分卡')}
           {this.renderCard()}
+        </div>
+        <div className={styles.place} >
+          <div className={styles.placeLeft}>
+            <span className={styles.placeLeftText}>{"需支付: " + this.state.payCash + "元"}</span>
           </div>
-          <div className={styles.place} >
-            <div className={styles.placeLeft}>
-              <span className={styles.placeLeftText}>{"需支付: " + this.state.payCash + "元"}</span>
-            </div>
-            <div className={styles.placeRight}>
-              <div
-                  className={styles.placeRightButton}
-                  onClick={this.onOrderPress}
-              >
-                <span className={styles.placeRightText}>下一步</span>
-              </div>
+          <div className={styles.placeRight}>
+            <div
+              className={styles.placeRightButton}
+              onClick={this.onOrderPress}
+            >
+              <span className={styles.placeRightText}>下一步</span>
             </div>
           </div>
         </div>
+      </div>
     );
   }
 }

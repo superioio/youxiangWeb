@@ -114,12 +114,8 @@
       "node"
     ]
   },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
-  },
   "devDependencies": {
+    "babel-plugin-import": "^1.11.0",
     "react-app-rewired": "^1.6.2"
   },
   "proxy": "http://admin.offline.ue-link.com"

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './styles.module.css';
 import { datetimeFormat, getStatus } from '@/utils';
-import { cancelOrder, getPayCheck } from './api'
+import { cancelOrder } from './api'
 import { Flex, Icon, NavBar, Toast, Modal } from "antd-mobile";
 import { withRouter } from "react-router-dom";
 
@@ -106,7 +106,7 @@ class OrderDetail extends Component {
     Toast.loading("请稍后...", 3);
     const result = await cancelOrder(this.props.location.state.order.id);
     Toast.hide();
-    if(result.error){
+    if (result.error) {
       Toast.fail(result.error);
       return;
     }
@@ -148,11 +148,13 @@ class OrderDetail extends Component {
           mode="light"
           icon={<Icon type="left" />}
           onLeftClick={() =>
-              this.props.location.state.order ?
-              this.props.history.push({ pathname: '/CardAndDiscount', state:  {
+            this.props.location.state.order ?
+              this.props.history.push({
+                pathname: '/CardAndDiscount', state: {
                   prePage: 'orderdetail', // 是从订单页返回订单页
                   orderInfo: this.props.location.state.order,//全部的订单信息
-                }}) : this.props.history.goBack()
+                }
+              }) : this.props.history.goBack()
           }
         >订单详情</NavBar>
         {this.renderContent(this.props.location.state.order, this.props.location.state.isPay)}

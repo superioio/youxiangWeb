@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { dateFormat} from '@/utils';
+import React, { Component } from 'react';
+import { dateFormat } from '@/utils';
 import {
   exchangeCard,
   exchangeVoucher,
@@ -8,9 +8,9 @@ import {
   getVoucherListByProduct,
   getCardListByProduct
 } from "./api";
-import moment from 'moment';
-import {Flex, Icon, NavBar, Toast, Modal} from "antd-mobile";
-import {withRouter} from "react-router-dom";
+// import moment from 'moment';
+import { Flex, Icon, NavBar, Toast, Modal } from "antd-mobile";
+import { withRouter } from "react-router-dom";
 import styles from './styles.module.css';
 import globalVal from '@/utils/global_val';
 
@@ -78,6 +78,8 @@ class CardAndDiscount extends Component {
         });
 
         break;
+      default:
+        break;
     }
     Toast.hide();
 
@@ -87,7 +89,7 @@ class CardAndDiscount extends Component {
       list: list,
       moreText,
     });
-    if(list.error){
+    if (list.error) {
       Toast.fail(list.error);
       return;
     }
@@ -114,7 +116,7 @@ class CardAndDiscount extends Component {
       moreText,
     });
     Toast.hide();
-    if(list.error){
+    if (list.error) {
       Toast.fail(list.error);
       return;
     }
@@ -192,13 +194,13 @@ class CardAndDiscount extends Component {
   }
 
   async onExchangePress() {
-    let result ;
+    let result;
     Toast.loading("请稍后...", 3);
-    result = this.props.location.state.tag == "积分卡"
-        ? await exchangeCard(this.state.exchangeCode)
-        : await exchangeVoucher(this.state.exchangeCode);
+    result = this.props.location.state.tag === "积分卡"
+      ? await exchangeCard(this.state.exchangeCode)
+      : await exchangeVoucher(this.state.exchangeCode);
     Toast.hide();
-    if(result.error){
+    if (result.error) {
       Toast.fail(result.error);
     }
   }
@@ -225,7 +227,7 @@ class CardAndDiscount extends Component {
   }
 
   renderCardItem = (item, index) => {
-    const {overPayCash} = this.state;
+    const { overPayCash } = this.state;
     const isSelect = this.state.selectedList.some(n => n.id === item.id);
 
     if (overPayCash && !isSelect) {
@@ -275,19 +277,19 @@ class CardAndDiscount extends Component {
   }
 
   renderCardList = () => {
-    const {list} = this.state;
-    const {isPay} = this.props.location.state;
+    const { list } = this.state;
+    const { isPay } = this.props.location.state;
     if (!list) return;
 
     return (<div className={styles.tabContent}>
       {list.map((item, index) =>
-          isPay ? this.renderCardItem(item, index) : this.renderUnPressCardItem(item, index))}
-      <div className={styles.margin }></div>
+        isPay ? this.renderCardItem(item, index) : this.renderUnPressCardItem(item, index))}
+      <div className={styles.margin}></div>
     </div>);
   }
 
   renderDiscountItem = (item, index) => {
-    const {overPayCash} = this.state;
+    const { overPayCash } = this.state;
     const isSelect = this.state.selectedList.some(n => n.id === item.id);
     if (overPayCash && !isSelect) {
       return (<div key={index}>
@@ -336,70 +338,70 @@ class CardAndDiscount extends Component {
   }
 
   renderDiscountList() {
-    const {list} = this.state;
-    const {isPay} = this.props.location.state;
+    const { list } = this.state;
+    const { isPay } = this.props.location.state;
     if (!list) return;
 
     return (<div className={styles.tabContent}>
       {list.map((item, index) => isPay
-          ? this.renderDiscountItem(item, index) : this.renderUnPressDiscountItem(item, index))}
-      <div className={styles.margin }></div>
+        ? this.renderDiscountItem(item, index) : this.renderUnPressDiscountItem(item, index))}
+      <div className={styles.margin}></div>
     </div>);
   }
 
   render() {
     return (
-        <div className={styles.container}>
-          <NavBar
-              mode="light"
-              icon={<Icon type="left"/>}
-              onLeftClick={() =>
-                  RegExp(/添加/).test(this.props.location.state.tag) ?
-                      this.props.history.push({
-                        pathname: '/OrderPlace', state: {
-                          isCancel: true, //从页面返回
-                          prePage: 'discount', // 是从代金劵或积分卡界面返回订单页
-                          tag: this.props.location.state.tag,//标识 此界面是 代金券 还是 积分卡
-                          orderInfo: this.props.location.state.orderInfo,//全部的订单信息
-                          payCash: this.props.location.state.payCash,
-                          voucherInfoList: this.props.location.state.voucherInfoList,
-                          cardInfoList: this.props.location.state.cardInfoList,
-                        }
-                      }) :
-                      this.props.history.goBack()
-              }
-          >{this.state.title}</NavBar>
-            {(this.props.location.state.tag === "添加积分卡" || this.props.location.state.tag === "积分卡") ? this.renderCardList() : this.renderDiscountList()}
+      <div className={styles.container}>
+        <NavBar
+          mode="light"
+          icon={<Icon type="left" />}
+          onLeftClick={() =>
+            RegExp(/添加/).test(this.props.location.state.tag) ?
+              this.props.history.push({
+                pathname: '/OrderPlace', state: {
+                  isCancel: true, //从页面返回
+                  prePage: 'discount', // 是从代金劵或积分卡界面返回订单页
+                  tag: this.props.location.state.tag,//标识 此界面是 代金券 还是 积分卡
+                  orderInfo: this.props.location.state.orderInfo,//全部的订单信息
+                  payCash: this.props.location.state.payCash,
+                  voucherInfoList: this.props.location.state.voucherInfoList,
+                  cardInfoList: this.props.location.state.cardInfoList,
+                }
+              }) :
+              this.props.history.goBack()
+          }
+        >{this.state.title}</NavBar>
+        {(this.props.location.state.tag === "添加积分卡" || this.props.location.state.tag === "积分卡") ? this.renderCardList() : this.renderDiscountList()}
 
-          <div className={styles.footer}>
-            <div className={styles.moreText} onClick={() => this.onMorePress(this.state.moreText)}>
-              <span>{this.state.moreText}</span>
-            </div>
-            {(this.props.location.state.tag === "添加积分卡" || this.props.location.state.tag === "添加代金券") ?
-                <div className={styles.exchangeBtn} onClick={() => this.onSubmit()}>
-                  <div>
-                    <span className={styles.exchangeText}>{"确定"}</span>
-                  </div>
-                </div> :
-                <div className={styles.exchangeBtn} onClick={() => Modal.prompt('输入兑换码', '请输入您的兑换码',
-                    [
-                      {text: '取消'},
-                      {
-                        text: '确定',
-                        onPress: exchangeCode => new Promise(() => {
-                          this.setState({exchangeCode});
-                          this.onExchangePress();
-                        }),
-                      },
-                    ], 'default', null, ['兑换码'])}
-                >
-                  <div>
-                    <span className={styles.exchangeText}>{"兑换" + this.state.tag}</span>
-                  </div>
-                </div>
-            }
+        <div className={styles.footer}>
+          <div className={styles.moreText} onClick={() => this.onMorePress(this.state.moreText)}>
+            <span>{this.state.moreText}</span>
           </div>
+          {(this.props.location.state.tag === "添加积分卡" || this.props.location.state.tag === "添加代金券") ?
+            <div className={styles.exchangeBtn} onClick={() => this.onSubmit()}>
+              <div>
+                <span className={styles.exchangeText}>{"确定"}</span>
+              </div>
+            </div> :
+            <div className={styles.exchangeBtn} onClick={() => Modal.prompt('输入兑换码', '请输入您的兑换码',
+              [
+                { text: '取消' },
+                {
+                  text: '确定',
+                  onPress: exchangeCode => new Promise(() => {
+                    this.setState({ exchangeCode });
+                    this.onExchangePress();
+                  }),
+                },
+              ], 'default', null, ['兑换码'])}
+            >
+              <div>
+                <span className={styles.exchangeText}>{"兑换" + this.state.tag}</span>
+              </div>
+            </div>
+          }
         </div>
+      </div>
     );
   }
 }
