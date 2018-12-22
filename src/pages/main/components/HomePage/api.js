@@ -11,7 +11,7 @@ export async function getCategoryList() {
     }
   })
     .then(function (response) {
-      return JSON.parse(response.data).data;
+      return response;
     })
     .catch(function (error) {
       console.log("getCardList error" + error);
@@ -32,7 +32,7 @@ export async function getProductList(productCategoryId, name, cityCode) {
     }
   })
     .then(function (response) {
-      return JSON.parse(response.data).data;
+      return response;
     })
     .catch(function (error) {
       console.log("getCardList error" + error);
@@ -44,7 +44,7 @@ export async function getProductList(productCategoryId, name, cityCode) {
 export async function getCityList() {
   return await axios.get('/api/syscity/getprovincelist')
     .then(function (response) {
-      return JSON.parse(response.data).data;
+      return response;
     })
     .catch(function (error) {
       console.log("getCardList error" + error);

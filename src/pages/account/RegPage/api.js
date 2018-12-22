@@ -9,7 +9,7 @@ export async function requestReg(mobile, name) {
     }
   })
     .then(function (response) {
-      return JSON.parse(response.data).data;
+      return response;
     })
     .catch(function (error) {
       console.log("requestReg error" + error);

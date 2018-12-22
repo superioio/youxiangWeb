@@ -9,7 +9,7 @@ export async function getDefaultAddress(customerId) {
         }
     })
         .then(function (response) {
-            return JSON.parse(response.data).data;
+            return response;
         })
         .catch(function (error) {
             console.log("getVoucherList error" + error);
@@ -30,12 +30,12 @@ export async function placeOrder(orderInfo,customerId) {
             customerMobile : orderInfo.customerMobile,
             customerName : orderInfo.customerName,
             customerRemark : orderInfo.customerRemark,
-            serviceTime : 123123,
+            serviceTime : orderInfo.serviceTime,
             voucherIds : voucherIds,
             rechargeCardIds : rechargeCardIds,
         })
     ).then(function (response) {
-        return JSON.parse(response.data).data;
+        return response;
     }) .catch(function (error) {
         console.log("placeOrder error" + error);
         return null;
@@ -54,7 +54,7 @@ export async function getVoucherList(customerId, productId, cityCode, ) {
         }
     })
         .then(function (response) {
-            return JSON.parse(response.data).data;
+            return response;
         })
         .catch(function (error) {
             console.log("getVoucherList error" + error);
@@ -74,7 +74,7 @@ export async function getCardList(customerId, productId, cityCode, ) {
         }
     })
         .then(function (response) {
-            return JSON.parse(response.data).data;
+            return response;
         })
         .catch(function (error) {
             console.log("getCardList error" + error);

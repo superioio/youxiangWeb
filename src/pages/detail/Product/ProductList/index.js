@@ -18,6 +18,10 @@ class ProductList extends Component {
     Toast.loading("请稍后...", 3);
     const list = await getProductList(params.productCategoryId, params.name, globalVal.selectCity.code);
     Toast.hide();
+    if(list.error){
+      Toast.fail(list.error);
+      return;
+    }
     this.setState({
       list: list
     });

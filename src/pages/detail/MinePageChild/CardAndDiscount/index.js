@@ -48,6 +48,7 @@ class CardAndDiscount extends Component {
     switch (this.props.location.state.tag) {
       case "积分卡":
         list = await getCardList(2, globalVal.userInfo.customerId);
+
         title = "我的积分卡";
         moreText = '查看失效的积分卡';
         break;
@@ -79,12 +80,17 @@ class CardAndDiscount extends Component {
         break;
     }
     Toast.hide();
+
     this.setState({
       title: title,
       tag: this.props.location.state.tag,
       list: list,
       moreText,
     });
+    if(list.error){
+      Toast.fail(list.error);
+      return;
+    }
   }
 
   loadUnEffectiveData = async () => {
@@ -108,6 +114,10 @@ class CardAndDiscount extends Component {
       moreText,
     });
     Toast.hide();
+    if(list.error){
+      Toast.fail(list.error);
+      return;
+    }
   }
 
   //计算其他 代金券/储值卡 是否仍然可选,储值卡直接计算余额，代金券计算个数*单价
@@ -182,11 +192,15 @@ class CardAndDiscount extends Component {
   }
 
   async onExchangePress() {
+    let result ;
     Toast.loading("请稍后...", 3);
-    this.props.location.state.tag == "积分卡"
+    result = this.props.location.state.tag == "积分卡"
         ? await exchangeCard(this.state.exchangeCode)
         : await exchangeVoucher(this.state.exchangeCode);
     Toast.hide();
+    if(result.error){
+      Toast.fail(result.error);
+    }
   }
 
   //点击  “查看更多”  按钮，此时应该隐藏 “查看更多”

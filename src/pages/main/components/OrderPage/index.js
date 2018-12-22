@@ -44,6 +44,10 @@ class OrderPage extends Component {
       Toast.loading("请稍后...", 30);
       const orders = await getOrderListByStatus(1, globalVal.userInfo.customerId);//默认 待付款
       Toast.hide();
+      if(orders.error){
+        Toast.fail(orders.error);
+        return;
+      }
       //console.log(JSON.stringify(orders));
       this.setState({
         orders: orders
@@ -69,6 +73,10 @@ class OrderPage extends Component {
     Toast.loading("请稍后...", 3);
     const orders = await getOrderListByStatus(getStatusCode(tabName), globalVal.userInfo.customerId);
     Toast.hide();
+    if(orders.error){
+      Toast.fail(orders.error);
+      return;
+    }
     this.setState({
       orders: orders
     });

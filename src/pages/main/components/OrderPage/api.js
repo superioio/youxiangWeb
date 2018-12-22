@@ -10,7 +10,7 @@ export async function getOrderList(customerId) {
     }
   })
     .then(function (response) {
-      return JSON.parse(response.data).data;
+      return response;
     })
     .catch(function (error) {
       console.log("getOrderList error" + error);
@@ -28,7 +28,7 @@ export async function getOrderListByStatus(status, customerId) {
     }
   })
     .then(function (response) {
-      return JSON.parse(response.data).data;
+      return response;
     })
     .catch(function (error) {
       console.log("getOrderList error" + error);

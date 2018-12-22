@@ -35,7 +35,7 @@ instance.interceptors.response.use((response) => {
     if (JSON.parse(data).error) {
       throw JSON.parse(data).error.message || '接口发生错误';
     }
-    return response;
+    return JSON.parse(data).data;
   }
   catch (e) {
     //Toast.fail(e);

@@ -12,7 +12,7 @@ export async function getCardList(status, customerId) {
         }
     })
         .then(function (response) {
-            return JSON.parse(response.data).data;
+            return response;
         })
         .catch(function (error) {
             console.log("getCardList error" + error);
@@ -30,7 +30,7 @@ export async function getDiscountList(status, customerId) {
         }
     })
         .then(function (response) {
-            return JSON.parse(response.data).data;
+            return response;
         })
         .catch(function (error) {
             console.log("getDiscountList error" + error);
@@ -47,7 +47,7 @@ export async function exchangeCard(keyStr, phoneNumber) {
         })
     )
         .then(function (response) {
-            return JSON.parse(response.data).data;
+            return response;
         })
         .catch(function (error) {
             console.log("exchangeDiscount error" + error);
@@ -64,7 +64,7 @@ export async function exchangeVoucher(keyStr,phoneNumber) {
         })
     )
         .then(function (response) {
-            return JSON.parse(response.data).data;
+            return response;
         })
         .catch(function (error) {
             console.log("exchangeDiscount error" + error);
@@ -84,7 +84,7 @@ export async function getVoucherListByProduct(customerId, productId, cityCode) {
         }
     })
         .then(function (response) {
-            return JSON.parse(response.data).data;
+            return response;
         })
         .catch(function (error) {
             console.log("getDiscountList error" + error);
@@ -103,7 +103,7 @@ export async function getCardListByProduct(customerId, productId, cityCode) {
         }
     })
         .then(function (response) {
-            return JSON.parse(response.data).data;
+            return response;
         })
         .catch(function (error) {
             console.log("getDiscountList error" + error);

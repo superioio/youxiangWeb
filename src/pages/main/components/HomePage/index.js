@@ -22,6 +22,11 @@ class HomePage extends Component {
   async componentDidMount() {
     Toast.loading("请稍后...", 3);
     const allCategoryList = await getCategoryList();
+    if(allCategoryList.error){
+      Toast.hide();
+      Toast.fail(allCategoryList.error);
+      return;
+    }
     allCategoryList.sort((pre, cur) => pre.priority - cur.priority);
 
     const categoryList = allCategoryList.slice(0, 4);
@@ -31,6 +36,11 @@ class HomePage extends Component {
     });
 
     const result = await Promise.all(moreCategoryGroupRequest);
+    if(result.error){
+      Toast.hide();
+      Toast.fail(result.error);
+      return;
+    }
     const moreCategoryGroup = result.map((productList, index) => {
       return {
         category: moreCategoryList[index],
@@ -70,11 +80,19 @@ class HomePage extends Component {
 
   setGlobalCityList = async () => {
     const cityList = await getCityList();
+    if(cityList.error){
+      Toast.fail(cityList.error);
+      return;
+    }
     globalVal.cityList = cityList;
   }
 
   setGlobalUserInfo = async () => {
     const userInfo = await globalVal.getUserInfo();
+    if(userInfo.error){
+      Toast.fail(userInfo.error);
+      return;
+    }
     if (userInfo.customerId === -1) return;
 
     const timeSpan = (Date.now() - userInfo.lastLoginTime) / 1000 / 60 / 60 / 24; // 天数

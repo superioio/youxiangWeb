@@ -9,7 +9,7 @@ export async function getPayCash(id) {
         }
     })
         .then(function (response) {
-            return JSON.parse(response.data).data.payCash;
+            return response;
         })
         .catch(function (error) {
             console.log("getCardList error" + error);
@@ -25,7 +25,7 @@ export async function getPayCheck(id) {
         }
     })
         .then(function (response) {
-            return JSON.parse(response.data).data.payCash;
+            return response;
         })
         .catch(function (error) {
             console.log("getCardList error" + error);
@@ -42,7 +42,7 @@ export async function cancelOrder(id) {
             id: id,
         })
     ).then(function (response) {
-        return JSON.parse(response.data).data;
+        return response;
     }) .catch(function (error) {
         console.log("cancelOrder error" + error);
         return null;

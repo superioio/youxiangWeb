@@ -104,8 +104,12 @@ class OrderDetail extends Component {
 
   confirm = async () => {
     Toast.loading("请稍后...", 3);
-    await cancelOrder(this.props.location.state.order.id);
+    const result = await cancelOrder(this.props.location.state.order.id);
     Toast.hide();
+    if(result.error){
+      Toast.fail(result.error);
+      return;
+    }
     this.props.history.goBack();
   }
   onPayPress = () => {

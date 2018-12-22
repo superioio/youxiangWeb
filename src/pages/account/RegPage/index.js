@@ -40,6 +40,10 @@ class RegPage extends Component {
     }
 
     const res = await requestReg(phoneNum.split(' ').join(''), name);
+    if(res.error){
+      Toast.fail(res.error);
+      return;
+    }
     if (res) {
       this.props.history.goBack();
     }

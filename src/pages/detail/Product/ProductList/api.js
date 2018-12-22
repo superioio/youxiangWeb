@@ -13,7 +13,7 @@ export async function getProductList(productCategoryId, name, cityCode) {
         }
     })
         .then(function (response) {
-            return JSON.parse(response.data).data;
+            return response;
         })
         .catch(function (error) {
             console.log("getCardList error" + error);

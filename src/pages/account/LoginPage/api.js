@@ -10,7 +10,7 @@ export async function getVerifyCode(mobile) {
   })
     .then(function (response) {
       console.log('response', response);
-      return JSON.parse(response.data).data.bizId;
+      return response;
     })
     .catch(function (error) {
       console.log("getVerifyCode error" + error);
@@ -28,7 +28,7 @@ export async function login(mobile, identifyingCode, bizId) {
     }
   })
     .then(function (response) {
-      return JSON.parse(response.data).data;
+      return response;
     })
     .catch(function (error) {
       console.log("login error" + error);

@@ -47,6 +47,10 @@ class LoginPage extends Component {
       this.props.history.goBack();
     }
     Toast.hide();
+    if(userInfo.error){
+      Toast.fail(userInfo.error);
+      return;
+    }
   }
 
   onGetVCode = async () => {
@@ -59,9 +63,13 @@ class LoginPage extends Component {
 
     if (this.state.timing === 60) {
       this.countDown();
-      const bizId = await getVerifyCode(phoneNum.split(' ').join(''));
+      const result = await getVerifyCode(phoneNum.split(' ').join(''));
+      if(result.error){
+        Toast.fail(result.error);
+        return;
+      }
       this.setState({
-        bizId: bizId
+        bizId: result.bizId
       });
     }
   }

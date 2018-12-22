@@ -51,6 +51,10 @@ class OrderPlace extends Component {
   fromProduct = async () => {
     const product = this.props.location.state.product;
     const address = await getDefaultAddress(globalVal.userInfo.customerId);
+    if(address.error){
+      Toast.fail(address.error);
+      return;
+    }
     const order = {};
     const productResp = product;
    // productResp.id = product.id;
@@ -137,8 +141,8 @@ class OrderPlace extends Component {
     Toast.loading("请稍后...", 3);
     const order = await placeOrder(this.state.orderInfo, globalVal.userInfo.customerId);
     Toast.hide();
-    if(order == null){
-      //Toast.fail("出错了");
+    if(order.error){
+      Toast.fail(order.error);
       return;
     }
     let orderInfo = this.state.orderInfo;
