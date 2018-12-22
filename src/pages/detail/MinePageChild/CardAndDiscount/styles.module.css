@@ -6,12 +6,13 @@
 .tabContent{
   height:100%;
   overflow: scroll;
+
 }
 .tabContentItem {
   display: flex;
   border-radius: 10px;
   background-color: white;
-  margin: 5px;
+  margin: 15px;
   flex-direction: row;
   height: 100px;
   justify-content: space-evenly;

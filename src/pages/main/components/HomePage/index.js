@@ -158,12 +158,12 @@ class HomePage extends Component {
     return (<Flex justify="between" className={styles.menu}>
       {categoryList.map((item, index) => <Flex.Item key={index}>
         <div className={styles.menuButton} onClick={() => this.onProductPress(item.id, item.name)} >
-          <img
-            className={styles.menuButtonImage}
-            src={globalVal.imgUrl + item.thumbnailUrl}
-            alt="服务"
-          />
-          <span className={styles.menuButtonText}>{item.name}</span>
+            <img
+                className={styles.menuButtonImage}
+                src={globalVal.imgUrl + item.thumbnailUrl}
+                alt="服务"
+            />
+          <div className={styles.menuButtonText}>{item.name}</div>
         </div>
       </Flex.Item>)}
     </Flex>);
