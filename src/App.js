@@ -9,6 +9,8 @@ import OrderDetail from './pages/detail/OrderDetail';
 import OrderPlace from './pages/detail/OrderPlace';
 import CitySelector from './pages/detail/CitySelector';
 import CardAndDiscount from './pages/detail/MinePageChild/CardAndDiscount';
+import AddressEdit from './pages/detail/MinePageChild/AddressEdit';
+import AddressList from './pages/detail/MinePageChild/AddressList';
 import Contact from './pages/detail/MinePageChild/Contact';
 
 
@@ -24,6 +26,8 @@ class App extends Component {
           <Route path="/LoginPage" exact component={LoginPage} />
           <Route path="/RegPage" exact component={RegPage} />
           <Route path="/CardAndDiscount" exact component={CardAndDiscount} />
+          <Route path="/AddressEdit" exact component={AddressEdit} />
+          <Route path="/AddressList" exact component={AddressList} />
           <Route path="/Contact" exact component={Contact} />
 
           <Route path="/ProductList" exact component={ProductList} />

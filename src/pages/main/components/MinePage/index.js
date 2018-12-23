@@ -79,7 +79,7 @@ class MinePage extends Component {
         this.props.history.push({ pathname: '/CardAndDiscount', state: { tag: "积分卡", isPay: false } });
         break;
       case 3:
-        this.props.history.push('/AddressList', { isPay: false });
+        this.props.history.push({ pathname: '/AddressList', state: { isPay: false } });
         break;
       case 4:
         this.props.history.push('/Contact');
