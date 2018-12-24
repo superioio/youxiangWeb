@@ -73,15 +73,20 @@ class HomePage extends Component {
   // #region 响应方法
 
   onCityPress = () => {
-    this.props.history.push({ pathname: '/CitySelector', state: { fromPath: '/' } });
+    this.props.history.push({ pathname: '/CitySelector' });
   }
 
   onProductPress(id, name) {
-    this.props.history.push({ pathname: '/ProductList', state: { productCategoryId: id, name: name } });
+    globalVal.routeProductCategory = {
+      id,
+      name,
+    };
+    this.props.history.push({ pathname: '/ProductList' });
   }
 
   onProductDetailPress(productDetail) {
-    this.props.history.push({ pathname: '/ProductDetail', state: { productDetail: productDetail } });
+    globalVal.routeProductDetail = productDetail;
+    this.props.history.push({ pathname: '/ProductDetail' });
   }
 
   // #endregion

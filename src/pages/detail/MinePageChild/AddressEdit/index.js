@@ -24,9 +24,6 @@ class AddressEdit extends Component {
       isDefault: 0,
 
       alreadyIsDefault: 0,
-
-      isFromPay: this.props.location.state
-        ? this.props.location.state.isFromPay : false,
     };
   }
 
@@ -67,12 +64,11 @@ class AddressEdit extends Component {
 
   // #region 响应方法
   onNavCitySelector = () => {
-    this.props.history.push({ pathname: '/CitySelector', state: { fromPath: '/AddressEdit' } });
+    this.props.history.push({ pathname: '/CitySelector' });
   }
 
   onBack = () => {
-    globalVal.routeAddrInfo = null;
-    this.props.history.push({ pathname: '/AddressList', state: { isFromPay: this.state.isFromPay } });
+    this.props.history.goBack();
   }
 
   onChangeGender = (gender) => {
@@ -119,7 +115,7 @@ class AddressEdit extends Component {
           Toast.info('修改成功');
         }
         Toast.hide();
-        this.props.history.push({ pathname: '/AddressList', state: { isFromPay: this.state.isFromPay } });
+        this.props.history.goBack();
       } else {
         console.log('error', error, values);
       }

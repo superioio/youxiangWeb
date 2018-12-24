@@ -73,12 +73,15 @@ class MinePage extends Component {
         this.props.changeSelectedTab('orderTab');
         break;
       case 1:
-        this.props.history.push({ pathname: '/CardAndDiscount', state: { tag: "代金券", isFromPay: false } });
+        globalVal.routeIsFromPay = false;
+        this.props.history.push({ pathname: '/CardAndDiscount', state: { tag: "代金券" } });
         break;
       case 2:
-        this.props.history.push({ pathname: '/CardAndDiscount', state: { tag: "积分卡", isFromPay: false } });
+        globalVal.routeIsFromPay = false;
+        this.props.history.push({ pathname: '/CardAndDiscount', state: { tag: "积分卡" } });
         break;
       case 3:
+        globalVal.routeIsFromPay = false;
         this.props.history.push({ pathname: '/AddressList', state: { isFromPay: false } });
         break;
       case 4:

@@ -31,7 +31,16 @@ const globalVal = {
   imgUrl: 'http://admin.offline.ue-link.com/static/',
   //imgUrl: 'http://148.70.110.127:8080/static/',
 
+  routeIsFromPay: null,
   routeAddrInfo: null,
   routeSelectCity: null,
+  routeProductCategory: null, // { id:1,name:'家庭保洁'}
+  routeProductDetail: null,
+
+  routeOrderInfo: null,
+  routeAddress: null,
+  routePayCash: null,
+
+  routeDiscount: null,
 };
 export default globalVal;

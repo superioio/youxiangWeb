@@ -6,6 +6,8 @@ import styles from './styles.module.css';
 import { withRouter } from "react-router-dom";
 
 class ProductList extends Component {
+  // #region 构造器
+
   constructor(props) {
     super(props);
     this.state = {
@@ -13,10 +15,15 @@ class ProductList extends Component {
     };
   }
 
+  // #endregion
+
+  // #region 生命周期
+
   async componentDidMount() {
-    const params = this.props.location.state;
+    const { code } = globalVal.selectCity;
+    const { id, name } = globalVal.routeProductCategory;
     Toast.loading("请稍后...", 3);
-    const list = await getProductList(params.productCategoryId, params.name, globalVal.selectCity.code);
+    const list = await getProductList(id, name, code);
     Toast.hide();
     if (list.error) {
       Toast.fail(list.error);
@@ -27,11 +34,24 @@ class ProductList extends Component {
     });
   }
 
+  // #endregion
+
+  // #region 响应方法
+  //点击商品
+  onProductPress(productDetail) {
+    globalVal.routeProductDetail = productDetail;
+    this.props.history.push({ pathname: '/ProductDetail' });
+  }
+  // #endregion
+
+  // #region render方法
 
   renderList(list) {
+    console.log('list', list);
     return (<div className={styles.producList}>
-      {list.map((item, index) =>
-        <div key={index} >
+      {list.map((item, index) => {
+        const price = item.productPriceList ? item.productPriceList[0].price : 0;
+        return (<div key={index} >
           <Flex onClick={() => this.onProductPress(item)} className={styles.product}>
             <img
               className={styles.leftImage}
@@ -40,33 +60,39 @@ class ProductList extends Component {
             <div className={styles.rightText}>
               <div className={styles.titleText}>{item.name}</div>
               <div className={styles.nameText}>{item.description}</div>
-              <div className={styles.priceText}>{item.productPriceList[0].price + "元/" + item.unitName}</div>
+              <div className={styles.priceText}>
+                {price + "元/" + item.unitName}</div>
             </div>
           </Flex>
-        </div>
-      )}</div>);
+        </div>);
+      })
+      }</div>);
   }
 
+  renderNavBar = () => {
+    const productCategoryName = globalVal.routeProductCategory
+      ? globalVal.routeProductCategory.name : '';
 
-  //点击商品
-  onProductPress(productDetail) {
-    this.props.history.push({ pathname: '/ProductDetail', state: { productDetail: productDetail, productCategoryId: this.props.location.state.productCategoryId, name: this.props.location.state.name } });
-    //this.props.navigation.navigate('ProductDetail', { productDetail: productDetail })
-  }
+    return (<NavBar
+      mode="light"
+      icon={<Icon type="left" />}
+      onLeftClick={() =>
+        this.props.history.push('/')
+      }
+    >{productCategoryName}</NavBar>)
+  };
+
+
   render() {
     return (
       <div className={styles.container}>
-        <NavBar
-          mode="light"
-          icon={<Icon type="left" />}
-          onLeftClick={() =>
-            this.props.history.push('/')
-          }
-        >{this.props.location.state.name}</NavBar>
+        {this.renderNavBar()}
         {this.renderList(this.state.list)}
       </div>
     );
   }
+
+  // #endregion
 }
 
 export default withRouter(ProductList);

@@ -7,6 +7,7 @@ import styles from './styles.module.css';
 
 
 let timeOutEvent;
+let longClick = 0;
 
 class AddressList extends Component {
 
@@ -15,9 +16,6 @@ class AddressList extends Component {
     super(props);
     this.state = {
       addrList: [],
-
-      isFromPay: this.props.location.state
-        ? this.props.location.state.isFromPay : false,
     };
   }
   // #endregion
@@ -38,7 +36,9 @@ class AddressList extends Component {
   }
 
   onItemTouchStart = (id) => {
+    longClick = 0;//设置初始为0
     timeOutEvent = setTimeout(() => {
+      longClick = 1;//设置初始为0
       const operation = Modal.operation;
       operation([
         { text: '设为默认', onPress: this.onSetDefaultAddress },
@@ -53,9 +53,16 @@ class AddressList extends Component {
     e.preventDefault();
   }
 
-  onItemTouchEnd = (e) => {
+  onItemTouchEnd = (e, item, isFromPay) => {
     clearTimeout(timeOutEvent);
-    timeOutEvent = 0;
+    if (timeOutEvent !== 0 && longClick === 0) {//点击
+      if (isFromPay) {
+        globalVal.routeAddress = item;
+        this.props.history.push({
+          pathname: '/OrderPlace'
+        });
+      }
+    }
     e.preventDefault();
   }
 
@@ -101,15 +108,8 @@ class AddressList extends Component {
     }
   }
 
-  onSetAddress = (item) => {
-    this.props.history.push({
-      pathname: '/OrderPlace',
-      state: { addrInfo: item }
-    });
-  }
-
   onBack = () => {
-
+    this.props.history.goBack();
   }
 
   // #endregion
@@ -140,10 +140,9 @@ class AddressList extends Component {
     const { id, address, name, gender, mobile } = item;
     return (<div
       className={styles.itemLeft}
-      onClick={isFromPay ? this.onSetAddress : null}
       onTouchStart={() => this.onItemTouchStart(id)}
       onTouchMove={this.onItemTouchMove}
-      onTouchEnd={this.onItemTouchEnd}
+      onTouchEnd={(e) => this.onItemTouchEnd(e, item, isFromPay)}
     >
       <div className={styles.itemFirstLine}>
         <div className={styles.firstLineText}>{address}</div>
@@ -160,7 +159,7 @@ class AddressList extends Component {
 
 
   renderAddressItem = (item) => {
-    const isFromPay = this.state.isFromPay;
+    const isFromPay = globalVal.routeIsFromPay;
     return (<div key={item.id} className={styles.itemContain}>
       {this.renderItemLeft(item, isFromPay)}
       <div className={styles.itemRight}>

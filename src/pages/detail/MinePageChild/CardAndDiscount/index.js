@@ -55,7 +55,7 @@ class CardAndDiscount extends Component {
       case "添加积分卡":
         title = this.props.location.state.tag;
         moreText = '查看失效的积分卡';
-        list = await getCardListByProduct(globalVal.userInfo.customerId, this.props.location.state.productId, globalVal.selectCity.code);
+        list = await getCardListByProduct(globalVal.userInfo.customerId, globalVal.routeOrderInfo.productId, globalVal.selectCity.code);
         this.setState({
           selectedList: this.props.location.state.cardInfoList,
         }, () => {
@@ -70,7 +70,7 @@ class CardAndDiscount extends Component {
       case "添加代金券":
         title = this.props.location.state.tag;
         moreText = '查看失效的代金劵';
-        list = await getVoucherListByProduct(globalVal.userInfo.customerId, this.props.location.state.productId, globalVal.selectCity.code);
+        list = await getVoucherListByProduct(globalVal.userInfo.customerId, globalVal.routeOrderInfo.productId, globalVal.selectCity.code);
         this.setState({
           selectedList: this.props.location.state.voucherInfoList,
         }, () => {
@@ -125,7 +125,7 @@ class CardAndDiscount extends Component {
   //计算其他 代金券/储值卡 是否仍然可选,储值卡直接计算余额，代金券计算个数*单价
   checkChooseStatus(isCard) {
     const needPayCash = this.props.location.state.needPayCash;
-    const price = this.props.location.state.price;
+    const price = globalVal.routeOrderInfo.price;
     let balance = 0;
     if (isCard) {
       this.state.selectedList.forEach(item => {
@@ -153,26 +153,19 @@ class CardAndDiscount extends Component {
 
   //添加选中的代金券或者积分卡
   onSubmit = () => {
-    const isChoose = this.state.selectedList.length > 0;
+    let cardInfoList = this.props.location.state.cardInfoList;
+    let voucherInfoList = this.props.location.state.voucherInfoList;
     if (RegExp(/积分卡/).test(this.props.location.state.tag)) {
-      this.props.location.state.cardInfoList = this.state.selectedList;
+      cardInfoList = this.state.selectedList;
     } else {
-      this.props.location.state.voucherInfoList = this.state.selectedList;
+      voucherInfoList = this.state.selectedList;
     }
-    this.props.history.push({
-      pathname: '/OrderPlace', state: {
-        isChoose: isChoose,
-        isCancel: false,
-        prePage: 'discount', // 是从代金劵或积分卡界面返回订单页
-        tag: this.props.location.state.tag,//标识 此界面是 代金券 还是 积分卡
-        orderInfo: this.props.location.state.orderInfo,//全部的订单信息
-        voucherInfoList: this.props.location.state.voucherInfoList,
-        cardInfoList: this.props.location.state.cardInfoList,
-        payCash: this.props.location.state.payCash
-      }
-    })
-    // this.props.location.state.setCardOrVoucherInfo(this.state.selectedList, isChoose);
-    // this.props.location.goBack();
+    globalVal.routeDiscount = {
+      tag: this.props.location.state.tag,//标识 此界面是 代金券 还是 积分卡
+      voucherInfoList: voucherInfoList,
+      cardInfoList: cardInfoList,
+    };
+    this.props.history.goBack();
   }
 
   //选中一个代金券或者积分卡
@@ -278,12 +271,12 @@ class CardAndDiscount extends Component {
 
   renderCardList = () => {
     const { list } = this.state;
-    const { isFromPay } = this.props.location.state;
     if (!list) return;
 
     return (<div className={styles.tabContent}>
       {list.map((item, index) =>
-        isFromPay ? this.renderCardItem(item, index) : this.renderUnPressCardItem(item, index))}
+        globalVal.routeIsFromPay
+          ? this.renderCardItem(item, index) : this.renderUnPressCardItem(item, index))}
       <div className={styles.margin}></div>
     </div>);
   }
@@ -339,11 +332,10 @@ class CardAndDiscount extends Component {
 
   renderDiscountList() {
     const { list } = this.state;
-    const { isFromPay } = this.props.location.state;
     if (!list) return;
 
     return (<div className={styles.tabContent}>
-      {list.map((item, index) => isFromPay
+      {list.map((item, index) => globalVal.routeIsFromPay
         ? this.renderDiscountItem(item, index) : this.renderUnPressDiscountItem(item, index))}
       <div className={styles.margin}></div>
     </div>);
@@ -355,21 +347,7 @@ class CardAndDiscount extends Component {
         <NavBar
           mode="light"
           icon={<Icon type="left" />}
-          onLeftClick={() =>
-            RegExp(/添加/).test(this.props.location.state.tag) ?
-              this.props.history.push({
-                pathname: '/OrderPlace', state: {
-                  isCancel: true, //从页面返回
-                  prePage: 'discount', // 是从代金劵或积分卡界面返回订单页
-                  tag: this.props.location.state.tag,//标识 此界面是 代金券 还是 积分卡
-                  orderInfo: this.props.location.state.orderInfo,//全部的订单信息
-                  payCash: this.props.location.state.payCash,
-                  voucherInfoList: this.props.location.state.voucherInfoList,
-                  cardInfoList: this.props.location.state.cardInfoList,
-                }
-              }) :
-              this.props.history.goBack()
-          }
+          onLeftClick={() => this.props.history.goBack()}
         >{this.state.title}</NavBar>
         {(this.props.location.state.tag === "添加积分卡" || this.props.location.state.tag === "积分卡") ? this.renderCardList() : this.renderDiscountList()}
 

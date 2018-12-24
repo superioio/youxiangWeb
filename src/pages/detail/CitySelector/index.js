@@ -14,9 +14,6 @@ class CitySelector extends Component {
     this.state = {
       locationCity: {},
       citys: [],
-
-      fromPath: this.props.location.state
-        ? this.props.location.state.fromPath : '/',
     };
   }
 
@@ -90,7 +87,7 @@ class CitySelector extends Component {
   }
   onSelectCity = (city) => {
     globalVal.routeSelectCity = city;
-    this.props.history.push({ pathname: this.state.fromPath });
+    this.props.history.goBack();
   }
 
   // #endregion

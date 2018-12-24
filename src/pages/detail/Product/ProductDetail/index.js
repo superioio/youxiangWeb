@@ -5,6 +5,8 @@ import globalVal from '@/utils/global_val';
 import { withRouter } from "react-router-dom";
 
 class ProductDetail extends Component {
+  // #region 构造器
+
   constructor(props) {
     super(props);
     this.state = {
@@ -15,22 +17,28 @@ class ProductDetail extends Component {
       },
     };
   }
+  // #endregion
 
+  // #region 生命周期
   componentDidMount() {
+    const product = globalVal.routeProductDetail;
     this.setState({
-      product: this.props.location.state.productDetail
+      product,
     });
   }
+  // #endregion
 
+  // #region 响应方法
   onOrderPress = () => {
     if (globalVal.userInfo.customerId === -1) {
       this.props.history.push('/LoginPage');
     }
     else {
-      this.props.history.push({ pathname: '/OrderPlace', state: { product: this.state.product, prePage: 'product' } });
+      this.props.history.push({ pathname: '/OrderPlace' });
     }
 
   }
+  // #region render方法
   //src={require("@/assets/images/washingMachineHeader.png")}
   renderHeaderImg() {
     const { product } = this.state;
@@ -60,19 +68,19 @@ class ProductDetail extends Component {
     </div>);
   }
 
+  renderNavBar = () => {
+    const { name } = globalVal.routeProductDetail;
+    return (<NavBar
+      mode="light"
+      icon={<Icon type="left" />}
+      onLeftClick={() => this.props.history.goBack()}
+    >{name}</NavBar>);
+  }
+
   render() {
     return (
       <div className={styles.container}>
-        <NavBar
-          mode="light"
-          icon={<Icon type="left" />}
-          onLeftClick={() =>
-            this.props.location.state.productCategoryId ?
-              this.props.history.push({ pathname: '/ProductList', state: { productCategoryId: this.props.location.state.productCategoryId, name: this.props.location.state.name } })
-              : this.props.history.push('/')
-          }
-        >{this.props.location.state.productDetail.name}</NavBar>
-
+        {this.renderNavBar()}
         <div className={styles.contentContainer}>
           {this.renderHeaderImg()}
           {this.renderPrice()}
@@ -86,6 +94,7 @@ class ProductDetail extends Component {
       </div>
     );
   }
+  // #endregion
 }
 
 export default withRouter(ProductDetail);
