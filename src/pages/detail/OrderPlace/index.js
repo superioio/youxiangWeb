@@ -388,7 +388,13 @@ class OrderPlace extends Component {
         <NavBar
           mode="light"
           icon={<Icon type="left" />}
-          onLeftClick={() => this.props.history.goBack()}
+          onLeftClick={() => {
+            globalVal.routeOrderInfo = null;
+            globalVal.routePayCash = null;
+            globalVal.routeDiscount = null;
+
+            this.props.history.goBack()
+          }}
         >下 单</NavBar>
         <div className={styles.contentContainer}>
           {this.renderTitle('地址')}
