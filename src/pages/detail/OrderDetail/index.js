@@ -7,7 +7,7 @@ import { withRouter } from "react-router-dom";
 
 class OrderDetail extends Component {
 
-  renderContent(order, isPay) {
+  renderContent(order, isFromPay) {
     let payVoucher = order.payVoucher * order.productPrice;//代金券支付金额
     // let payment = order.totalAmount - payVoucher - order.payRechargeCard;//需支付金额
     // payment = payment > 0 ? payment : 0;
@@ -30,7 +30,7 @@ class OrderDetail extends Component {
           <span className={styles.nameText}>服务电话</span>
           <span className={styles.contentText}> {order.customerMobile}</span>
         </div>
-        {!isPay ? <div className={styles.contentRow}>
+        {!isFromPay ? <div className={styles.contentRow}>
           <span className={styles.nameText}>订单状态</span>
           <span className={[styles.contentText, styles.importantText]}> {getStatus(order.status)}</span>
         </div> : <div></div>}
@@ -43,7 +43,7 @@ class OrderDetail extends Component {
       <div className={styles.remark}>
         <span> {order.customerRemark} </span>
       </div>
-      {!isPay ? <div className={`${styles.content} ${styles.noBorderBottom}`}>
+      {!isFromPay ? <div className={`${styles.content} ${styles.noBorderBottom}`}>
         <div className={styles.contentRow}>
           <span className={styles.nameText}>服务人员</span>
           <span className={styles.contentText}> {order.workerName}</span>
@@ -157,8 +157,8 @@ class OrderDetail extends Component {
               }) : this.props.history.goBack()
           }
         >订单详情</NavBar>
-        {this.renderContent(this.props.location.state.order, this.props.location.state.isPay)}
-        {this.props.location.state.isPay ? this.renderPayButton() : this.renderCancelButton(this.props.location.state.isUnpaid)}
+        {this.renderContent(this.props.location.state.order, this.props.location.state.isFromPay)}
+        {this.props.location.state.isFromPay ? this.renderPayButton() : this.renderCancelButton(this.props.location.state.isUnpaid)}
 
       </div>
     );

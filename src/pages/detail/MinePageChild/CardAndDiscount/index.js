@@ -278,12 +278,12 @@ class CardAndDiscount extends Component {
 
   renderCardList = () => {
     const { list } = this.state;
-    const { isPay } = this.props.location.state;
+    const { isFromPay } = this.props.location.state;
     if (!list) return;
 
     return (<div className={styles.tabContent}>
       {list.map((item, index) =>
-        isPay ? this.renderCardItem(item, index) : this.renderUnPressCardItem(item, index))}
+        isFromPay ? this.renderCardItem(item, index) : this.renderUnPressCardItem(item, index))}
       <div className={styles.margin}></div>
     </div>);
   }
@@ -339,11 +339,11 @@ class CardAndDiscount extends Component {
 
   renderDiscountList() {
     const { list } = this.state;
-    const { isPay } = this.props.location.state;
+    const { isFromPay } = this.props.location.state;
     if (!list) return;
 
     return (<div className={styles.tabContent}>
-      {list.map((item, index) => isPay
+      {list.map((item, index) => isFromPay
         ? this.renderDiscountItem(item, index) : this.renderUnPressDiscountItem(item, index))}
       <div className={styles.margin}></div>
     </div>);

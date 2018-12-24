@@ -17,3 +17,7 @@
 .am-button-primary {
   background-color: #f18036;
 }
+
+.am-button-primary.am-button-active {
+  background-color: #DE7632;
+}

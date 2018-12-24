@@ -1,6 +1,5 @@
 
 const globalVal = {
-  cityList: [],
   selectCity: {
     code: '110000',
     name: '北京',
@@ -31,5 +30,8 @@ const globalVal = {
   },
   imgUrl: 'http://admin.offline.ue-link.com/static/',
   //imgUrl: 'http://148.70.110.127:8080/static/',
+
+  routeAddrInfo: null,
+  routeSelectCity: null,
 };
 export default globalVal;

@@ -151,18 +151,18 @@ class OrderPlace extends Component {
     orderInfo.payVoucher = this.state.voucherInfo.length;
     orderInfo.payRechargeCard = this.state.saveMoneyByCard;
     orderInfo.totalAmount = orderInfo.productPrice * orderInfo.count;
-    const isPay = order.payCash === 0 ? false : true;//如果仍需要支付金额不是0 ，则显示微信支付
+    const isFromPay = order.payCash === 0 ? false : true;//如果仍需要支付金额不是0 ，则显示微信支付
     this.setState({
       hasPlace: true
     });
-    this.props.history.push({ pathname: '/OrderDetail', state: { order: orderInfo, isPay: isPay, isUnpaid: true } });
-    // this.props.navigation.navigate('OrderDetail', { order: orderInfo, isPay: isPay, isUnpaid: true })
+    this.props.history.push({ pathname: '/OrderDetail', state: { order: orderInfo, isFromPay: isFromPay, isUnpaid: true } });
+    // this.props.navigation.navigate('OrderDetail', { order: orderInfo, isFromPay: isFromPay, isUnpaid: true })
   }
 
   onAddrPress = () => {
     alert("onAddrPress");
     // this.props.navigation.navigate('AddressList', {
-    //   isPay: true,
+    //   isFromPay: true,
     //   setAddress: (address) => {
     //     this.setState({
     //       address: address
@@ -188,7 +188,7 @@ class OrderPlace extends Component {
     }
     this.props.history.push({
       pathname: '/CardAndDiscount', state: {
-        isPay: true, // 是从订单页进入代金劵或积分卡界面的
+        isFromPay: true, // 是从订单页进入代金劵或积分卡界面的
         tag: tag,
         productId: this.state.orderInfo.productResp.id,
         price: this.state.orderInfo.productPrice,//单价，主要用来计算还需要多少个代金券

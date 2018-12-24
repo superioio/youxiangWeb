@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Flex, Carousel, Toast } from 'antd-mobile';
 import styles from './styles.module.css';
-import { getCategoryList, getProductList, getCityList } from './api';
+import { getCategoryList, getProductList } from './api';
 import globalVal from '@/utils/global_val';
 import { withRouter } from "react-router-dom";
 
@@ -9,20 +9,32 @@ class HomePage extends Component {
   // #region 构造器
   constructor(props) {
     super(props);
+
     this.state = {
       selectCity: globalVal.selectCity,
       categoryList: [],// 商品类别列表
       moreCategoryGroup: [],// 商品类别，第5个以后的商品列表
     };
-    this.setGlobalCityList();
     this.setGlobalUserInfo();
   }
 
+  // #endregion
+
+  // #region 生命周期
 
   async componentDidMount() {
+    if (globalVal.routeSelectCity) {
+      this.setState({
+        selectCity: globalVal.routeSelectCity,
+      }, () => {
+        globalVal.routeSelectCity = null;
+        globalVal.selectCity = this.state.selectCity;
+      });
+    }
+
     Toast.loading("请稍后...", 3);
     const allCategoryList = await getCategoryList();
-    if(allCategoryList.error){
+    if (allCategoryList.error) {
       Toast.hide();
       Toast.fail(allCategoryList.error);
       return;
@@ -36,7 +48,7 @@ class HomePage extends Component {
     });
 
     const result = await Promise.all(moreCategoryGroupRequest);
-    if(result.error){
+    if (result.error) {
       Toast.hide();
       Toast.fail(result.error);
       return;
@@ -61,35 +73,24 @@ class HomePage extends Component {
   // #region 响应方法
 
   onCityPress = () => {
-    this.props.history.push({ pathname: '/CitySelector' });
+    this.props.history.push({ pathname: '/CitySelector', state: { fromPath: '/' } });
   }
 
   onProductPress(id, name) {
     this.props.history.push({ pathname: '/ProductList', state: { productCategoryId: id, name: name } });
-    // this.props.navigation.navigate('ProductList', { productCategoryId: id, name: name })
   }
 
   onProductDetailPress(productDetail) {
     this.props.history.push({ pathname: '/ProductDetail', state: { productDetail: productDetail } });
-    //  this.props.navigation.navigate('ProductDetail', { productDetail: productDetail })
   }
 
   // #endregion
 
   // #region 私有方法
 
-  setGlobalCityList = async () => {
-    const cityList = await getCityList();
-    if(cityList.error){
-      Toast.fail(cityList.error);
-      return;
-    }
-    globalVal.cityList = cityList;
-  }
-
   setGlobalUserInfo = async () => {
     const userInfo = await globalVal.getUserInfo();
-    if(userInfo.error){
+    if (userInfo.error) {
       Toast.fail(userInfo.error);
       return;
     }
@@ -158,11 +159,11 @@ class HomePage extends Component {
     return (<Flex justify="between" className={styles.menu}>
       {categoryList.map((item, index) => <Flex.Item key={index}>
         <div className={styles.menuButton} onClick={() => this.onProductPress(item.id, item.name)} >
-            <img
-                className={styles.menuButtonImage}
-                src={globalVal.imgUrl + item.thumbnailUrl}
-                alt="服务"
-            />
+          <img
+            className={styles.menuButtonImage}
+            src={globalVal.imgUrl + item.thumbnailUrl}
+            alt="服务"
+          />
           <div className={styles.menuButtonText}>{item.name}</div>
         </div>
       </Flex.Item>)}

@@ -15,6 +15,9 @@ class AddressList extends Component {
     super(props);
     this.state = {
       addrList: [],
+
+      isFromPay: this.props.location.state
+        ? this.props.location.state.isFromPay : false,
     };
   }
   // #endregion
@@ -28,26 +31,18 @@ class AddressList extends Component {
   // #region 响应方法
 
   onNavAddressEdit = (item) => {
-    console.log('item', item);
-    if (item) {
-      this.props.history.push({
-        pathname: '/AddressEdit',
-        state: { isAdd: false, addrInfo: item }
-      });
-    } else {
-      this.props.history.push({
-        pathname: '/AddressEdit',
-        state: { isAdd: true }
-      });
-    }
+    globalVal.routeAddrInfo = item;
+    this.props.history.push({
+      pathname: '/AddressEdit',
+    });
   }
 
-  onItemTouchStart = () => {
+  onItemTouchStart = (id) => {
     timeOutEvent = setTimeout(() => {
       const operation = Modal.operation;
       operation([
         { text: '设为默认', onPress: this.onSetDefaultAddress },
-        { text: '删除地址', onPress: this.onConfrimDelete },
+        { text: '删除地址', onPress: () => this.onConfrimDelete(id) },
       ])
     }, 500);
   }
@@ -64,23 +59,23 @@ class AddressList extends Component {
     e.preventDefault();
   }
 
-  onConfrimDelete = async () => {
+  onConfrimDelete = async (id) => {
     const alert = Modal.alert;
 
     alert('取消订单', '确认删除地址吗？',
       [{ text: "取消", onPress: () => { return null } },
-      { text: "确认", onPress: this.deleteConfirm },
+      { text: "确认", onPress: () => this.deleteConfirm(id) },
       ]
     );
 
   }
 
-  deleteConfirm = async () => {
+  deleteConfirm = async (id) => {
     this.setState({
       isPopDeleteConfrim: false,
     });
     Toast.loading("请稍后...", 3);
-    const data = await deleteAddress(this.selectAddressId);
+    const data = await deleteAddress(id);
     Toast.hide();
     if (data.code === 100000) {
       this.getAddrList();
@@ -106,7 +101,16 @@ class AddressList extends Component {
     }
   }
 
+  onSetAddress = (item) => {
+    this.props.history.push({
+      pathname: '/OrderPlace',
+      state: { addrInfo: item }
+    });
+  }
 
+  onBack = () => {
+
+  }
 
   // #endregion
 
@@ -132,19 +136,17 @@ class AddressList extends Component {
     >上门地址</NavBar>);
   }
 
-  renderItemLeftOutPay = (item) => {
-    const { id, address, name, gender, mobile, isDefault } = item;
-    return (<div className={styles.itemLeft}
-      // onLongPress={() => { this.onPop(id) }}
-      onTouchStart={this.onItemTouchStart}
+  renderItemLeft = (item, isFromPay) => {
+    const { id, address, name, gender, mobile } = item;
+    return (<div
+      className={styles.itemLeft}
+      onClick={isFromPay ? this.onSetAddress : null}
+      onTouchStart={() => this.onItemTouchStart(id)}
       onTouchMove={this.onItemTouchMove}
       onTouchEnd={this.onItemTouchEnd}
     >
       <div className={styles.itemFirstLine}>
         <div className={styles.firstLineText}>{address}</div>
-        {isDefault ? (<div className={styles.isDefault}>
-          <div className={styles.isDefaultText}>默认</div>
-        </div>) : null}
       </div>
       <div className={styles.itemSecondLine}>
         <div className={styles.secondLineText}>{name}</div>
@@ -156,29 +158,11 @@ class AddressList extends Component {
     </div>);
   }
 
-  renderItemLeftInPay = (item) => {
-    const { id, address, name, gender, mobile } = item;
-    return (<div
-      className={styles.itemLeft}
-      onClick={this.onSetAddress}
-    // onLongPress={() => { this.onPop(id) }}
-    >
-      <div className={styles.itemFirstLine}>
-        <div className={styles.firstLineText}>{address}</div>
-      </div>
-      <div className={styles.itemSecondLine}>
-        <div className={styles.secondLineText}>{name}</div>
-        <div className={[styles.secondLineText, styles.marginLeft20]}>{gender === 1 ? "先生" : "女士"}</div>
-        <div className={[styles.secondLineText, styles.marginLeft20]}>{mobile}</div>
-      </div>
-    </div>);
-  }
-
 
   renderAddressItem = (item) => {
-    const isFromPay = this.props.location.state.isPay;
+    const isFromPay = this.state.isFromPay;
     return (<div key={item.id} className={styles.itemContain}>
-      {isFromPay ? this.renderItemLeftInPay(item) : this.renderItemLeftOutPay(item)}
+      {this.renderItemLeft(item, isFromPay)}
       <div className={styles.itemRight}>
         <div
           className={styles.itemRightButton}

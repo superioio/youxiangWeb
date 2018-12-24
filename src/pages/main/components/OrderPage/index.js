@@ -121,7 +121,7 @@ class OrderPage extends Component {
     const isUnpaid = this.state.selectTab === "unpaid";
     this.props.history.push({
       pathname: '/OrderDetail', state: {
-        order: order, isPay: false, isUnpaid: isUnpaid
+        order: order, isFromPay: false, isUnpaid: isUnpaid
       }
     });
   }

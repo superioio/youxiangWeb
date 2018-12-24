@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { NavBar, Icon } from 'antd-mobile';
-import globalVal from '@/utils/global_val';
+import { NavBar, Icon, Toast } from 'antd-mobile';
 import { getCityLocation } from '@/utils/location';
+import { getCityList } from './api';
 import { withRouter } from "react-router-dom";
+import globalVal from '@/utils/global_val';
 import styles from "./styles.module.css";
 
 class CitySelector extends Component {
@@ -13,6 +14,9 @@ class CitySelector extends Component {
     this.state = {
       locationCity: {},
       citys: [],
+
+      fromPath: this.props.location.state
+        ? this.props.location.state.fromPath : '/',
     };
   }
 
@@ -21,8 +25,14 @@ class CitySelector extends Component {
   // #region 生命周期
 
   async componentDidMount() {
+    const cityList = await getCityList();
+    if (cityList.error) {
+      Toast.fail(cityList.error);
+      return;
+    }
+
     this.setState({
-      citys: this.convertCityList(globalVal.cityList),
+      citys: this.convertCityList(cityList),
     });
 
     getCityLocation()
@@ -79,8 +89,8 @@ class CitySelector extends Component {
     this.props.history.goBack();
   }
   onSelectCity = (city) => {
-    globalVal.selectCity = city;
-    this.props.history.goBack();
+    globalVal.routeSelectCity = city;
+    this.props.history.push({ pathname: this.state.fromPath });
   }
 
   // #endregion
