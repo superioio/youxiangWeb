@@ -2,20 +2,26 @@
   width:100%;
   height: 100%;
   background-color: white;
+  display: flex;
+  flex-direction: column;
 }
 .producList {
   margin-left: 10px;
   margin-right: 10px;
-  background-color: #ccc;
+  background-color: white;
+  overflow: scroll;
+  height: 100%;
 }
 .product {
   height: 160px;
   margin-bottom: 10px;
   background-color: white;
+  border-bottom:solid #ccc 8px;
+
 }
 .leftImage {
-  height: 8rem;
-  width: 8rem;
+  height: 70%;
+  width: 30%;
 
 }
 .rightText {
