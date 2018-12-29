@@ -40,14 +40,15 @@ class LoginPage extends Component {
     }
 
     const userInfo = await login(phoneNum.split(' ').join(''), vetifyCode, this.state.bizId);
-    if (userInfo) {
+
+    if (userInfo && userInfo.customerId) {
       userInfo.lastLoginTime = Date.now();
       globalVal.setUserInfo(userInfo);
       globalVal.userInfo = userInfo;
       this.props.history.goBack();
     }
     Toast.hide();
-    if(userInfo.error){
+    if (userInfo.error) {
       Toast.fail(userInfo.error);
       return;
     }
@@ -64,7 +65,7 @@ class LoginPage extends Component {
     if (this.state.timing === 60) {
       this.countDown();
       const result = await getVerifyCode(phoneNum.split(' ').join(''));
-      if(result.error){
+      if (result.error) {
         Toast.fail(result.error);
         return;
       }

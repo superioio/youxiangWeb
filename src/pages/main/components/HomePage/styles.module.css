@@ -41,8 +41,6 @@
 }
 .menuButton {
     margin-top : 20%;
-    /*margin-left: 18%;*/
-    /*margin-right: 18%;*/
     align-items: center ;
     text-align: center;
 }
@@ -54,6 +52,11 @@
 .menuButtonText {
     font-size: 14px;
     width: 100%;
+}
+
+.moreMenuButton {
+  align-items: center ;
+  text-align: center;
 }
 
 .acceptTop {

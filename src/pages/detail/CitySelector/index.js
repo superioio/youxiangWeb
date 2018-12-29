@@ -31,28 +31,27 @@ class CitySelector extends Component {
     this.setState({
       citys: this.convertCityList(cityList),
     });
-
+    Toast.loading("", 10);
     getCityLocation()
       .then(res => {
-        console.log('获取当前位置', res);
-
         if (res.status === 0) {
           const { result } = res;
           const {
-            cityCode,
-            addressComponent: { city }
+            addressComponent: { city, adcode }
           } = result;
 
           const locationCity = {
-            code: cityCode,
+            code: adcode,
             name: city,
           };
           this.setState({
             locationCity,
           });
         }
+        Toast.hide();
       })
       .catch(err => {
+        Toast.hide();
         console.warn('获取失败' + err);
       });
   }

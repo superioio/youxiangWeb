@@ -2,7 +2,6 @@ import axios from '@/utils/http';
 
 //获取验证码
 export async function getVerifyCode(mobile) {
-  console.log('mobile', mobile);
   return await axios.get('/api/signin/customersendcode', {
     params: {
       mobile: mobile,

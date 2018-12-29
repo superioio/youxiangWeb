@@ -41,7 +41,7 @@ class AddressList extends Component {
       longClick = 1;//设置初始为0
       const operation = Modal.operation;
       operation([
-        { text: '设为默认', onPress: this.onSetDefaultAddress },
+        { text: '设为默认', onPress: () => this.onSetDefaultAddress(id) },
         { text: '删除地址', onPress: () => this.onConfrimDelete(id) },
       ])
     }, 500);
@@ -78,33 +78,27 @@ class AddressList extends Component {
   }
 
   deleteConfirm = async (id) => {
-    this.setState({
-      isPopDeleteConfrim: false,
-    });
     Toast.loading("请稍后...", 3);
     const data = await deleteAddress(id);
     Toast.hide();
     if (data.code === 100000) {
-      this.getAddrList();
-      Toast.show('删除成功');
+      await this.getAddrList();
+      Toast.success('删除成功');
     } else {
-      Toast.show('删除失败');
+      Toast.fail('删除失败');
     }
   }
 
 
-  onSetDefaultAddress = async () => {
-    this.setState({
-      isPopDeleteConfrim: false,
-    });
+  onSetDefaultAddress = async (id) => {
     Toast.loading("请稍后...", 3);
-    const data = await setIsDefault(this.selectAddressId, 1);
+    const data = await setIsDefault(id, 1);
     Toast.hide();
     if (data.code === 100000) {
-      this.getAddrList();
-      Toast.show('设置成功');
+      await this.getAddrList();
+      Toast.success('设置成功');
     } else {
-      Toast.show('设置失败');
+      Toast.fail('设置失败');
     }
   }
 
@@ -137,7 +131,7 @@ class AddressList extends Component {
   }
 
   renderItemLeft = (item, isFromPay) => {
-    const { id, address, name, gender, mobile } = item;
+    const { id, address, name, gender, mobile, isDefault } = item;
     return (<div
       className={styles.itemLeft}
       onTouchStart={() => this.onItemTouchStart(id)}
@@ -146,6 +140,9 @@ class AddressList extends Component {
     >
       <div className={styles.itemFirstLine}>
         <div className={styles.firstLineText}>{address}</div>
+        {isDefault ? (<div className={styles.isDefault}>
+          <div className={styles.isDefaultText}>默认</div>
+        </div>) : null}
       </div>
       <div className={styles.itemSecondLine}>
         <div className={styles.secondLineText}>{name}</div>

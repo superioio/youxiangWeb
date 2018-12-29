@@ -1,5 +1,5 @@
-import axios from '../../../../utils/http'
-import Qs from 'qs'
+import axios from '@/utils/http';
+import Qs from 'qs';
 
 //添加地址
 export async function addAddr(info) {

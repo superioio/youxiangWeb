@@ -87,66 +87,70 @@ class AddressEdit extends Component {
   onSavePress = async () => {
     const { id, cityCode, gender, isDefault } = this.state;
     const { address, name, mobile, remark } = this.props.form.getFieldsValue();
-    // if (!this.checkInput(address, mobile, name)) {
-    //   return;
-    // }
 
-    this.props.form.validateFields(async (error, values) => {
-      if (!error) {
-        const customerId = globalVal.userInfo.customerId;
-        const params = {
-          customerId,
-          gender,
-          cityCode,
-          address,
-          mobile,
-          name,
-          remark,
-          isDefault,
-        };
-        Toast.loading("请稍后...", 3);
-        if (this.props.navigation.state.params.isAdd) {
+    if (!this.checkInput()) {
+      return;
+    }
 
-          await addAddr(params);
-          Toast.info('添加成功');
-        } else {
-          params.id = id;
-          await editAddr(params);
-          Toast.info('修改成功');
-        }
-        Toast.hide();
-        this.props.history.goBack();
-      } else {
-        console.log('error', error, values);
-      }
-    });
-
+    const customerId = globalVal.userInfo.customerId;
+    const params = {
+      customerId,
+      gender,
+      cityCode,
+      address,
+      mobile,
+      name,
+      remark,
+      isDefault,
+    };
+    Toast.loading("请稍后...", 3);
+    if (!globalVal.routeAddrInfo) {
+      await addAddr(params);
+      Toast.hide();
+      Toast.success('添加成功');
+    } else {
+      params.id = id;
+      await editAddr(params);
+      Toast.hide();
+      Toast.success('修改成功');
+    }
+    globalVal.routeAddrInfo = null;
+    this.props.history.goBack();
   }
   // #endregion
 
-  // checkInput(address, mobile, name) {
-  //   if (address == undefined || address == '') {
-  //     Alert.alert('信息有误', '请填写地址信息。',
-  //       [{ text: "知道了", onPress: () => { return null } }]
-  //     );
-  //     return false;
-  //   }
-  //   if (name == undefined || name == '') {
-  //     Alert.alert('信息有误', '请填写姓名。',
-  //       [{ text: "知道了", onPress: () => { return null } }]
-  //     );
-  //     return false;
-  //   }
+  // #region 方法
+  checkInput = () => {
+    const { cityCode, gender } = this.state;
+    const { address, name, mobile } = this.props.form.getFieldsValue();
+    if (!cityCode) {
+      Toast.info('请选择城市');
+      return false;
+    }
+    if (!gender) {
+      Toast.info('请选中性别');
+      return false;
+    }
+    if (!address) {
+      Toast.info('请输入详细地址');
+      return false;
+    }
+    if (!name) {
+      Toast.info('请输入姓名');
+      return false;
+    }
+    if (!mobile) {
+      Toast.info('请输入电话号码，以便服务人员联系您');
+      return false;
+    }
+    if (!(/^1(3|4|5|7|8)\d{9}$/.test(mobile))) {
+      Toast.info('请输入电话号码格式有误');
+      return false;
+    }
 
-  //   if (!this.checkTel(mobile)) {
-  //     Alert.alert('信息有误', '电话号码格式不正确。',
-  //       [{ text: "知道了", onPress: () => { return null } }]
-  //     );
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
+    return true;
+  }
+  // #endregion
 
   // #region render
 
@@ -160,7 +164,7 @@ class AddressEdit extends Component {
   }
 
   render() {
-    const { getFieldProps, getFieldError } = this.props.form;
+    const { getFieldProps } = this.props.form;
     const { address, cityName, mobile, name, remark, isDefault, alreadyIsDefault } = this.state;
     return (
       <div>
@@ -170,13 +174,8 @@ class AddressEdit extends Component {
           <InputItem
             {...getFieldProps('address', {
               initialValue: address,
-              rules: [{ required: true, message: '请输入详细地址' }],
             })}
             clear
-            error={!!getFieldError('address')}
-            onErrorClick={() => {
-              alert(getFieldError('address').join('、'));
-            }}
             placeholder="请输入详细地址"
           >详细地址:</InputItem>
         </List>
@@ -184,13 +183,8 @@ class AddressEdit extends Component {
           <InputItem
             {...getFieldProps('name', {
               initialValue: name,
-              rules: [{ required: true, message: '请输入姓名' }],
             })}
             clear
-            error={!!getFieldError('name')}
-            onErrorClick={() => {
-              alert(getFieldError('name').join('、'));
-            }}
             placeholder="请输入姓名"
           >姓名:</InputItem>
           <Item>
@@ -207,12 +201,7 @@ class AddressEdit extends Component {
           <InputItem
             {...getFieldProps('mobile', {
               initialValue: mobile,
-              rules: [{ required: true, message: '请输入电话，以便服务人员联系您' }],
             })}
-            error={!!getFieldError('mobile')}
-            onErrorClick={() => {
-              alert(getFieldError('mobile').join('、'));
-            }}
             placeholder="请输入电话，以便服务人员联系您"
           >手机:</InputItem>
           <TextareaItem
@@ -223,7 +212,7 @@ class AddressEdit extends Component {
             })}
             autoHeight
           />
-          {alreadyIsDefault === 1 ?
+          {alreadyIsDefault === 0 ?
             <Item>
               <div className={styles.marginLeft86}>
                 <Checkbox checked={isDefault === 1}

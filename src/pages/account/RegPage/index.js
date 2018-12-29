@@ -40,7 +40,7 @@ class RegPage extends Component {
     }
 
     const res = await requestReg(phoneNum.split(' ').join(''), name);
-    if(res.error){
+    if (res.error) {
       Toast.fail(res.error);
       return;
     }
@@ -74,7 +74,7 @@ class RegPage extends Component {
       <div className={styles.container}>
         {this.renderNavBar()}
         <div className={styles.title}>注册</div>
-        <div className={styles.phoneNumContain}>
+        <div className={styles.vetifyCodeInputContain}>
           <InputItem
             {...getFieldProps('phoneNum')}
             type="phone"

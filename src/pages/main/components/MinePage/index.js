@@ -157,7 +157,6 @@ class MinePage extends Component {
           {this.renderButton('积分卡', 2)}
           {this.renderButton('我的地址', 3)}
           {this.renderButton('联系客服', 4)}
-          {this.renderButton('修改密码', 5)}
           {isLogined ? this.renderButton('退出登录', 6) : null}
         </div>
       </div>

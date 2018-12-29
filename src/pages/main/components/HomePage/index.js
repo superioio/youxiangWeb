@@ -200,7 +200,7 @@ class HomePage extends Component {
         {
           productList.map((product, index) => {
             return (<Flex.Item key={index} onClick={() => this.onProductDetailPress(product)}>
-              <div className={styles.menuButton}>
+              <div className={styles.moreMenuButton}>
                 <img
                   className={styles.acceptButtonImage}
                   src={globalVal.imgUrl + product.thumbnailUrl}
@@ -225,8 +225,6 @@ class HomePage extends Component {
     }));
   }
 
-  // #endregion
-
   render() {
     return (
       <div className={styles.container}>
@@ -250,6 +248,8 @@ class HomePage extends Component {
       </div>
     );
   }
+
+  // #endregion
 }
 
 export default withRouter(HomePage);
