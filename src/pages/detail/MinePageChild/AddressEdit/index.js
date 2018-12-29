@@ -121,14 +121,10 @@ class AddressEdit extends Component {
 
   // #region 方法
   checkInput = () => {
-    const { cityCode, gender } = this.state;
+    const { cityCode } = this.state;
     const { address, name, mobile } = this.props.form.getFieldsValue();
     if (!cityCode) {
       Toast.info('请选择城市');
-      return false;
-    }
-    if (!gender) {
-      Toast.info('请选中性别');
       return false;
     }
     if (!address) {
