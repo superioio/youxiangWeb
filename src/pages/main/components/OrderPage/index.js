@@ -35,13 +35,13 @@ class OrderPage extends Component {
   didFocus = async () => {
     if (globalVal.userInfo.customerId === -1) {
       this.setState({
-        isLogined: true,
+        isLogined: false,
       });
     } else {
       this.setState({
         isLogined: true,
       });
-      Toast.loading("请稍后...", 30);
+      Toast.loading("请稍后...", 3);
       const orders = await getOrderListByStatus(1, globalVal.userInfo.customerId);//默认 待付款
       Toast.hide();
       if(orders.error){
@@ -84,7 +84,7 @@ class OrderPage extends Component {
   }
 
   onLoginPress = () => {
-    //this.props.navigation.navigate('Login');
+    this.props.history.push('/LoginPage');
   }
 
   // #endregion
@@ -92,29 +92,27 @@ class OrderPage extends Component {
   // #region render
 
   renderHeader() {
-    return (<Flex className={styles.header}>
+    return (<div className={styles.header}>
       <span className={styles.headerText}>我的订单</span>
-    </Flex>);
+    </div>);
   }
 
   renderTabButton(text, tab, isSelected) {
-    return (<Flex.Item className={[styles.tabButton, isSelected && {
-      borderBottomColor: 'rgb(241, 128, 54)',
-      borderBottomWidth: 4,
-    }]} onClick={() => this.onTabPress(text, tab)}>
+    return (<div className={isSelected ? `${styles.tabButton} ${styles.borderStyle}` : styles.tabButton}
+      onClick={() => this.onTabPress(text, tab)}>
       <span>{text}</span>
-    </Flex.Item>);
+    </div>);
   }
 
   renderTabsHeader() {
     const { selectTab } = this.state;
-    return (<Flex className={styles.tabsHeader}>
+    return (<div className={styles.tabsHeader}>
       {this.renderTabButton('待付款', "unpaid", "unpaid" === selectTab)}
       {this.renderTabButton('待服务', "paid", "paid" === selectTab)}
       {this.renderTabButton('已完成', "completed", "completed" === selectTab)}
       {this.renderTabButton('已取消', "cancel", "cancel" === selectTab)}
       {this.renderTabButton('全部', "all", "all" === selectTab)}
-    </Flex>);
+    </div>);
   }
 
   onOrderPress(order) {

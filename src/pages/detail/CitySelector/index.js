@@ -31,7 +31,7 @@ class CitySelector extends Component {
     this.setState({
       citys: this.convertCityList(cityList),
     });
-    Toast.loading("", 10);
+    Toast.loading("", 3);
     getCityLocation()
       .then(res => {
         if (res.status === 0) {
@@ -85,6 +85,7 @@ class CitySelector extends Component {
     this.props.history.goBack();
   }
   onSelectCity = (city) => {
+    city.code = city.code.substr(0,4) + '00';
     globalVal.routeSelectCity = city;
     this.props.history.goBack();
   }
