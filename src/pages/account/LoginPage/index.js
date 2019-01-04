@@ -107,11 +107,11 @@ class LoginPage extends Component {
       mode="light"
       icon={<Icon type="left" />}
       onLeftClick={this.onBack}
-      rightContent={<div onClick={this.onNavReg}>
-        注册
-      </div>}
     ></NavBar>);
   }
+  // rightContent={<div onClick={this.onNavReg}>
+  //   注册
+  // </div>}
 
   render() {
     const { getFieldProps } = this.props.form;

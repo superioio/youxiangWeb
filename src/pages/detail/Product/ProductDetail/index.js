@@ -34,6 +34,7 @@ class ProductDetail extends Component {
       this.props.history.push('/LoginPage');
     }
     else {
+      globalVal.routeIsFromProductDetail = true;
       this.props.history.push({ pathname: '/OrderPlace' });
     }
 
