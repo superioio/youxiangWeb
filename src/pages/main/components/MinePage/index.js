@@ -82,12 +82,16 @@ class MinePage extends Component {
         break;
       case 3:
         globalVal.routeIsFromPay = false;
-        this.props.history.push({ pathname: '/AddressList', state: { isFromPay: false } });
+        this.props.history.push({ pathname: '/CardAndDiscount', state: { tag: "储值卡" } });
         break;
       case 4:
-        this.props.history.push('/Contact');
+        globalVal.routeIsFromPay = false;
+        this.props.history.push({ pathname: '/AddressList', state: { isFromPay: false } });
         break;
       case 5:
+        this.props.history.push('/Contact');
+        break;
+      case 6:
         break;
       default:
         break;
@@ -155,8 +159,9 @@ class MinePage extends Component {
           {this.renderButton('我的订单', 0)}
           {this.renderButton('代金劵', 1)}
           {this.renderButton('积分卡', 2)}
-          {this.renderButton('我的地址', 3)}
-          {this.renderButton('联系客服', 4)}
+          {this.renderButton('储值卡', 3)}
+          {this.renderButton('我的地址', 4)}
+          {this.renderButton('联系客服', 5)}
           {isLogined ? this.renderButton('退出登录', 6) : null}
         </div>
       </div>

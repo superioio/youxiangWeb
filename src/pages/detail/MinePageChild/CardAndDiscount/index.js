@@ -56,7 +56,7 @@ class CardAndDiscount extends Component {
         title = "我的储值卡";
         moreText = '查看失效的储值卡';
         break;
-      case "添加储值卡":
+      case "选择储值卡":
         title = this.props.location.state.tag;
         moreText = '查看失效的储值卡';
         list = await getCardListByProduct(globalVal.userInfo.customerId, globalVal.routeOrderInfo.productId, globalVal.selectCity.code);
@@ -71,7 +71,7 @@ class CardAndDiscount extends Component {
         list = await getDiscountList(2, globalVal.userInfo.customerId);
         moreText = '查看失效的代金劵';
         break;
-      case "添加代金券":
+      case "选择代金券":
         title = this.props.location.state.tag;
         moreText = '查看失效的代金劵';
         list = await getVoucherListByProduct(globalVal.userInfo.customerId, globalVal.routeOrderInfo.productId, globalVal.selectCity.code);
@@ -87,7 +87,7 @@ class CardAndDiscount extends Component {
             list = await getPointList(2, globalVal.userInfo.customerId);
             moreText = '查看失效的积分卡';
         break;
-      case "添加积分卡":
+      case "选择积分卡":
             title = this.props.location.state.tag;
             moreText = '查看失效的积分卡';
             list = await getPointListByProduct(globalVal.userInfo.customerId, globalVal.routeOrderInfo.productId, globalVal.selectCity.code);
@@ -107,6 +107,7 @@ class CardAndDiscount extends Component {
       title: title,
       tag: this.props.location.state.tag,
       list: list,
+      overPayCash: false,
       moreText,
     });
     if (list.error) {
@@ -148,7 +149,7 @@ class CardAndDiscount extends Component {
   //计算其他 代金券/储值卡/积分卡 是否仍然可选,储值卡直接计算余额，代金券计算个数*单价
   checkChooseStatus(isCard) {
     const needPayCash = this.props.location.state.needPayCash;
-    const price = globalVal.routeOrderInfo.price;
+    const price = globalVal.routeOrderInfo.productPrice;
     let balance = 0;
     if (isCard === 0) {
       this.state.selectedList.forEach(item => {
@@ -182,7 +183,7 @@ class CardAndDiscount extends Component {
   onSubmit = () => {
     let cardInfoList = this.props.location.state.cardInfoList;
     let voucherInfoList = this.props.location.state.voucherInfoList;
-      let  pointInfoList = this.props.location.state.pointInfoList;
+    let  pointInfoList = this.props.location.state.pointInfoList;
     if (RegExp(/储值卡/).test(this.props.location.state.tag)) {
       cardInfoList = this.state.selectedList;
     } else if (RegExp(/代金券/).test(this.props.location.state.tag)){
@@ -268,8 +269,9 @@ class CardAndDiscount extends Component {
             <span className={styles.leftText}>{item.faceValue + "元"}</span>
           </div>
           <div className={styles.rightTabItem}>
-            <div>{item.description + ":  剩余" + item.balance + "元"}</div>
-            <div>{"有效期至" + dateFormat(item.expiryTime)}</div>
+            <div>{item.name}</div>
+            <div>{"剩余 : " + item.balance + "元"}</div>
+            <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
           </div>
           <div className={styles.checkContain}>
           </div>
@@ -283,8 +285,9 @@ class CardAndDiscount extends Component {
           <span className={styles.leftText}>{item.faceValue + "元"}</span>
         </div>
         <div className={styles.rightTabItem}>
-          <div>{item.description + ":  剩余" + item.balance + "元"}</div>
-          <div>{"有效期至" + dateFormat(item.expiryTime)}</div>
+          <div>{item.name}</div>
+          <div>{"剩余 : " + item.balance + "元"}</div>
+          <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
         </div>
         <div className={styles.checkContain}>
           {this.renderCheck(isSelect)}
@@ -294,14 +297,16 @@ class CardAndDiscount extends Component {
   }
 
   renderUnPressCardItem = (item, index) => {
+    const { overPayCash } = this.state;
     return (<div key={index}>
-      <Flex className={styles.tabContentItem}>
+      <Flex className={overPayCash ? styles.tabOverPayCash : styles.tabContentItem}>
         <div className={styles.leftTabItem}>
           <span className={styles.leftText}>{item.faceValue + "元"}</span>
         </div>
         <div className={styles.rightTabItem}>
-          <div>{item.description + ":  剩余" + item.balance + "元"}</div>
-          <div>{"有效期至" + dateFormat(item.expiryTime)}</div>
+          <div>{item.name}</div>
+          <div>{"剩余 : " + item.balance + "元"}</div>
+          <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
         </div>
       </Flex>
     </div>);
@@ -329,8 +334,8 @@ class CardAndDiscount extends Component {
             <span className={styles.leftText}>{item.count + "个单位"}</span>
           </div>
           <div className={styles.rightTabItem}>
-            <div className={styles.line}>{item.description}</div>
-            <div>{"有效期至" + dateFormat(item.expiryTime)}</div>
+            <div className={styles.line}>{item.name}</div>
+            <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
           </div>
           <div className={styles.checkContain}>
           </div>
@@ -344,8 +349,8 @@ class CardAndDiscount extends Component {
           <span className={styles.leftText}>{item.count + "个单位"}</span>
         </div>
         <div className={styles.rightTabItem}>
-          <div>{item.description}</div>
-          <div>{"有效期至" + dateFormat(item.expiryTime)}</div>
+          <div>{item.name}</div>
+          <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
         </div>
         <div className={styles.checkContain}>
           {this.renderCheck(isSelect)}
@@ -354,14 +359,15 @@ class CardAndDiscount extends Component {
     </div>);
   }
   renderUnPressDiscountItem = (item, index) => {
+    const { overPayCash } = this.state;
     return (<div key={index}>
-      <Flex className={styles.tabContentItem}>
+      <Flex  className={overPayCash ? styles.tabOverPayCash : styles.tabContentItem}>
         <div className={styles.leftTabItem}>
           <span className={styles.leftText}>{item.count + "个单位"}</span>
         </div>
         <div className={styles.rightTabItem}>
-          <div>{item.description}</div>
-          <div>{"有效期至" + dateFormat(item.expiryTime)}</div>
+          <div>{item.name}</div>
+          <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
         </div>
       </Flex>
     </div>);
@@ -389,8 +395,9 @@ class CardAndDiscount extends Component {
                         <span className={styles.leftText}>{item.faceValue + "分"}</span>
                     </div>
                     <div className={styles.rightTabItem}>
-                        <div>{item.description + ":  剩余" + item.balance + "分"}</div>
-                        <div>{"有效期至" + dateFormat(item.expiryTime)}</div>
+                      <div>{item.name}</div>
+                      <div>{"剩余 : " + item.balance + "分"}</div>
+                      <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
                     </div>
                     <div className={styles.checkContain}>
                     </div>
@@ -404,8 +411,9 @@ class CardAndDiscount extends Component {
                     <span className={styles.leftText}>{item.faceValue + "分"}</span>
                 </div>
                 <div className={styles.rightTabItem}>
-                    <div>{item.description + ":  剩余" + item.balance + "分"}</div>
-                    <div>{"有效期至" + dateFormat(item.expiryTime)}</div>
+                  <div>{item.name}</div>
+                  <div>{"剩余 : " + item.balance + "分"}</div>
+                  <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
                 </div>
                 <div className={styles.checkContain}>
                     {this.renderCheck(isSelect)}
@@ -414,14 +422,16 @@ class CardAndDiscount extends Component {
         </div>)
     }
     renderUnPressPointItem = (item, index) => {
+      const { overPayCash } = this.state;
         return (<div key={index}>
-            <Flex className={styles.tabContentItem}>
+            <Flex className={overPayCash ? styles.tabOverPayCash : styles.tabContentItem}>
                 <div className={styles.leftTabItem}>
                     <span className={styles.leftText}>{item.faceValue + "分"}</span>
                 </div>
                 <div className={styles.rightTabItem}>
-                    <div>{item.description + ":  剩余" + item.balance + "分"}</div>
-                    <div>{"有效期至" + dateFormat(item.expiryTime)}</div>
+                  <div>{item.name}</div>
+                  <div>{"剩余 : " + item.balance + "分"}</div>
+                  <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
                 </div>
             </Flex>
         </div>);
@@ -462,7 +472,7 @@ class CardAndDiscount extends Component {
           <div className={styles.moreText} onClick={() => this.onMorePress(this.state.moreText)}>
             <span>{this.state.moreText}</span>
           </div>
-          {(RegExp(/添加/).test(this.props.location.state.tag)) ?
+          {(RegExp(/选择/).test(this.props.location.state.tag)) ?
             <div className={styles.exchangeBtn} onClick={() => this.onSubmit()}>
               <div>
                 <span className={styles.exchangeText}>{"确定"}</span>

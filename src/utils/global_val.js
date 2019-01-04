@@ -6,9 +6,9 @@ const globalVal = {
   },
   selectedTab: 'homeTab',
   userInfo: {
-    customerId: 8,
-    customerName: '张军',
-    customerMobile: '183888888',
+    customerId: -1,
+    customerName: '',
+    customerMobile: '',
     sessionId: '',
     lastLoginTime: Date.now(),
   },
@@ -19,9 +19,9 @@ const globalVal = {
     const userInfo = sessionStorage.getItem('userInfo');
     if (!userInfo) {
       return {
-        customerId: 8,
-        customerName: '张军',
-        customerMobile: '183888888',
+        customerId: -1,
+        customerName: '',
+        customerMobile: '',
         sessionId: '',
         lastLoginTime: Date.now(),
       };
@@ -40,6 +40,7 @@ const globalVal = {
   routeOrderInfo: null,
   routeAddress: null,
   routePayCash: null,
+  routeIsFromProductDetail: null,
 
   routeDiscount: null,
 };

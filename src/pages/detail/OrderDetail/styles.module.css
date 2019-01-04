@@ -28,6 +28,7 @@
   border-top: solid 1px #999999;
   border-bottom: solid 1px #999999;
   padding-bottom: 10px;
+  padding-top: 10px;
 }
 .contentRow {
   display: flex;

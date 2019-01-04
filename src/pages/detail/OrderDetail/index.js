@@ -128,9 +128,9 @@ class OrderDetail extends Component {
       <Flex.Item className={`${styles.button} ${styles.cancelBtn}`} onClick={this.onCancelPress}>
         <span className={styles.centerText}>取消订单</span>
       </Flex.Item>
-      <Flex.Item className={`${styles.button} ${styles.payBtn}`} onClick={this.onPayPress}>
-        <span className={styles.centerText}>支付订单</span>
-      </Flex.Item>
+      {/*<Flex.Item className={`${styles.button} ${styles.payBtn}`} onClick={this.onPayPress}>*/}
+        {/*<span className={styles.centerText}>支付订单</span>*/}
+      {/*</Flex.Item>*/}
     </Flex>
     ) : null;
   }
@@ -154,8 +154,8 @@ class OrderDetail extends Component {
           onLeftClick={() => this.props.history.goBack()}
         >订单详情</NavBar>
         {this.renderContent(this.props.location.state.order, this.props.location.state.isFromPay)}
-        {this.props.location.state.isFromPay ? this.renderPayButton() : this.renderCancelButton(this.props.location.state.isUnpaid)}
-
+        {/*{this.props.location.state.isFromPay ? this.renderPayButton() : this.renderCancelButton(this.props.location.state.isUnpaid)}*/}
+        {this.props.location.state.isFromPay ? null : this.renderCancelButton(this.props.location.state.isUnpaid)}
       </div>
     );
   }

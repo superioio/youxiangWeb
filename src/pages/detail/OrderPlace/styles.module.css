@@ -139,3 +139,6 @@
 .card{
   margin-bottom: 120px;
 }
+.cardDisabled{
+  opacity: 0.4;
+}

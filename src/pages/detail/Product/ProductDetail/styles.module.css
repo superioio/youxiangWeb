@@ -13,7 +13,7 @@
   background-color: white;
 }
 .headerImg {
-  height: 20rem
+  width: 100%;
 }
 .contentContainer{
   height: 100%;
@@ -26,16 +26,17 @@
   height: 30px;
   font-size: 16px;
   font-weight: bold;
+  margin: 10px;
 }
 .priceText {
   font-size: 16px;
-  margin-top: 20px;
+  margin: 10px;
   color: red;
 }
 .descImgContainer {
   width:100%;
   /*height:6000px;*/
-  margin-bottom: 50px;
+  margin-bottom: 25%;
 }
 .descImg {
   width: auto;

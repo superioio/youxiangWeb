@@ -37,9 +37,7 @@
   color: #00CED1
 }
 .rightTabItem {
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  line-height: 160%;
 }
 .line{
   width:100%;
@@ -100,4 +98,7 @@
 .margin{
   margin-bottom: 100px;
   padding-bottom: 100px;
+}
+.expireDateText{
+  color: #f18036
 }
