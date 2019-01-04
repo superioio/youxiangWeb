@@ -15,6 +15,8 @@ class OrderPlace extends Component {
       address: {},
       cardInfo: [],
       voucherInfo: [],
+      pointCardInfo: [],
+      saveMoneyByPoint: 0,
       saveMoneyByCard: 0,
       saveMoneyByVoucher: 0,
       payCash: 0,
@@ -86,9 +88,11 @@ class OrderPlace extends Component {
         totalAmount: 0,
         payVoucher: "",
         payRechargeCard: "",
+        payPoint: "",
         payment: "",
         voucherIds: '',//选中的代金券ID  1,2,3
-        rechargeCardIds: '',//选中的积分卡ID  1,2,3
+        rechargeCardIds: '',//选中的储值卡ID  1,2,3
+        pointsCardIds: '',//选中的积分卡ID  1,2,3
         cardMoneys: '',//选中的积分卡使用金额 暂时不用
       };
       orderInfo.serviceTime = moment(`${orderInfo.date}`).unix() * 1000;
@@ -100,37 +104,49 @@ class OrderPlace extends Component {
     }
   }
 
-  //从积分卡/代金券选择页面返回
+  //从积分卡/代金券/储值卡 选择页面返回
   getDiscountInfo = () => {
     if (!globalVal.routeDiscount) return;
 
     const orderInfo = globalVal.routeOrderInfo;
-    const { cardInfoList, voucherInfoList } = globalVal.routeDiscount;
+    const { cardInfoList, voucherInfoList, pointInfoList } = globalVal.routeDiscount;
     let cardAmount = 0;
     let voucherAmount = 0;
+    let pointAmount = 0;
     let cardIds = '';
     let voucherIds = '';
-    let payCash = 0;
+    let pointCardIds = '';
+    var payCash = 0;
     for (const i of cardInfoList) {
       cardAmount += i.balance;
-      cardIds += i.id + ",";//积分卡ID 字符串
+      cardIds += i.id + ",";//储值卡ID 字符串
     }
 
     for (const i of voucherInfoList) {
       voucherAmount += i.count * orderInfo.productPrice;
       voucherIds += i.id + ",";//代金券ID 字符串
     }
+
+    for (const i of pointInfoList) {
+        pointAmount += i.balance * i.projectResp.pointConversionRate;
+        pointCardIds += i.id + ",";//积分卡ID 字符串
+    }
     payCash = orderInfo.productPrice * orderInfo.count;
+
     cardAmount = (payCash - voucherAmount) > cardAmount ? cardAmount : payCash - voucherAmount;
-    payCash = (payCash - cardAmount - voucherAmount) <= 0 ? 0 : (payCash - cardAmount - voucherAmount);
+      pointAmount = (payCash - voucherAmount - cardAmount) > pointAmount ? pointAmount : payCash - voucherAmount - cardAmount;
+    payCash = (payCash - cardAmount - voucherAmount - pointAmount) <= 0 ? 0 : (payCash - cardAmount - voucherAmount - pointAmount);
 
     orderInfo.rechargeCardIds = cardIds;
     orderInfo.voucherIds = voucherIds;
+    orderInfo.pointCardIds = pointCardIds;
     this.setState({
       saveMoneyByCard: cardAmount,
       saveMoneyByVoucher: voucherAmount,
       cardInfo: cardInfoList,
-      voucherInfo: voucherInfoList
+      voucherInfo: voucherInfoList,
+      saveMoneyByPoint: pointAmount,
+      pointInfoList: pointInfoList,
     });
   };
 
@@ -151,6 +167,7 @@ class OrderPlace extends Component {
     orderInfo.payment = order.payCash;
     orderInfo.payVoucher = this.state.voucherInfo.length;
     orderInfo.payRechargeCard = this.state.saveMoneyByCard;
+    orderInfo.payPoint = this.state.saveMoneyByPoint;
     orderInfo.totalAmount = orderInfo.productPrice * orderInfo.count;
     const isFromPay = order.payCash === 0 ? false : true;//如果仍需要支付金额不是0 ，则显示微信支付
     this.setState({
@@ -165,26 +182,28 @@ class OrderPlace extends Component {
   }
 
   //选择代金券或者积分卡,isCard: true，添加积分卡
-  onChooseCardOrVoucherPress = (isCard) => {
+  onChooseCardOrVoucherPress = (type) => {
     var tag = "";
-    if (isCard) {
-      tag = "添加积分卡";
-    } else {
-      tag = "添加代金券";
-    }
     let needPayCash;
-    if (isCard) {
+    if (type === 0) {
+      tag = "添加储值卡";
       needPayCash = this.state.payCash + this.state.saveMoneyByCard;
-    } else {
+    } else if (type === 1) {
+      tag = "添加代金券";
       needPayCash = this.state.payCash + this.state.saveMoneyByVoucher;
+    } else if (type === 2){
+      tag = "添加积分卡";
+      needPayCash = this.state.payCash + this.state.saveMoneyByPoint;
     }
+
     globalVal.routeIsFromPay = true;// 是从订单页进入代金劵或积分卡界面的
     this.props.history.push({
       pathname: '/CardAndDiscount', state: {
         tag: tag,
-        needPayCash: needPayCash,//还需支付的金额 + 已选积分卡的金额（或者已选代金券的金额）
-        cardInfoList: this.state.cardInfo,//已经添加的积分卡
+        needPayCash: needPayCash,//还需支付的金额 + 已选 积分卡/储值卡/代金券 的金额
+        cardInfoList: this.state.cardInfo,//已经添加的储值卡卡
         voucherInfoList: this.state.voucherInfo,//已经添加的代金券
+        pointInfoList: this.state.pointCardInfo,//已经添加的储值卡
       }
     });
   }
@@ -354,14 +373,14 @@ class OrderPlace extends Component {
     </div>);
   }
 
-  renderCard() {
-    return (<div className={styles.card} onClick={() => this.onChooseCardOrVoucherPress(true)}>
+  renderRechargeCard() {
+    return (<div className={styles.card} onClick={() => this.onChooseCardOrVoucherPress(0)}>
       <div className={styles.label}>
         <span
           className={styles.greyText}>{this.state.saveMoneyByCard > 0 ? "可支付" + this.state.saveMoneyByCard + "元" : "请选择"}</span>
         <img
           className={styles.arrowImage}
-          alt='积分卡'
+          alt='储值卡'
           src={require('@/assets/images/arrow-right.png')}
         />
       </div>
@@ -369,7 +388,7 @@ class OrderPlace extends Component {
   }
 
   renderVoucher() {
-    return (<div onClick={() => this.onChooseCardOrVoucherPress(false)}>
+    return (<div onClick={() => this.onChooseCardOrVoucherPress(1)}>
       <div className={styles.label}>
         <span
           className={styles.greyText}>{this.state.saveMoneyByVoucher > 0 ? "已节省" + this.state.saveMoneyByVoucher + "元" : "请选择"}</span>
@@ -380,6 +399,19 @@ class OrderPlace extends Component {
         />
       </div>
     </div>);
+  }
+  renderPointCard() {
+      return (<div className={styles.card} onClick={() => this.onChooseCardOrVoucherPress(2)}>
+          <div className={styles.label}>
+      <span
+          className={styles.greyText}>{this.state.saveMoneyByPoint > 0 ? "可支付" + this.state.saveMoneyByPoint + "元" : "请选择"}</span>
+              <img
+                  className={styles.arrowImage}
+                  alt='积分卡'
+                  src={require('@/assets/images/arrow-right.png')}
+              />
+          </div>
+      </div>);
   }
 
   render() {
@@ -408,8 +440,10 @@ class OrderPlace extends Component {
           {this.renderReMark()}
           {this.renderTitle('代金券')}
           {this.renderVoucher()}
+          {this.renderTitle('储值卡')}
+          {this.renderRechargeCard()}
           {this.renderTitle('积分卡')}
-          {this.renderCard()}
+          {this.renderPointCard()}
         </div>
         <div className={styles.place} >
           <div className={styles.placeLeft}>
