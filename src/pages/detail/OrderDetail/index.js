@@ -75,8 +75,12 @@ class OrderDetail extends Component {
         </Flex>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>使用积分支付</Flex.Item>
-          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payRechargeCard + "元"}</Flex.Item>
+          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payPoint + "元"}</Flex.Item>
         </Flex>
+          <Flex className={styles.contentRow}>
+              <Flex.Item className={styles.nameText}>使用储值卡支付</Flex.Item>
+              <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payRechargeCard + "元"}</Flex.Item>
+          </Flex>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>尚需支付</Flex.Item>
           <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payment + "元"}</Flex.Item>
