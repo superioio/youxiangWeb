@@ -25,6 +25,12 @@
     text-align: center;
 }
 
+.emptyTabContent{
+  height: 400px;
+  text-align: center;
+  padding-top: 20px;
+}
+
 .tabContent {
     width : 100%;
     background-color: rgb(225, 222, 222);
