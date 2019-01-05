@@ -9,13 +9,14 @@ class HomePage extends Component {
   // #region 构造器
   constructor(props) {
     super(props);
+    this.setGlobalSelectCity();
+    this.setGlobalUserInfo();
 
     this.state = {
       selectCity: globalVal.selectCity,
       categoryList: [],// 商品类别列表
       moreCategoryGroup: [],// 商品类别，第5个以后的商品列表
     };
-    this.setGlobalUserInfo();
   }
 
   // #endregion
@@ -29,6 +30,7 @@ class HomePage extends Component {
       }, () => {
         globalVal.routeSelectCity = null;
         globalVal.selectCity = this.state.selectCity;
+        global.setSelectCity(globalVal.selectCity);
       });
     }
 
@@ -110,6 +112,10 @@ class HomePage extends Component {
       };
       Toast.info('您的登录信息已过期，请重新登录');
     }
+  }
+  setGlobalSelectCity = async () => {
+    const selectCity = await globalVal.getSelectCity();
+    globalVal.selectCity = selectCity;
   }
 
   // #endregion
