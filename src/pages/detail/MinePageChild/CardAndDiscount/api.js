@@ -58,11 +58,11 @@ export async function getDiscountList(status, customerId) {
 }
 
 //兑换充值卡
-export async function exchangeCard(keyStr, phoneNumber) {
+export async function exchangeCard(keyStr, id) {
     return await axios.post('/api/rcexchangecode/customerselfcodecharge',
         Qs.stringify({
             keyt : keyStr,
-            mobile: phoneNumber
+          id: id
         })
     )
         .then(function (response) {
@@ -75,11 +75,11 @@ export async function exchangeCard(keyStr, phoneNumber) {
 }
 
 //兑换积分卡
-export async function exchangePoint(keyStr, phoneNumber) {
+export async function exchangePoint(keyStr, id) {
     return await axios.post('/api/pointexchangecode/customerselfcodecharge',
         Qs.stringify({
             keyt : keyStr,
-            mobile: phoneNumber
+          id: id
         })
     )
         .then(function (response) {
@@ -91,11 +91,11 @@ export async function exchangePoint(keyStr, phoneNumber) {
         });
 }
 //兑换代金券
-export async function exchangeVoucher(keyStr,phoneNumber) {
+export async function exchangeVoucher(keyStr,id) {
     return await axios.post('/api/voucherexchangecode/customerselfcodecharge',
         Qs.stringify({
             keyt : keyStr,
-            mobile: phoneNumber
+          id: id
         })
     )
         .then(function (response) {

@@ -79,7 +79,7 @@ class OrderPlace extends Component {
       const orderInfo = {
         productResp: product,
         productId: product.id,
-        date: moment().add(product.effectiveDays, 'days').format(),
+        date: moment().add(product.delayDays, 'days').format(),
         time: '',
         status: 1,
         customerRemark: "",
@@ -272,7 +272,7 @@ class OrderPlace extends Component {
     if (!orderInfo) return null;
 
     const today = new Date();
-    const minDate = new Date(today.setDate(today.getDate() + orderInfo.productResp.effectiveDays));
+    const minDate = new Date(today.setDate(today.getDate() + orderInfo.productResp.delayDays));
     return (
       <List className={styles.datePickContainer}>
         <DatePicker

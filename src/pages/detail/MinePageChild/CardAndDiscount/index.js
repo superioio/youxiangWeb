@@ -222,11 +222,11 @@ class CardAndDiscount extends Component {
     let result;
     Toast.loading("请稍后...", 3);
       if (RegExp(/储值卡/).test(this.props.location.state.tag)) {
-          result = await exchangeCard(this.state.exchangeCode)
+          result = await exchangeCard(this.state.exchangeCode, globalVal.userInfo.customerId)
       } else if (RegExp(/代金券/).test(this.props.location.state.tag)){
-          result = await exchangeVoucher(this.state.exchangeCode);
+          result = await exchangeVoucher(this.state.exchangeCode, globalVal.userInfo.customerId);
       } else if (RegExp(/积分卡/).test(this.props.location.state.tag)){
-          result = await exchangePoint(this.state.exchangeCode);
+          result = await exchangePoint(this.state.exchangeCode, globalVal.userInfo.customerId);
       }
     // result = this.props.location.state.tag === "积分卡"
     //   ? await exchangeCard(this.state.exchangeCode)
