@@ -12,11 +12,24 @@ const globalVal = {
     sessionId: '',
     lastLoginTime: Date.now(),
   },
+  setSelectCity(value) {
+    localStorage.setItem('selectCity', JSON.stringify(value));
+  },
+  getSelectCity() {
+    const selectCity = localStorage.getItem('selectCity');
+    if (!selectCity) {
+      return {
+        code: '110000',
+        name: '北京',
+      };
+    }
+    return JSON.parse(selectCity);
+  },
   setUserInfo(value) {
-    sessionStorage.setItem('userInfo', JSON.stringify(value));
+    localStorage.setItem('userInfo', JSON.stringify(value));
   },
   getUserInfo() {
-    const userInfo = sessionStorage.getItem('userInfo');
+    const userInfo = localStorage.getItem('userInfo');
     if (!userInfo) {
       return {
         customerId: -1,
