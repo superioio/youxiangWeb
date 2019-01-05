@@ -13,10 +13,10 @@ const globalVal = {
     lastLoginTime: Date.now(),
   },
   setUserInfo(value) {
-    sessionStorage.setItem('userInfo', JSON.stringify(value));
+    localStorage.setItem('userInfo', JSON.stringify(value));
   },
   getUserInfo() {
-    const userInfo = sessionStorage.getItem('userInfo');
+    const userInfo = localStorage.getItem('userInfo');
     if (!userInfo) {
       return {
         customerId: -1,
