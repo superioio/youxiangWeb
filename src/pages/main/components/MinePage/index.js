@@ -8,22 +8,11 @@ class MinePage extends Component {
   // #region 构造器
   constructor(props) {
     super(props);
+    globalVal.minePageRef = this;
+
     this.state = {
       isLogined: false,
     };
-  }
-  // #endregion
-
-
-  // #region 生命周期
-
-  componentDidMount() {
-    this.didFocus();
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.selected) {
-      this.didFocus();
-    }
   }
   // #endregion
 

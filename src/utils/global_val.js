@@ -56,5 +56,9 @@ const globalVal = {
   routeIsFromProductDetail: null,
 
   routeDiscount: null,
+
+  homePageRef: null,
+  orderPageRef: null,
+  minePageRef: null,
 };
 export default globalVal;

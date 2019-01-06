@@ -17,6 +17,8 @@ const tabs = [
 class OrderPage extends Component {
   constructor(props) {
     super(props);
+    globalVal.orderPageRef = this;
+
     this.state = {
       isLogined: false,
       unpaidOrders: [],
@@ -28,20 +30,6 @@ class OrderPage extends Component {
       refreshing: false,
     };
   }
-
-  // #region 生命周期
-
-  componentDidMount() {
-    if (this.props.selected) {
-      this.didFocus();
-    }
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.selected) {
-      this.didFocus();
-    }
-  }
-  // #endregion
 
   // #region 私有方法
 

@@ -9,6 +9,7 @@ class HomePage extends Component {
   // #region 构造器
   constructor(props) {
     super(props);
+    globalVal.homePageRef = this;
     this.setGlobalSelectCity();
     this.setGlobalUserInfo();
 
@@ -23,7 +24,7 @@ class HomePage extends Component {
 
   // #region 生命周期
 
-  async componentDidMount() {
+  didFocus = async () => {
     if (globalVal.routeSelectCity) {
       this.setState({
         selectCity: globalVal.routeSelectCity,
@@ -69,8 +70,8 @@ class HomePage extends Component {
     });
   }
 
-
   // #endregion
+
 
   // #region 响应方法
 

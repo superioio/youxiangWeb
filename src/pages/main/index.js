@@ -15,12 +15,49 @@ class MainPage extends Component {
     };
   }
 
+  // #region 生命周期
+
+  componentDidMount() {
+    const { selectedTab } = this.state;
+    this.didFocus(selectedTab);
+  }
+  // #endregion
+
+  // #region 方法
+
+  didFocus = (selectedTab) => {
+    switch (selectedTab) {
+      case 'homeTab':
+        globalVal.homePageRef.didFocus();
+        break;
+      case 'orderTab':
+        globalVal.orderPageRef.didFocus();
+        break;
+      case 'mineTab':
+        globalVal.minePageRef.didFocus();
+        break;
+      default:
+        break;
+
+    }
+  }
+
+  // #endregion
+
+  // #region 响应方法
+
   onChangeSelectedTab = (selectedTab) => {
     this.setState({
       selectedTab,
     });
     globalVal.selectedTab = selectedTab;
+
+    this.didFocus(selectedTab);
   }
+
+  // #endregion
+
+  // #region render
 
   render() {
     return (
@@ -49,8 +86,8 @@ class MainPage extends Component {
             onPress={() => { this.onChangeSelectedTab('orderTab') }}
           >
             <OrderPage
+
               selected={this.state.selectedTab === 'orderTab'}
-              changeSelectedTab={(selectedTab) => { this.onChangeSelectedTab(selectedTab) }}
             />
           </TabBar.Item>
           <TabBar.Item
@@ -70,6 +107,8 @@ class MainPage extends Component {
       </div >
     );
   }
+
+  // #endregion
 }
 
 export default MainPage;
