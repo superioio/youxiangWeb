@@ -11,8 +11,8 @@ class Contact extends Component {
               icon={<Icon type="left" />}
               onLeftClick={() => this.props.history.goBack()}
           >联系我们</NavBar>
-          <div className={styles.mobile}>客服电话：13888888888</div>
-          <div className={styles.mobile}>联系地址：北京市昌平区</div>
+          <div className={styles.mobile}>客服电话： < a href="tel://4000852818" className={styles.mobile} >4000852818 </a></div>
+          <div className={styles.mobile}>联系地址：    北京市昌平区</div>
         </div>
     );
   }
