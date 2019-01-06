@@ -45,8 +45,10 @@
 }
 .remark {
   height: 70px;
-  border:solid 1px #999999;
   margin: 15px;
+}
+.remarkBorder{
+  border:solid 1px #999999;
 }
 .noBorderBottom {
   border-bottom-width: 0;

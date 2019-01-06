@@ -210,7 +210,7 @@ class HomePage extends Component {
                 <img
                   className={styles.acceptButtonImage}
                   src={globalVal.imgUrl + product.thumbnailUrl}
-                  alt="广告"
+                  alt="缩略图"
                 />
                 <div className={styles.menuButtonText}>{product.name}</div>
               </div>

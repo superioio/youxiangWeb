@@ -201,7 +201,7 @@ class OrderPage extends Component {
                   <img
                     className={styles.tabContentImage}
                     alt="商品缩略图"
-                    src={require('../../../../assets/images/clean1.png')}
+                    src={globalVal.imgUrl + item.productResp.thumbnailUrl}
                   />
                 </div>
                 <div className={styles.tabContentRight}>

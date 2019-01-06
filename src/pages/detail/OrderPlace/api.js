@@ -20,6 +20,7 @@ export async function getDefaultAddress(customerId) {
 export async function placeOrder(orderInfo, customerId) {
   const voucherIds = orderInfo.voucherIds.substring(0, orderInfo.voucherIds.length - 1);
   const rechargeCardIds = orderInfo.rechargeCardIds.substring(0, orderInfo.rechargeCardIds.length - 1);
+  const pointIds =  orderInfo.pointCardIds.substring(0, orderInfo.rechargeCardIds.length - 1);
   const cityCode = orderInfo.customerCityCode.substr(0,4) + '00';
   return await axios.post('/api/orderinfo/customerplaceorder',
     Qs.stringify({
@@ -34,6 +35,7 @@ export async function placeOrder(orderInfo, customerId) {
       serviceTime: orderInfo.serviceTime,
       voucherIds: voucherIds,
       rechargeCardIds: rechargeCardIds,
+      pointIds: pointIds,
     })
   ).then(function (response) {
     return response;

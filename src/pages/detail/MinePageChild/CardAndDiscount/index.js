@@ -218,15 +218,15 @@ class CardAndDiscount extends Component {
     }
   }
 
-  async onExchangePress() {
+  async onExchangePress(exchangeCode, resolve) {
     let result;
     Toast.loading("请稍后...", 3);
       if (RegExp(/储值卡/).test(this.props.location.state.tag)) {
-          result = await exchangeCard(this.state.exchangeCode, globalVal.userInfo.customerId)
+          result = await exchangeCard(exchangeCode, globalVal.userInfo.customerId)
       } else if (RegExp(/代金券/).test(this.props.location.state.tag)){
-          result = await exchangeVoucher(this.state.exchangeCode, globalVal.userInfo.customerId);
+          result = await exchangeVoucher(exchangeCode, globalVal.userInfo.customerId);
       } else if (RegExp(/积分卡/).test(this.props.location.state.tag)){
-          result = await exchangePoint(this.state.exchangeCode, globalVal.userInfo.customerId);
+          result = await exchangePoint(exchangeCode, globalVal.userInfo.customerId);
       }
     // result = this.props.location.state.tag === "积分卡"
     //   ? await exchangeCard(this.state.exchangeCode)
@@ -234,7 +234,10 @@ class CardAndDiscount extends Component {
     Toast.hide();
     if (result.error) {
       Toast.fail(result.error);
+      return;
     }
+    Toast.loading("兑换成功", 2);
+    resolve();
   }
 
   //点击  “查看更多”  按钮，此时应该隐藏 “查看更多”
@@ -483,9 +486,11 @@ class CardAndDiscount extends Component {
                 { text: '取消' },
                 {
                   text: '确定',
-                  onPress: exchangeCode => new Promise(() => {
-                    this.setState({ exchangeCode });
-                    this.onExchangePress();
+                  onPress: exchangeCode => new Promise((resolve, reject) => {
+                    //this.setState({ exchangeCode });
+                    if(this.onExchangePress(exchangeCode, resolve)){
+                     // resolve();
+                    }
                   }),
                 },
               ], 'default', null, ['兑换码'])}

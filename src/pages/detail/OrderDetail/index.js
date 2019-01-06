@@ -8,7 +8,7 @@ import { withRouter } from "react-router-dom";
 class OrderDetail extends Component {
 
   renderContent(order, isFromPay) {
-    let payVoucher = order.payVoucher * order.productPrice;//代金券支付金额
+    //let payVoucher = order.payVoucher * order.productPrice;//代金券支付金额
     // let payment = order.totalAmount - payVoucher - order.payRechargeCard;//需支付金额
     // payment = payment > 0 ? payment : 0;
     return (<div className={styles.contentContain}>
@@ -71,7 +71,7 @@ class OrderDetail extends Component {
       <div className={`${styles.content} ${styles.noBorderBottom}`}>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>使用代金券支付</Flex.Item>
-          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {payVoucher + "元"}</Flex.Item>
+          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payVoucher + "元"}</Flex.Item>
         </Flex>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>使用积分支付</Flex.Item>

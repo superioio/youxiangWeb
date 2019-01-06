@@ -176,7 +176,7 @@ class OrderPlace extends Component {
     let orderInfo = this.state.orderInfo;
     orderInfo.id = order.orderId;
     orderInfo.payment = order.payCash;
-    orderInfo.payVoucher = this.state.voucherInfo.length;
+    orderInfo.payVoucher = this.state.saveMoneyByVoucher;
     orderInfo.payRechargeCard = this.state.saveMoneyByCard;
     orderInfo.payPoint = this.state.saveMoneyByPoint;
     orderInfo.totalAmount = orderInfo.productPrice * orderInfo.count;
