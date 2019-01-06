@@ -105,13 +105,21 @@ class AddressEdit extends Component {
     };
     Toast.loading("请稍后...", 3);
     if (!globalVal.routeAddrInfo) {
-      await addAddr(params);
+      const res = await addAddr(params);
       Toast.hide();
+      if (res.error) {
+        Toast.fail(res.error);
+        return;
+      }
       Toast.success('添加成功');
     } else {
       params.id = id;
-      await editAddr(params);
+      const res = await editAddr(params);
       Toast.hide();
+      if (res.error) {
+        Toast.fail(res.error);
+        return;
+      }
       Toast.success('修改成功');
     }
     globalVal.routeAddrInfo = null;
