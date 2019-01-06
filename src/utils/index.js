@@ -60,32 +60,55 @@ export function getStatus(statusCode) {
 
 //1代付款，2待派单，3待服务，4已完成，5取消待审核，6取消审核未通过，7已取消
 export function getStatusCode(statusStr) {
+    // let statusCode = '0';
+    // switch (statusStr) {
+    //     case "待付款":
+    //         statusCode = '1';
+    //         break;
+    //     case "待派单":
+    //     case "待服务":
+    //         statusCode = '2,3';
+    //         break;
+    //     case "已完成":
+    //         statusCode = '4';
+    //         break;
+    //     case "取消待审核":
+    //     case "已取消":
+    //         statusCode = '5,7';
+    //         break;
+    //     case "取消审核未通过":
+    //         statusCode = '6';
+    //         break;
+    //     default :
+    //         statusCode = '0';
+    //         break;
+    // }
     let statusCode = 0;
     switch (statusStr) {
-        case "待付款":
-            statusCode = 1;
-            break;
-        case "待派单":
-            statusCode = 2;
-            break;
-        case "待服务":
-            statusCode = 3;
-            break;
-        case "已完成":
-            statusCode = 4;
-            break;
-        case "取消待审核":
-            statusCode = 5;
-            break;
-        case "取消审核未通过":
-            statusCode = 6;
-            break;
-        case "已取消":
-            statusCode = 7;
-            break;
-        default :
-            statusCode = 0;
-            break;
+      case "待付款":
+        statusCode = 1;
+        break;
+      case "待派单":
+        statusCode = 2;
+        break;
+      case "待服务":
+        statusCode = 3;
+        break;
+      case "已完成":
+        statusCode = 4;
+        break;
+      case "取消待审核":
+        statusCode = 5;
+        break;
+      case "取消审核未通过":
+        statusCode = 6;
+        break;
+      case "已取消":
+        statusCode = 7;
+        break;
+      default :
+        statusCode = 0;
+        break;
     }
     return statusCode;
 }

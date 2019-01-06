@@ -495,7 +495,7 @@ class OrderPlace extends Component {
               className={styles.placeRightButton}
               onClick={this.onOrderPress}
             >
-              <span className={styles.placeRightText}>下一步</span>
+              <span className={styles.placeRightText}>确认订单</span>
             </div>
           </div>
         </div>
