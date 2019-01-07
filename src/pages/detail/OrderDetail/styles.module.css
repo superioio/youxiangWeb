@@ -3,6 +3,7 @@
   padding-right: 5%;
   background-color: white;
   height:100%;
+  overflow: scroll;
 }
 .header {
   height: 35px;
@@ -21,8 +22,12 @@
   width: 30%;
   color: rgb(155, 147, 147);
 }
+.eCodeText{
+  font-size: 1.2rem;
+  color: rgb(155, 147, 147);
+}
 .contentContain {
-  height: 800px;
+  /*height: 85%;*/
 }
 .content {
   border-top: solid 1px #999999;
@@ -33,6 +38,10 @@
 .contentRow {
   display: flex;
   padding-top: 10px;
+}
+.eCodeRow{
+  display: flex;
+  padding: 10px;
 }
 .contentText {
   font-size: 0.9rem;
@@ -54,6 +63,7 @@
   border-bottom-width: 0;
 }
 .buttonsRow {
+  margin-top: 10%;
   height: 3rem;
 }
 .buttonsColumn {
@@ -68,9 +78,9 @@
   height:100%;
 }
 .cancelBtn {
-  color: rgb(217, 66, 66);
+  color: #f18036;
   background-color: white;
-  border:solid 2px rgb(217, 66, 66);
+  border:solid 2px #f18036;
 }
 .payBtn {
   background-color: rgb(217, 66, 66);
@@ -80,6 +90,7 @@
 
 }
 .payButton {
+  display: flex;
   justify-content: center;
   align-items: center;
   width: 90%;

@@ -7,11 +7,11 @@ import { dateFormat, getStatusCode, getStatus } from '@/utils';
 import { withRouter } from 'react-router-dom';
 
 const tabs = [
+  { title: '全部', },
   { title: '待付款', },
   { title: '待服务', },
   { title: '已完成', },
   { title: '已取消', },
-  { title: '全部', },
 ];
 
 class OrderPage extends Component {
@@ -26,7 +26,6 @@ class OrderPage extends Component {
       completedOrders: [],
       cancelOrders: [],
       allOrders: [],
-
       refreshing: false,
     };
   }
@@ -42,7 +41,7 @@ class OrderPage extends Component {
       this.setState({
         isLogined: true,
       });
-      this.requestOrders('待付款');
+      this.requestOrders('全部');
     };
   }
   // #endregion
@@ -57,6 +56,9 @@ class OrderPage extends Component {
 
   //点击tab，获取对应的order list
   onTabPress = ({ title }) => {
+    this.setState({
+      selectTab : title
+    });
     const orders = this.getCurrentOrders(title);
     if (orders.length > 0) return;
 
@@ -152,7 +154,7 @@ class OrderPage extends Component {
   }
 
   onOrderPress(order) {
-    const isUnpaid = this.state.selectTab === "unpaid";
+    const isUnpaid = order.status === 1;
     this.props.history.push({
       pathname: '/OrderDetail', state: {
         order: order, isFromPay: false, isUnpaid: isUnpaid
@@ -193,9 +195,10 @@ class OrderPage extends Component {
                   />
                 </div>
                 <div className={styles.tabContentRight}>
-                  <div className={styles.tabContentText}>{dateFormat(item.serviceTime)}</div>
+                  <div className={styles.tabContentText}>{'服务时间 : ' + dateFormat(item.serviceTime)}</div>
                   <div className={styles.tabContentText}>{item.customerCityName + item.customerAddress}</div>
                   <div className={styles.tabContentText}>{item.count + item.productResp.unitName}</div>
+                  <div className={styles.tabContentText}>{'下单时间 : ' + dateFormat(item.orderTime)}</div>
                 </div>
               </Flex>
             </div>
@@ -219,11 +222,11 @@ class OrderPage extends Component {
       initialPage={0}
       onTabClick={(tab) => { this.onTabPress(tab); }}
     >
+      {this.renderTabsContent('全部')}
       {this.renderTabsContent('待付款')}
       {this.renderTabsContent('待服务')}
       {this.renderTabsContent('已完成')}
       {this.renderTabsContent('已取消')}
-      {this.renderTabsContent('全部')}
     </Tabs>);
   }
 

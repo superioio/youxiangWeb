@@ -69,7 +69,7 @@ class AddressList extends Component {
   onConfrimDelete = async (id) => {
     const alert = Modal.alert;
 
-    alert('取消订单', '确认删除地址吗？',
+    alert('删除地址', '确认删除地址吗？',
       [{ text: "取消", onPress: () => { return null } },
       { text: "确认", onPress: () => this.deleteConfirm(id) },
       ]
