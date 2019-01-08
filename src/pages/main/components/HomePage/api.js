@@ -40,6 +40,21 @@ export async function getProductList(productCategoryId, name, cityCode) {
     });
 }
 
+//根据二维码充值
+export async function getRechargeByQRCode(code) {
+  return await axios.get('/api/getQRCode', {
+    params: {
+      code,
+    }
+  })
+    .then(function (response) {
+      return response;
+    })
+    .catch(function (error) {
+      console.log("getRechargeByQRCode error" + error);
+      return [];
+    });
+}
 
 // //暂时不用
 // function getBannerImgs() {

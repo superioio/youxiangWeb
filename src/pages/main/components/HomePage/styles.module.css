@@ -5,9 +5,10 @@
 
 }
 .cityContainer {
-    height: 36px;
-    justify-content: center;
-    text-align: center;
+  display: flex;
+  height: 36px;
+  justify-content: center;
+  text-align: center;
 }
 .adContainer {
     height: 190px;
@@ -18,14 +19,36 @@
 .acceptContainer {
     height: 160px;
 }
-
+.cityButtonContain{
+  flex: 1;
+  display: flex;
+  
+  justify-content: center;
+  align-items: center;
+  margin-left: 30px;
+}
 .cityButton {
+
 }
 .cityButtonImage {
     width: 15px;
     height: 15px;
 }
 .cityButtonText {
+}
+.scanButton{
+  width: 20px;
+  height: 36px;
+  margin-right: 10px;
+
+  display: flex;
+  
+  justify-content: center;
+  align-items: center;
+}
+.scanButtonImage {
+  width: 20px;
+  height: 20px;
 }
 
 .carousel {

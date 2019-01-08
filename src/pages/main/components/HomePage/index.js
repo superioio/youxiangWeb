@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Flex, Carousel, Toast } from 'antd-mobile';
 import styles from './styles.module.css';
-import { getCategoryList, getProductList } from './api';
+import { getCategoryList, getProductList, getRechargeByQRCode } from './api';
 import globalVal from '@/utils/global_val';
 import { withRouter } from "react-router-dom";
+
+let barcode = null;
 
 class HomePage extends Component {
   // #region 构造器
@@ -79,6 +81,71 @@ class HomePage extends Component {
     this.props.history.push({ pathname: '/CitySelector' });
   }
 
+  onMarked = async (type, resultStr) => {
+    var text = '未知: ';
+    switch (type) {
+      case window.plus.barcode.QR:
+        text = 'QR: ';
+        break;
+      case window.plus.barcode.EAN13:
+        text = 'EAN13: ';
+        break;
+      case window.plus.barcode.EAN8:
+        text = 'EAN8: ';
+        break;
+      default:
+        break;
+    }
+    alert(text + resultStr);
+
+    barcode.cancel();
+    barcode.close();
+
+    const res = await getRechargeByQRCode(resultStr);
+    if (res.error) {
+      Toast.fail(res.error);
+      return;
+    }
+    Toast.success('添加成功');
+
+  }
+
+  onScanPress = () => {
+    if (window.plus && window.plus.barcode) {
+      if (!barcode) {
+        barcode = window.plus.barcode.create('barcode', [window.plus.barcode.QR], {
+          top: '100px',
+          left: '0px',
+          width: '100%',
+          height: '200px',
+          position: 'static'
+        });
+        barcode.onmarked = this.onMarked;
+        window.plus.webview.currentWebview().append(barcode);
+      }
+      barcode.start();
+    }
+    if (window.wx) {
+      window.wx.scanQRCode({
+        needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+        scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+        success: async (result) => {
+          const resultStr = result.resultStr; // 当needResult 为 1 时，扫码返回的结果
+
+          alert('resultStr', resultStr);
+
+          const res = await getRechargeByQRCode(resultStr);
+          if (res.error) {
+            Toast.fail(res.error);
+            return;
+          }
+          Toast.success('添加成功');
+        }
+      });
+    }
+
+  }
+
   onProductPress(id, name) {
     globalVal.routeProductCategory = {
       id,
@@ -126,20 +193,32 @@ class HomePage extends Component {
   renderCityButton = () => {
     const { selectCity } = this.state;
     return (
-      <div className={styles.cityButton} onClick={this.onCityPress}>
-        <img
-          className={styles.cityButtonImage}
-          src={require('../../../../assets/images/map.png')}
-          alt="广告"
-        />
-        <span className={styles.cityButtonText}>{selectCity.name}</span>
-        <img
-          className={styles.cityButtonImage}
-          src={require('../../../../assets/images/arrow-down.png')}
-          alt="广告"
-        />
+      <div className={styles.cityButtonContain} >
+        <div className={styles.cityButton} onClick={this.onCityPress}>
+          <img
+            className={styles.cityButtonImage}
+            src={require('../../../../assets/images/map.png')}
+            alt="箭头"
+          />
+          <span className={styles.cityButtonText}>{selectCity.name}</span>
+          <img
+            className={styles.cityButtonImage}
+            src={require('../../../../assets/images/arrow-down.png')}
+            alt="箭头"
+          />
+        </div>
       </div>
     );
+  }
+
+  renderScanCode = () => {
+    return (<div className={styles.scanButton} onClick={this.onScanPress}>
+      <img
+        className={styles.scanButtonImage}
+        src={require('../../../../assets/images/scan.png')}
+        alt="扫一扫"
+      />
+    </div>)
   }
 
   renderCarouse = () => {
@@ -235,9 +314,10 @@ class HomePage extends Component {
   render() {
     return (
       <div className={styles.container}>
-        <Flex className={styles.cityContainer}>
+        <div className={styles.cityContainer}>
           {this.renderCityButton()}
-        </Flex>
+          {this.renderScanCode()}
+        </div>
         <div className={styles.adContainer}>
           {/* 轮播广告 */}
           {this.renderCarouse()}

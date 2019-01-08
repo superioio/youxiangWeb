@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { initWX } from '@/utils/global_api';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+
+
+initWX();
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
