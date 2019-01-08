@@ -31,7 +31,7 @@ class HomePage extends Component {
       }, () => {
         globalVal.routeSelectCity = null;
         globalVal.selectCity = this.state.selectCity;
-        global.setSelectCity(globalVal.selectCity);
+        globalVal.setSelectCity(globalVal.selectCity);
       });
     }
 

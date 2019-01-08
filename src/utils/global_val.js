@@ -1,7 +1,7 @@
 
 const globalVal = {
   selectCity: {
-    code: '110000',
+    code: '110100',
     name: '北京',
   },
   selectedTab: 'homeTab',
@@ -19,7 +19,7 @@ const globalVal = {
     const selectCity = localStorage.getItem('selectCity');
     if (!selectCity) {
       return {
-        code: '110000',
+        code: '110100',
         name: '北京',
       };
     }
