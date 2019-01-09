@@ -68,7 +68,7 @@ class OrderDetail extends Component {
         <span className={styles.titleText}>订单明细</span>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>单价</Flex.Item>
-          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.productPrice + "分/" + order.productResp.unitName}</Flex.Item>
+          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.productPrice + "积分/" + order.productResp.unitName}</Flex.Item>
         </Flex>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>购买数量</Flex.Item>
@@ -76,25 +76,25 @@ class OrderDetail extends Component {
         </Flex>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>金额</Flex.Item>
-          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.totalAmount + "分"}</Flex.Item>
+          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.totalAmount + "积分"}</Flex.Item>
         </Flex>
       </div>
       <div className={`${styles.content} ${styles.noBorderBottom}`}>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>代金券支付</Flex.Item>
-          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payVoucher + "分"}</Flex.Item>
+          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payVoucher + "积分"}</Flex.Item>
         </Flex>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>积分支付</Flex.Item>
-          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payPoint + "分"}</Flex.Item>
+          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payPoint + "积分"}</Flex.Item>
         </Flex>
           <Flex className={styles.contentRow}>
               <Flex.Item className={styles.nameText}>储值卡支付</Flex.Item>
-              <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payRechargeCard + "分"}</Flex.Item>
+              <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payRechargeCard + "积分"}</Flex.Item>
           </Flex>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>尚需支付</Flex.Item>
-          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payment + "分"}</Flex.Item>
+          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payment + "积分"}</Flex.Item>
         </Flex>
       </div>
     </div>);
@@ -127,6 +127,19 @@ class OrderDetail extends Component {
     alert('点击了微信支付按钮');
   }
 
+  onBackListPress = () => {
+    this.props.history.push('/');
+  }
+
+  renderBackToList() {
+    return (
+        <div className={styles.buttonsColumn}>
+          <Flex className={`${styles.payButton} ${styles.wechatPayButton}`} onClick={this.onBackListPress}>
+            <span className={styles.centerText}>返回首页</span>
+          </Flex>
+        </div>
+    );
+  }
   renderCancelButton(isUnpaid) {
     return isUnpaid ? (<div className={styles.buttonsRow}>
       <div className={`${styles.button} ${styles.cancelBtn}`} onClick={this.onCancelPress}>
@@ -167,7 +180,7 @@ class OrderDetail extends Component {
           onLeftClick={() => this.props.history.goBack()}
         >订单详情</NavBar>
         {this.renderContent(this.props.location.state.order, this.props.location.state.isFromPay)}
-        {this.props.location.state.isFromPay ? null : this.renderCancelButton(this.props.location.state.isUnpaid)}
+        {this.props.location.state.isFromPay ? this.renderBackToList() : this.renderCancelButton(this.props.location.state.isUnpaid)}
         {/*{this.props.location.state.isFromPay ? this.renderPayButton() : this.renderCancelButton(this.props.location.state.isUnpaid)}*/}
       </div>
     );

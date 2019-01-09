@@ -425,7 +425,7 @@ class OrderPlace extends Component {
         (<div className={styles.cardDisabled}>
       <div className={styles.label}>
         <span
-          className={styles.greyText}>{this.state.saveMoneyByCard > 0 ? "可支付" + this.state.saveMoneyByCard + "分" : "请选择"}</span>
+          className={styles.greyText}>{this.state.saveMoneyByCard > 0 ? "可支付" + this.state.saveMoneyByCard + "积分" : "请选择"}</span>
         <img
           className={styles.arrowImage}
           alt='储值卡'
@@ -437,7 +437,7 @@ class OrderPlace extends Component {
       (<div onClick={() => this.onChooseCardOrVoucherPress(0)}>
         <div className={styles.label}>
       <span
-          className={styles.greyText}>{this.state.saveMoneyByCard > 0 ? "可支付" + this.state.saveMoneyByCard + "分" : "请选择"}</span>
+          className={styles.greyText}>{this.state.saveMoneyByCard > 0 ? "可支付" + this.state.saveMoneyByCard + "积分" : "请选择"}</span>
           <img
               className={styles.arrowImage}
               alt='储值卡'
@@ -451,7 +451,7 @@ class OrderPlace extends Component {
     return (<div onClick={() => this.onChooseCardOrVoucherPress(1)}>
       <div className={styles.label}>
         <span
-          className={styles.greyText}>{this.state.saveMoneyByVoucher > 0 ? "已节省" + this.state.saveMoneyByVoucher + "分" : "请选择"}</span>
+          className={styles.greyText}>{this.state.saveMoneyByVoucher > 0 ? "已节省" + this.state.saveMoneyByVoucher + "积分" : "请选择"}</span>
         <img
           className={styles.arrowImage}
           alt='代金券'
@@ -465,7 +465,7 @@ class OrderPlace extends Component {
        (<div className={`${styles.card} ${styles.cardDisabled}`}>
           <div className={styles.label}>
       <span
-          className={styles.greyText}>{this.state.saveMoneyByPoint > 0 ? "可支付" + this.state.saveMoneyByPoint + "分" : "请选择"}</span>
+          className={styles.greyText}>{this.state.saveMoneyByPoint > 0 ? "可支付" + this.state.saveMoneyByPoint + "积分" : "请选择"}</span>
               <img
                   className={styles.arrowImage}
                   alt='积分卡'
@@ -477,7 +477,7 @@ class OrderPlace extends Component {
      (<div className={styles.card} onClick={() => this.onChooseCardOrVoucherPress(2)}>
       <div className={styles.label}>
       <span
-          className={styles.greyText}>{this.state.saveMoneyByPoint > 0 ? "可支付" + this.state.saveMoneyByPoint + "分" : "请选择"}</span>
+          className={styles.greyText}>{this.state.saveMoneyByPoint > 0 ? "可支付" + this.state.saveMoneyByPoint + "积分" : "请选择"}</span>
         <img
             className={styles.arrowImage}
             alt='积分卡'
@@ -526,7 +526,7 @@ class OrderPlace extends Component {
         </div>
         <div className={styles.place} >
           <div className={styles.placeLeft}>
-            <span className={styles.placeLeftText}>{"需支付: " + this.state.payCash + "分"}</span>
+            <span className={styles.placeLeftText}>{"需支付: " + this.state.payCash + "积分"}</span>
           </div>
           <div className={styles.placeRight}>
             <div

@@ -139,6 +139,9 @@ class HomePage extends Component {
           alert('resultStr', resultStr);
 
           const res = await getRechargeByQRCode(resultStr);
+
+          alert('res', JSON.stringify(res));
+
           if (res.error) {
             Toast.fail(res.error);
             return;
