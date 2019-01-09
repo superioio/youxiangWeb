@@ -13,6 +13,19 @@ export async function getJsTicket() {
     });
 }
 
+function randomStrCode(len) {
+    var d,
+        e,
+        b = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        c = "";
+    for (d = 0; len > d; d += 1){
+        e = Math.random() * b.length;
+        e = Math.floor(e);
+        c += b.charAt(e);
+    }
+    return c;
+}
+
 export async function initWX() {
   if (window.wx) {
     const signature = getJsTicket();
