@@ -170,8 +170,8 @@ class HomePage extends Component {
 
   // #region 私有方法
 
-  setGlobalUserInfo = async () => {
-    const userInfo = await globalVal.getUserInfo();
+  setGlobalUserInfo = () => {
+    const userInfo = globalVal.getUserInfo();
     if (userInfo.error) {
       Toast.fail(userInfo.error);
       return;
@@ -189,8 +189,8 @@ class HomePage extends Component {
       Toast.info('您的登录信息已过期，请重新登录');
     }
   }
-  setGlobalSelectCity = async () => {
-    const selectCity = await globalVal.getSelectCity();
+  setGlobalSelectCity = () => {
+    const selectCity = globalVal.getSelectCity();
     globalVal.selectCity = selectCity;
   }
 
