@@ -54,6 +54,7 @@ class MinePage extends Component {
         customerMobile: '',
         sessionId: '',
       };
+      globalVal.setUserInfo(globalVal.userInfo);
       Toast.info('退出成功', 1);
     }
 
