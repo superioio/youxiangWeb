@@ -3,6 +3,7 @@ import { Flex, Carousel, Toast } from 'antd-mobile';
 import styles from './styles.module.css';
 import { getCategoryList, getProductList, getRechargeByQRCode } from './api';
 import globalVal from '@/utils/global_val';
+import {initWX} from '@/utils/global_api';
 import { withRouter } from "react-router-dom";
 
 let barcode = null;
@@ -14,7 +15,6 @@ class HomePage extends Component {
     globalVal.homePageRef = this;
     this.setGlobalSelectCity();
     this.setGlobalUserInfo();
-
     this.state = {
       selectCity: globalVal.selectCity,
       categoryList: [],// 商品类别列表
@@ -181,6 +181,7 @@ class HomePage extends Component {
     } else {
       globalVal.userInfo = {
         customerId: -1,
+        sessionId: ''
       };
       Toast.info('您的登录信息已过期，请重新登录');
     }

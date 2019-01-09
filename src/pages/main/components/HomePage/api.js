@@ -1,4 +1,5 @@
 import axios from '@/utils/http'
+import Qs from 'qs';
 
 //获取商品大类
 export async function getCategoryList() {
@@ -42,11 +43,10 @@ export async function getProductList(productCategoryId, name, cityCode) {
 
 //根据二维码充值
 export async function getRechargeByQRCode(code) {
-  return await axios.get('/api/getQRCode', {
-    params: {
-      code,
-    }
-  })
+  return await axios.post('/api/point/chargebyqrcode',
+      Qs.stringify({
+        qrCode: code,
+    }))
     .then(function (response) {
       return response;
     })
