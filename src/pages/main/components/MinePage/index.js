@@ -16,7 +16,11 @@ class MinePage extends Component {
   }
   // #endregion
 
-  // #region 私有方法
+  // #region 生命周期
+
+  componentDidMount() {
+    this.didFocus();
+  }
 
   didFocus = () => {
     if (globalVal.userInfo.customerId === -1) {

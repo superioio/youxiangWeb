@@ -17,24 +17,22 @@ class MainPage extends Component {
 
   // #region 生命周期
 
-  componentDidMount() {
-    const { selectedTab } = this.state;
-    this.didFocus(selectedTab);
-  }
-  // #endregion
-
-  // #region 方法
-
   didFocus = (selectedTab) => {
     switch (selectedTab) {
       case 'homeTab':
-        globalVal.homePageRef.didFocus();
+        if (globalVal.homePageRef) {
+          globalVal.homePageRef.didFocus();
+        }
         break;
       case 'orderTab':
-        globalVal.orderPageRef.didFocus();
+        if (globalVal.orderPageRef) {
+          globalVal.orderPageRef.didFocus();
+        }
         break;
       case 'mineTab':
-        globalVal.minePageRef.didFocus();
+        if (globalVal.minePageRef) {
+          globalVal.minePageRef.didFocus();
+        }
         break;
       default:
         break;
@@ -66,6 +64,7 @@ class MainPage extends Component {
           unselectedTintColor="#949494"
           tintColor="#33A3F4"
           barTintColor="white"
+          prerenderingSiblingsNumber={0}
         >
           <TabBar.Item
             title="首页"
@@ -85,10 +84,7 @@ class MainPage extends Component {
             selected={this.state.selectedTab === 'orderTab'}
             onPress={() => { this.onChangeSelectedTab('orderTab') }}
           >
-            <OrderPage
-
-              selected={this.state.selectedTab === 'orderTab'}
-            />
+            <OrderPage />
           </TabBar.Item>
           <TabBar.Item
             title="我的"
@@ -99,7 +95,6 @@ class MainPage extends Component {
             onPress={() => { this.onChangeSelectedTab('mineTab') }}
           >
             <MinePage
-              selected={this.state.selectedTab === 'mineTab'}
               changeSelectedTab={(selectedTab) => { this.onChangeSelectedTab(selectedTab) }}
             />
           </TabBar.Item>

@@ -26,6 +26,10 @@ class HomePage extends Component {
 
   // #region 生命周期
 
+  componentDidMount() {
+    this.didFocus();
+  }
+
   didFocus = async () => {
     if (globalVal.routeSelectCity) {
       this.setState({

@@ -83,21 +83,21 @@ class CardAndDiscount extends Component {
 
         break;
       case "积分卡":
-            title = "我的积分卡";
-            list = await getPointList(2, globalVal.userInfo.customerId);
-            moreText = '查看失效的积分卡';
+        title = "我的积分卡";
+        list = await getPointList(2, globalVal.userInfo.customerId);
+        moreText = '查看失效的积分卡';
         break;
       case "选择积分卡":
-            title = this.props.location.state.tag;
-            moreText = '查看失效的积分卡';
-            list = await getPointListByProduct(globalVal.userInfo.customerId, globalVal.routeOrderInfo.productId, globalVal.selectCity.code);
-            this.setState({
-                selectedList: this.props.location.state.pointInfoList,
-            }, () => {
-                this.checkChooseStatus(2);
-            });
+        title = this.props.location.state.tag;
+        moreText = '查看失效的积分卡';
+        list = await getPointListByProduct(globalVal.userInfo.customerId, globalVal.routeOrderInfo.productId, globalVal.selectCity.code);
+        this.setState({
+          selectedList: this.props.location.state.pointInfoList,
+        }, () => {
+          this.checkChooseStatus(2);
+        });
 
-         break;
+        break;
       default:
         break;
     }
@@ -129,10 +129,10 @@ class CardAndDiscount extends Component {
       list = await getDiscountList(1, globalVal.userInfo.customerId);
       title = '失效的代金券';
       moreText = '查看有效的代金券';
-    } else if(RegExp(/储值卡/).test(this.props.location.state.tag)){
-        list = await getCardList(1, globalVal.userInfo.customerId);
-        title = '失效的储值卡';
-        moreText = '查看有效的储值卡';
+    } else if (RegExp(/储值卡/).test(this.props.location.state.tag)) {
+      list = await getCardList(1, globalVal.userInfo.customerId);
+      title = '失效的储值卡';
+      moreText = '查看有效的储值卡';
     }
     this.setState({
       title: title,
@@ -155,14 +155,14 @@ class CardAndDiscount extends Component {
       this.state.selectedList.forEach(item => {
         balance += item.balance;
       });
-    } else if (isCard === 1){
+    } else if (isCard === 1) {
       this.state.selectedList.forEach(item => {
         balance += item.count * price;
       });
-    } else if (isCard === 2){
-        this.state.selectedList.forEach(item => {
-            balance += item.balance * item.projectResp.pointConversionRate;
-        });
+    } else if (isCard === 2) {
+      this.state.selectedList.forEach(item => {
+        balance += item.balance * item.projectResp.pointConversionRate;
+      });
     }
     if (balance >= needPayCash) {
       this.setState({
@@ -183,13 +183,13 @@ class CardAndDiscount extends Component {
   onSubmit = () => {
     let cardInfoList = this.props.location.state.cardInfoList;
     let voucherInfoList = this.props.location.state.voucherInfoList;
-    let  pointInfoList = this.props.location.state.pointInfoList;
+    let pointInfoList = this.props.location.state.pointInfoList;
     if (RegExp(/储值卡/).test(this.props.location.state.tag)) {
       cardInfoList = this.state.selectedList;
-    } else if (RegExp(/代金券/).test(this.props.location.state.tag)){
+    } else if (RegExp(/代金券/).test(this.props.location.state.tag)) {
       voucherInfoList = this.state.selectedList;
-    } else if (RegExp(/积分卡/).test(this.props.location.state.tag)){
-        pointInfoList = this.state.selectedList;
+    } else if (RegExp(/积分卡/).test(this.props.location.state.tag)) {
+      pointInfoList = this.state.selectedList;
     }
     globalVal.routeDiscount = {
       tag: this.props.location.state.tag,//标识 此界面是 代金券 还是 积分卡 还是 储值卡
@@ -221,13 +221,13 @@ class CardAndDiscount extends Component {
   async onExchangePress(exchangeCode, resolve) {
     let result;
     Toast.loading("请稍后...", 3);
-      if (RegExp(/储值卡/).test(this.props.location.state.tag)) {
-          result = await exchangeCard(exchangeCode, globalVal.userInfo.customerId)
-      } else if (RegExp(/代金券/).test(this.props.location.state.tag)){
-          result = await exchangeVoucher(exchangeCode, globalVal.userInfo.customerId);
-      } else if (RegExp(/积分卡/).test(this.props.location.state.tag)){
-          result = await exchangePoint(exchangeCode, globalVal.userInfo.customerId);
-      }
+    if (RegExp(/储值卡/).test(this.props.location.state.tag)) {
+      result = await exchangeCard(exchangeCode, globalVal.userInfo.customerId)
+    } else if (RegExp(/代金券/).test(this.props.location.state.tag)) {
+      result = await exchangeVoucher(exchangeCode, globalVal.userInfo.customerId);
+    } else if (RegExp(/积分卡/).test(this.props.location.state.tag)) {
+      result = await exchangePoint(exchangeCode, globalVal.userInfo.customerId);
+    }
     // result = this.props.location.state.tag === "积分卡"
     //   ? await exchangeCard(this.state.exchangeCode)
     //   : await exchangeVoucher(this.state.exchangeCode);
@@ -317,7 +317,7 @@ class CardAndDiscount extends Component {
 
   renderCardList = () => {
     const { list } = this.state;
-    if (!list) return;
+    if (!list || !list.length) return;
 
     return (<div className={styles.tabContent}>
       {list.map((item, index) =>
@@ -364,7 +364,7 @@ class CardAndDiscount extends Component {
   renderUnPressDiscountItem = (item, index) => {
     const { overPayCash } = this.state;
     return (<div key={index}>
-      <Flex  className={overPayCash ? styles.tabOverPayCash : styles.tabContentItem}>
+      <Flex className={overPayCash ? styles.tabOverPayCash : styles.tabContentItem}>
         <div className={styles.leftTabItem}>
           <span className={styles.leftText}>{item.count + "个单位"}</span>
         </div>
@@ -378,7 +378,7 @@ class CardAndDiscount extends Component {
 
   renderDiscountList() {
     const { list } = this.state;
-    if (!list) return;
+    if (!list || !list.length) return;
 
     return (<div className={styles.tabContent}>
       {list.map((item, index) => globalVal.routeIsFromPay
@@ -387,78 +387,78 @@ class CardAndDiscount extends Component {
     </div>);
   }
 
-    renderPointItem = (item, index) => {
-        const { overPayCash } = this.state;
-        const isSelect = this.state.selectedList.some(n => n.id === item.id);
+  renderPointItem = (item, index) => {
+    const { overPayCash } = this.state;
+    const isSelect = this.state.selectedList.some(n => n.id === item.id);
 
-        if (overPayCash && !isSelect) {
-            return (<div key={index}>
-                <div className={styles.tabOverPayCash}>
-                    <div className={styles.leftTabItem}>
-                        <span className={styles.leftText}>{item.faceValue + "分"}</span>
-                    </div>
-                    <div className={styles.rightTabItem}>
-                      <div>{item.name}</div>
-                      <div>{"剩余 : " + item.balance + "分"}</div>
-                      <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
-                    </div>
-                    <div className={styles.checkContain}>
-                    </div>
-                </div>
-            </div>)
-        }
-
-        return (<div key={index}>
-            <Flex className={styles.tabContentItem} onClick={() => this.onChoosePress(item, 2)}>
-                <div className={styles.leftTabItem}>
-                    <span className={styles.leftText}>{item.faceValue + "分"}</span>
-                </div>
-                <div className={styles.rightTabItem}>
-                  <div>{item.name}</div>
-                  <div>{"剩余 : " + item.balance + "分"}</div>
-                  <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
-                </div>
-                <div className={styles.checkContain}>
-                    {this.renderCheck(isSelect)}
-                </div>
-            </Flex>
-        </div>)
-    }
-    renderUnPressPointItem = (item, index) => {
-      const { overPayCash } = this.state;
-        return (<div key={index}>
-            <Flex className={overPayCash ? styles.tabOverPayCash : styles.tabContentItem}>
-                <div className={styles.leftTabItem}>
-                    <span className={styles.leftText}>{item.faceValue + "分"}</span>
-                </div>
-                <div className={styles.rightTabItem}>
-                  <div>{item.name}</div>
-                  <div>{"剩余 : " + item.balance + "分"}</div>
-                  <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
-                </div>
-            </Flex>
-        </div>);
+    if (overPayCash && !isSelect) {
+      return (<div key={index}>
+        <div className={styles.tabOverPayCash}>
+          <div className={styles.leftTabItem}>
+            <span className={styles.leftText}>{item.faceValue + "分"}</span>
+          </div>
+          <div className={styles.rightTabItem}>
+            <div>{item.name}</div>
+            <div>{"剩余 : " + item.balance + "分"}</div>
+            <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
+          </div>
+          <div className={styles.checkContain}>
+          </div>
+        </div>
+      </div>)
     }
 
-    renderPointList() {
-        const { list } = this.state;
-        if (!list) return;
+    return (<div key={index}>
+      <Flex className={styles.tabContentItem} onClick={() => this.onChoosePress(item, 2)}>
+        <div className={styles.leftTabItem}>
+          <span className={styles.leftText}>{item.faceValue + "分"}</span>
+        </div>
+        <div className={styles.rightTabItem}>
+          <div>{item.name}</div>
+          <div>{"剩余 : " + item.balance + "分"}</div>
+          <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
+        </div>
+        <div className={styles.checkContain}>
+          {this.renderCheck(isSelect)}
+        </div>
+      </Flex>
+    </div>)
+  }
+  renderUnPressPointItem = (item, index) => {
+    const { overPayCash } = this.state;
+    return (<div key={index}>
+      <Flex className={overPayCash ? styles.tabOverPayCash : styles.tabContentItem}>
+        <div className={styles.leftTabItem}>
+          <span className={styles.leftText}>{item.faceValue + "分"}</span>
+        </div>
+        <div className={styles.rightTabItem}>
+          <div>{item.name}</div>
+          <div>{"剩余 : " + item.balance + "分"}</div>
+          <div className={styles.expireDateText}>{"有效期至" + dateFormat(item.expiryTime)}</div>
+        </div>
+      </Flex>
+    </div>);
+  }
 
-        return (<div className={styles.tabContent}>
-            {list.map((item, index) => globalVal.routeIsFromPay
-                ? this.renderPointItem(item, index) : this.renderUnPressPointItem(item, index))}
-            <div className={styles.margin}></div>
-        </div>);
+  renderPointList() {
+    const { list } = this.state;
+    if (!list || !list.length) return;
+
+    return (<div className={styles.tabContent}>
+      {list.map((item, index) => globalVal.routeIsFromPay
+        ? this.renderPointItem(item, index) : this.renderUnPressPointItem(item, index))}
+      <div className={styles.margin}></div>
+    </div>);
+  }
+
+  renderListByTag(tag) {
+    if (RegExp(/储值卡/).test(this.props.location.state.tag)) {
+      return this.renderCardList()
+    } else if (RegExp(/代金券/).test(this.props.location.state.tag)) {
+      return this.renderDiscountList()
+    } else if (RegExp(/积分卡/).test(this.props.location.state.tag)) {
+      return this.renderPointList()
     }
-
-  renderListByTag(tag){
-      if(RegExp(/储值卡/).test(this.props.location.state.tag)){
-         return this.renderCardList()
-      } else if(RegExp(/代金券/).test(this.props.location.state.tag)){
-          return this.renderDiscountList()
-      }else if(RegExp(/积分卡/).test(this.props.location.state.tag)){
-          return this.renderPointList()
-      }
   }
 
   render() {
@@ -488,8 +488,8 @@ class CardAndDiscount extends Component {
                   text: '确定',
                   onPress: exchangeCode => new Promise((resolve, reject) => {
                     //this.setState({ exchangeCode });
-                    if(this.onExchangePress(exchangeCode, resolve)){
-                     // resolve();
+                    if (this.onExchangePress(exchangeCode, resolve)) {
+                      // resolve();
                     }
                   }),
                 },

@@ -30,7 +30,11 @@ class OrderPage extends Component {
     };
   }
 
-  // #region 私有方法
+  // #region 生命周期
+
+  componentDidMount() {
+    this.didFocus();
+  }
 
   didFocus = async () => {
     if (globalVal.userInfo.customerId === -1) {
@@ -57,7 +61,7 @@ class OrderPage extends Component {
   //点击tab，获取对应的order list
   onTabPress = ({ title }) => {
     this.setState({
-      selectTab : title
+      selectTab: title
     });
     const orders = this.getCurrentOrders(title);
     if (orders.length > 0) return;
