@@ -60,5 +60,12 @@ const globalVal = {
   homePageRef: null,
   orderPageRef: null,
   minePageRef: null,
+
+  wxInitParams :{
+    appId: '',
+    timestamp: '',
+    nonceStr: '',
+    signature: '',
+  }
 };
 export default globalVal;

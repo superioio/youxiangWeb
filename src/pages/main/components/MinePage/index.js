@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom';
 import { Toast } from 'antd-mobile';
 import globalVal from '@/utils/global_val';
 import styles from './styles.module.css';
+import {logout} from './api'
+import {getCategoryList} from "../HomePage/api";
 
 class MinePage extends Component {
   // #region 构造器
@@ -42,7 +44,7 @@ class MinePage extends Component {
     this.props.history.push('/LoginPage');
   }
 
-  onClick = (index) => {
+  onClick = async (index) => {
     const { isLogined } = this.state;
     if (index === 6) {
       this.setState({
@@ -55,6 +57,11 @@ class MinePage extends Component {
         sessionId: '',
       };
       globalVal.setUserInfo(globalVal.userInfo);
+      const res = await logout();
+      if (res.error) {
+        Toast.fail(res.error);
+        return;
+      }
       Toast.info('退出成功', 1);
     }
 
