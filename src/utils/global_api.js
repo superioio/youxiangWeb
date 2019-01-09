@@ -2,6 +2,7 @@
 
 import axios from '@/utils/http';
 
+//clientKey=7a4dd7faa7f3ce1613581703c5e264e4
 export async function getJsTicket() {
   return await axios.get('/api/getJsTicket')
     .then(function (response) {
