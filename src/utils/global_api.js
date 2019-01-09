@@ -2,6 +2,7 @@
 
 import axios from '@/utils/http';
 
+//clientKey=7a4dd7faa7f3ce1613581703c5e264e4
 export async function getJsTicket() {
   return await axios.get('/api/getJsTicket')
     .then(function (response) {
@@ -11,6 +12,19 @@ export async function getJsTicket() {
       console.log("login error" + error);
       return null;
     });
+}
+
+function randomStrCode(len) {
+    var d,
+        e,
+        b = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        c = "";
+    for (d = 0; len > d; d += 1){
+        e = Math.random() * b.length;
+        e = Math.floor(e);
+        c += b.charAt(e);
+    }
+    return c;
 }
 
 export async function initWX() {
