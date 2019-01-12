@@ -193,11 +193,10 @@ class OrderPlace extends Component {
     orderInfo.payPoint = this.state.saveMoneyByPoint;
     orderInfo.totalAmount = orderInfo.productPrice * orderInfo.count;
     orderInfo.orderTime = new Date();
-    const isFromPay = order.payCash === 0 ? false : true;//如果仍需要支付金额不是0 ，则显示微信支付
     this.setState({
       hasPlace: true
     });
-    this.props.history.push({ pathname: '/OrderDetail', state: { order: orderInfo, isFromPay: isFromPay, isUnpaid: true } });
+    this.props.history.push({ pathname: '/OrderDetail', state: { order: orderInfo, isFromPay: true, isUnpaid: true } });
 
 
     globalVal.routeOrderInfo = null;
@@ -547,8 +546,11 @@ class OrderPlace extends Component {
             this.renderVisitDateButton() : null}
           {/*{this.renderVisitTimeButton()}*/}
           {this.renderNumberButton()}
-          {this.renderTitle('备注')}
-          {this.renderReMark()}
+          {this.state.orderInfo.productResp.productType === 0 ?
+              this.renderTitle('备注') : null}
+          {this.state.orderInfo.productResp.productType === 0 ?
+              this.renderReMark() : null}
+
           {this.renderTitle('代金券')}
           {this.renderVoucher()}
           {this.renderTitle('储值卡')}

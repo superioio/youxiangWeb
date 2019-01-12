@@ -23,8 +23,8 @@
   color: rgb(155, 147, 147);
 }
 .eCodeText{
-  font-size: 1.2rem;
-  color: rgb(155, 147, 147);
+  font-size: 1rem;
+  color: #f18036;
 }
 .contentContain {
   /*height: 85%;*/
@@ -41,7 +41,7 @@
 }
 .eCodeRow{
   display: flex;
-  padding: 10px;
+  padding-top: 10px;
 }
 .contentText {
   font-size: 0.9rem;

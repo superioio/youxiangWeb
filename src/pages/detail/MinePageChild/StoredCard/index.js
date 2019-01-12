@@ -87,7 +87,7 @@ class StoredCard extends Component {
   itemCanPress = (item) => {
     const { isScanExpiry, overPayCash } = this.state;
     const { effectiveTime } = item;
-    const isSelect = this.state.selectedPointCardList.some(n => n.id === item.id);
+    const isSelect = this.state.selectedStoredCardList.some(n => n.id === item.id);
     if (isScanExpiry) {
       return false;
     } else if (overPayCash && !isSelect) {
@@ -163,7 +163,7 @@ class StoredCard extends Component {
 
     Toast.hide();
     if (result.error) {
-      Toast.fail(result.error);
+      Toast.fail(result.error,1);
       return;
     }
     Toast.loading("兑换成功", 2);
@@ -206,7 +206,8 @@ class StoredCard extends Component {
         <div className={styles.rightTabItem}>
           <div>{item.name}</div>
           <div>{"剩余 : " + item.balance + "元"}</div>
-          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "-" + dateFormat(item.expiryTime)}</div>
+          <div className={styles.expireDateText}>{"有效期："}</div>
+          <div className={styles.expireDateText}>{dateFormat(item.effectiveTime) + "-" + dateFormat(item.expiryTime)}</div>
         </div>
         <div className={styles.checkContain}>
           {this.renderCheck(isSelect)}

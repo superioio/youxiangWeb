@@ -84,7 +84,7 @@ class Voucher extends Component {
   itemCanPress = (item) => {
     const { isScanExpiry, overPayCash } = this.state;
     const { effectiveTime } = item;
-    const isSelect = this.state.selectedPointCardList.some(n => n.id === item.id);
+    const isSelect = this.state.selectedVoucherList.some(n => n.id === item.id);
     if (isScanExpiry) {
       return false;
     } else if (overPayCash && !isSelect) {
@@ -165,7 +165,7 @@ class Voucher extends Component {
 
     Toast.hide();
     if (result.error) {
-      Toast.fail(result.error);
+      Toast.fail(result.error,1);
       return;
     }
     Toast.loading("兑换成功", 2);
@@ -203,11 +203,13 @@ class Voucher extends Component {
       <Flex className={isCanPress ? styles.tabContentItem : styles.tabOverPayCash}
         onClick={() => this.onChoosePress(item)}>
         <div className={styles.leftTabItem}>
-          <span className={styles.leftText}>{item.count + "个单位"}</span>
+          <span className={styles.leftText}>数量</span>
+          <span className={styles.leftText}>{item.count}</span>
         </div>
         <div className={styles.rightTabItem}>
           <div>{item.name}</div>
-          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "-" + dateFormat(item.expiryTime)}</div>
+          <div className={styles.expireDateText}>{"有效期："}</div>
+          <div className={styles.expireDateText}>{dateFormat(item.effectiveTime) + "-" + dateFormat(item.expiryTime)}</div>
         </div>
         <div className={styles.checkContain}>
           {this.renderCheck(isSelect)}

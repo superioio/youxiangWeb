@@ -48,7 +48,7 @@ class OrderDetail extends Component {
           <span className={styles.nameText}>商品描述</span>
           <span className={styles.contentText}> {order.productResp.description}</span>
         </div>
-        {/*{(!isFromPay && order.productResp.productType === 1) ? this.renderECodes(eCodes) : <div></div>}*/}
+        {(!isFromPay && order.productResp.productType === 1) ? this.renderECodes(JSON.parse(order.extInfo)) : <div></div>}
       </div>
       <span> 备注: </span>
       <div className={styles.remark}>
@@ -162,9 +162,15 @@ class OrderDetail extends Component {
   }
 
   renderECodes(eCodes) {
-    return (<div className={styles.eCodeRow}>
-      {eCodes.map((item, index) =>
-        <div className={styles.eCodeText}>{item}</div>
+    return (<div>
+          {eCodes.map((item, index) => <div key={index}>
+            <Flex className={styles.eCodeRow}>
+
+            <Flex.Item className={styles.eCodeText}> {"兑换码：" + item.code}</Flex.Item>
+
+            <Flex.Item className={styles.eCodeText}> {"密钥：" +item.keyt}</Flex.Item>
+              </Flex>
+              </div>
       )}
     </div>
     )
@@ -177,7 +183,10 @@ class OrderDetail extends Component {
         <NavBar
           mode="light"
           icon={<Icon type="left" />}
-          onLeftClick={() => this.props.history.go(-2)}
+          onLeftClick={() =>
+              this.props.location.state.isFromPay ?
+              this.props.history.go(-2) : this.props.history.goBack()
+          }
         >订单详情</NavBar>
         {this.renderContent(this.props.location.state.order, this.props.location.state.isFromPay)}
         {this.props.location.state.isFromPay ? this.renderBackToList() : this.renderCancelButton(this.props.location.state.isUnpaid)}

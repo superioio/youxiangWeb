@@ -156,7 +156,7 @@ class OrderPage extends Component {
   }
 
   onOrderPress(order) {
-    const isUnpaid = order.status === 1;
+    const isUnpaid = (order.status === 1 || order.status === 2 || order.status === 3);
     this.props.history.push({
       pathname: '/OrderDetail', state: {
         order: order, isFromPay: false, isUnpaid: isUnpaid
