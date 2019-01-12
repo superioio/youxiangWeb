@@ -46,8 +46,14 @@ class ProductList extends Component {
 
   // #region render方法
 
-  renderList(list) {
-    console.log('list', list);
+  renderList() {
+    const { list } = this.state;
+    if (!list || list.length === 0) {
+      return (<div className={styles.producList}>
+        <div className={styles.noProduct}>暂无商品</div>
+      </div>);
+    }
+
     return (<div className={styles.producList}>
       {list.map((item, index) => {
         const price = item.productPriceList ? item.productPriceList[0].price : 0;
@@ -87,7 +93,7 @@ class ProductList extends Component {
     return (
       <div className={styles.container}>
         {this.renderNavBar()}
-        {this.renderList(this.state.list)}
+        {this.renderList()}
       </div>
     );
   }

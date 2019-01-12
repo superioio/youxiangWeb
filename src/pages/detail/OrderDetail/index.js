@@ -177,7 +177,7 @@ class OrderDetail extends Component {
         <NavBar
           mode="light"
           icon={<Icon type="left" />}
-          onLeftClick={() => this.props.history.goBack()}
+          onLeftClick={() => this.props.history.go(-2)}
         >订单详情</NavBar>
         {this.renderContent(this.props.location.state.order, this.props.location.state.isFromPay)}
         {this.props.location.state.isFromPay ? this.renderBackToList() : this.renderCancelButton(this.props.location.state.isUnpaid)}

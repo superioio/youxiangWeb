@@ -54,11 +54,6 @@ class OrderPage extends Component {
   // #endregion
 
 
-
-  componentWillUnmount() {
-    //this.didFocusListener.remove();
-  }
-
   // #region 响应方法
 
   //点击tab，获取对应的order list
@@ -227,7 +222,7 @@ class OrderPage extends Component {
   renderTabs = () => {
     return (<Tabs tabs={tabs}
       initialPage={0}
-      onTabClick={(tab) => { this.onTabPress(tab); }}
+      onChange={(tab) => { this.onTabPress(tab); }}
     >
       {this.renderTabsContent('全部')}
       {this.renderTabsContent('待付款')}

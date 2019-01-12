@@ -48,3 +48,11 @@
   margin-top: 20px;
   color: red
 }
+
+.noProduct{
+  font-size: 16px;
+  padding-top: 10px;
+  padding-left: 10px;
+  height: 97%;
+  background-color:#eeeeee;
+}
