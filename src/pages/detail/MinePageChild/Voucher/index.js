@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import { dateFormat } from '@/utils';
 import {
   exchangeVoucher,
   getDiscountList,
   getVoucherListByProduct,
 } from "./api";
-// import moment from 'moment';
 import { Flex, Icon, NavBar, Toast, Modal } from "antd-mobile";
 import { withRouter } from "react-router-dom";
 import styles from './styles.module.css';
@@ -15,15 +15,12 @@ class Voucher extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      voucherList: [], // 代金劵
+      selectedVoucherList: [],// 选中的代金劵
+
       exchangeCode: '1234',
-
-      voucherList: [],
-      selectedVoucherList: [],
-      showMore: true,
       overPayCash: false,
-
-      moreText: '查看失效的代金劵',
-      title: ''
+      isScanExpiry: false, // 查看失效代金劵或是查看有效代金劵
     };
   }
 
@@ -39,7 +36,8 @@ class Voucher extends Component {
 
   // #region 方法
   loadEffectiveData = async () => {
-    const { selectedVoucherList } = globalVal.routeVoucher;
+    const { selectedVoucherList } = globalVal.routeIsFromPay ?
+      globalVal.routeVoucher : { selectedVoucherList: [] };
     const { title } = this.props.location.state;
     let voucherList;
     Toast.loading("请稍后...", 3);
@@ -60,8 +58,7 @@ class Voucher extends Component {
     }
 
     this.setState({
-      title,
-      moreText: '查看失效的代金劵',
+      isScanExpiry: false,
       voucherList,
       selectedVoucherList,
     }, this.checkChooseStatus);
@@ -78,15 +75,32 @@ class Voucher extends Component {
     }
 
     this.setState({
-      moreText: '查看有效的代金券',
+      isScanExpiry: true,
       voucherList,
-      overPayCash: true,
     });
 
   }
 
+  itemCanPress = (item) => {
+    const { isScanExpiry, overPayCash } = this.state;
+    const { effectiveTime } = item;
+    const isSelect = this.state.selectedPointCardList.some(n => n.id === item.id);
+    if (isScanExpiry) {
+      return false;
+    } else if (overPayCash && !isSelect) {
+      return false;
+    } else if (moment(effectiveTime).isAfter(moment())) {
+      return false;
+    }
+    return styles.tabContentItem;
+  }
+
   //计算其他 代金券/储值卡/积分卡 是否仍然可选,储值卡直接计算余额，代金券计算个数*单价
   checkChooseStatus() {
+    if (!globalVal.routeIsFromPay) {
+      return;
+    }
+
     const { needPayCash } = this.props.location.state;
     const { productPrice } = globalVal.routeOrderInfo;
     let balance = 0;
@@ -121,17 +135,24 @@ class Voucher extends Component {
   }
 
   //选中一个代金券
-  onChoosePress = (info) => {
-    const isSelect = this.state.selectedVoucherList.some(n => n.id === info.id);
+  onChoosePress = (item) => {
+    if (!globalVal.routeIsFromPay) {
+      return;
+    }
+    if (!this.itemCanPress(item)) {
+      return;
+    }
+
+    const isSelect = this.state.selectedVoucherList.some(n => n.id === item.id);
     if (isSelect) {
       this.setState({//添加到选中列表中
-        selectedVoucherList: this.state.selectedVoucherList.filter(n => n.id !== info.id),
+        selectedVoucherList: this.state.selectedVoucherList.filter(n => n.id !== item.id),
       }, () => {
         this.checkChooseStatus();
       });
     } else {
       this.setState(prevState => ({//添加到选中列表中
-        selectedVoucherList: [...prevState.selectedVoucherList, info],
+        selectedVoucherList: [...prevState.selectedVoucherList, item],
       }), () => {
         this.checkChooseStatus();
       });
@@ -154,7 +175,8 @@ class Voucher extends Component {
 
   //点击  “查看更多”  按钮，此时应该隐藏 “查看更多”
   onMorePress = async (moreText) => {
-    if (RegExp(/有效/).test(moreText)) {
+    const { isScanExpiry } = this.state;
+    if (isScanExpiry) {
       this.loadEffectiveData();
     } else {
       this.loadUnEffectiveData();
@@ -174,26 +196,12 @@ class Voucher extends Component {
   }
 
   renderDiscountItem = (item, index) => {
-    const { overPayCash } = this.state;
+    const isCanPress = this.itemCanPress(item);
     const isSelect = this.state.selectedVoucherList.some(n => n.id === item.id);
-    if (overPayCash && !isSelect) {
-      return (<div key={index}>
-        <div className={styles.tabOverPayCash}>
-          <div className={styles.leftTabItem}>
-            <span className={styles.leftText}>{item.count + "个单位"}</span>
-          </div>
-          <div className={styles.rightTabItem}>
-            <div className={styles.line}>{item.name}</div>
-            <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
-          </div>
-          <div className={styles.checkContain}>
-          </div>
-        </div>
-      </div>);
-    }
 
     return (<div key={index}>
-      <Flex className={styles.tabContentItem} onClick={() => this.onChoosePress(item)}>
+      <Flex className={isCanPress ? styles.tabContentItem : styles.tabOverPayCash}
+        onClick={() => this.onChoosePress(item)}>
         <div className={styles.leftTabItem}>
           <span className={styles.leftText}>{item.count + "个单位"}</span>
         </div>
@@ -207,39 +215,24 @@ class Voucher extends Component {
       </Flex>
     </div>);
   }
-  renderUnPressDiscountItem = (item, index) => {
-    const { overPayCash } = this.state;
-    return (<div key={index}>
-      <Flex className={overPayCash ? styles.tabOverPayCash : styles.tabContentItem}>
-        <div className={styles.leftTabItem}>
-          <span className={styles.leftText}>{item.count + "个单位"}</span>
-        </div>
-        <div className={styles.rightTabItem}>
-          <div>{item.name}</div>
-          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
-        </div>
-      </Flex>
-    </div>);
-  }
 
   renderDiscountList() {
     const { voucherList } = this.state;
     if (!voucherList || !voucherList.length) return;
 
     return (<div className={styles.tabContent}>
-      {voucherList.map((item, index) => globalVal.routeIsFromPay
-        ? this.renderDiscountItem(item, index) : this.renderUnPressDiscountItem(item, index))}
+      {voucherList.map((item, index) => this.renderDiscountItem(item, index))}
       <div className={styles.margin}></div>
     </div>);
   }
 
   renderFooter = () => {
-    const { moreText, title } = this.state;
+    const { isScanExpiry } = this.state;
     return <div className={styles.footer}>
-      <div className={styles.moreText} onClick={() => this.onMorePress(moreText)}>
-        <span>{moreText}</span>
+      <div className={styles.moreText} onClick={() => this.onMorePress()}>
+        <span>{isScanExpiry ? '查看有效的代金劵' : '查看失效的代金劵'}</span>
       </div>
-      {(RegExp(/选择/).test(title)) ?
+      {globalVal.routeIsFromPay ?
         <div className={styles.exchangeBtn} onClick={this.onSubmit}>
           <div>
             <span className={styles.exchangeText}>{"确定"}</span>
@@ -262,7 +255,7 @@ class Voucher extends Component {
           ], 'default', null, ['兑换码'])}
         >
           <div>
-            <span className={styles.exchangeText}>{"兑换" + this.state.title}</span>
+            <span className={styles.exchangeText}>{"兑换代金劵"}</span>
           </div>
         </div>
       }
@@ -271,7 +264,7 @@ class Voucher extends Component {
 
 
   render() {
-    const { title } = this.state;
+    const { title } = this.props.location.state;
     return (
       <div className={styles.container}>
         <NavBar

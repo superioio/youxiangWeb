@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import { dateFormat } from '@/utils';
 import {
   exchangePoint,
@@ -6,7 +7,6 @@ import {
   getPointListByProduct,
 
 } from "./api";
-// import moment from 'moment';
 import { Flex, Icon, NavBar, Toast, Modal } from "antd-mobile";
 import { withRouter } from "react-router-dom";
 import styles from './styles.module.css';
@@ -37,8 +37,8 @@ class PointCard extends Component {
 
   // #region 方法
   loadEffectiveData = async () => {
-    const { selectedPointCardList } = globalVal.routePointCard ? globalVal.routePointCard
-      : { selectedPointCardList: [] };
+    const { selectedPointCardList } = globalVal.routeIsFromPay
+      ? globalVal.routePointCard : { selectedPointCardList: [] };
     const { title } = this.props.location.state;
     let pointCardList;
     Toast.loading("请稍后...", 3);
@@ -53,16 +53,16 @@ class PointCard extends Component {
         break;
     }
     Toast.hide();
+    if (pointCardList.error) {
+      Toast.fail(pointCardList.error);
+      return;
+    }
 
     this.setState({
       isScanExpiry: false,
       pointCardList,
       selectedPointCardList,
     }, this.checkChooseStatus);
-    if (pointCardList.error) {
-      Toast.fail(pointCardList.error);
-      return;
-    }
   }
 
   loadUnEffectiveData = async () => {
@@ -83,14 +83,17 @@ class PointCard extends Component {
   }
 
   itemCanPress = (item) => {
-    const { isScanExpiry } = this.state;
-    const { overPayCash } = this.state;
+    const { isScanExpiry, overPayCash } = this.state;
     const isSelect = this.state.selectedPointCardList.some(n => n.id === item.id);
+    const { effectiveTime } = item;
     if (isScanExpiry) {
       return false;
     } else if (overPayCash && !isSelect) {
       return false;
+    } else if (moment(effectiveTime).isAfter(moment())) {
+      return false;
     }
+
     return styles.tabContentItem;
   }
 
@@ -191,6 +194,7 @@ class PointCard extends Component {
   renderPointItem = (item, index) => {
     const isSelect = this.state.selectedPointCardList.some(n => n.id === item.id);
     const isCanPress = this.itemCanPress(item);
+
     return (<div key={index}>
       <Flex className={isCanPress ? styles.tabContentItem : styles.tabOverPayCash}
         onClick={() => this.onChoosePress(item)}>
@@ -225,7 +229,7 @@ class PointCard extends Component {
       <div className={styles.moreText} onClick={() => this.onMorePress()}>
         <span>{isScanExpiry ? '查看有效的积分卡' : '查看失效的积分卡'}</span>
       </div>
-      {global.routeIsFromPay ?
+      {globalVal.routeIsFromPay ?
         <div className={styles.exchangeBtn} onClick={this.onSubmit}>
           <div>
             <span className={styles.exchangeText}>{"确定"}</span>

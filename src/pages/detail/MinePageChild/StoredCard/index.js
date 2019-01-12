@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import { dateFormat } from '@/utils';
 import {
   exchangeCard,
@@ -15,14 +16,12 @@ class StoredCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      storedCardList: [],
-      selectedStoredCardList: [],
-      showMore: true,
-      overPayCash: false,
+      storedCardList: [], // 储值卡
+      selectedStoredCardList: [], // 选中的储值卡
       exchangeCode: '1234',
 
-      moreText: '查看失效的储值卡',
-      title: ''
+      overPayCash: false,
+      isScanExpiry: false, // 查看失效积分卡或是查看有效积分卡
     };
   }
 
@@ -38,7 +37,8 @@ class StoredCard extends Component {
 
   // #region 方法
   loadEffectiveData = async () => {
-    const { selectedStoredCardList } = globalVal.routeStoredCard;
+    const { selectedStoredCardList } = globalVal.routeIsFromPay
+      ? globalVal.routeStoredCard : { selectedStoredCardList: [] };
     const { title } = this.props.location.state;
     let storedCardList;
     Toast.loading("请稍后...", 3);
@@ -54,16 +54,17 @@ class StoredCard extends Component {
     }
     Toast.hide();
 
-    this.setState({
-      title,
-      moreText: '查看失效的储值卡',
-      storedCardList,
-      selectedStoredCardList,
-    }, this.checkChooseStatus);
     if (storedCardList.error) {
       Toast.fail(storedCardList.error);
       return;
     }
+
+    this.setState({
+      isScanExpiry: false,
+      storedCardList,
+      selectedStoredCardList,
+    }, this.checkChooseStatus);
+
   }
 
   loadUnEffectiveData = async () => {
@@ -78,11 +79,23 @@ class StoredCard extends Component {
     }
 
     this.setState({
-      moreText: '查看有效的储值卡',
-
+      isScanExpiry: true,
       storedCardList,
-      overPayCash: true,
     });
+  }
+
+  itemCanPress = (item) => {
+    const { isScanExpiry, overPayCash } = this.state;
+    const { effectiveTime } = item;
+    const isSelect = this.state.selectedPointCardList.some(n => n.id === item.id);
+    if (isScanExpiry) {
+      return false;
+    } else if (overPayCash && !isSelect) {
+      return false;
+    } else if (moment(effectiveTime).isAfter(moment())) {
+      return false;
+    }
+    return styles.tabContentItem;
   }
 
   //计算其他 代金券/储值卡/积分卡 是否仍然可选,储值卡直接计算余额，代金券计算个数*单价
@@ -120,17 +133,24 @@ class StoredCard extends Component {
   }
 
   //选中一个代金券/积分卡/储值卡
-  onChoosePress = (info) => {
-    const isSelect = this.state.selectedStoredCardList.some(n => n.id === info.id);
+  onChoosePress = (item) => {
+    if (!globalVal.routeIsFromPay) {
+      return;
+    }
+    if (!this.itemCanPress(item)) {
+      return;
+    }
+
+    const isSelect = this.state.selectedStoredCardList.some(n => n.id === item.id);
     if (isSelect) {
       this.setState({//添加到选中列表中
-        selectedStoredCardList: this.state.selectedStoredCardList.filter(n => n.id !== info.id),
+        selectedStoredCardList: this.state.selectedStoredCardList.filter(n => n.id !== item.id),
       }, () => {
         this.checkChooseStatus();
       });
     } else {
       this.setState(prevState => ({//添加到选中列表中
-        selectedStoredCardList: [...prevState.selectedStoredCardList, info],
+        selectedStoredCardList: [...prevState.selectedStoredCardList, item],
       }), () => {
         this.checkChooseStatus();
       });
@@ -153,7 +173,8 @@ class StoredCard extends Component {
 
   //点击  “查看更多”  按钮，此时应该隐藏 “查看更多”
   onMorePress = async (moreText) => {
-    if (RegExp(/有效/).test(moreText)) {
+    const { isScanExpiry } = this.state;
+    if (isScanExpiry) {
       this.loadEffectiveData();
     } else {
       this.loadUnEffectiveData();
@@ -173,28 +194,12 @@ class StoredCard extends Component {
   }
 
   renderCardItem = (item, index) => {
-    const { overPayCash } = this.state;
     const isSelect = this.state.selectedStoredCardList.some(n => n.id === item.id);
-
-    if (overPayCash && !isSelect) {
-      return (<div key={index}>
-        <div className={styles.tabOverPayCash}>
-          <div className={styles.leftTabItem}>
-            <span className={styles.leftText}>{item.faceValue + "元"}</span>
-          </div>
-          <div className={styles.rightTabItem}>
-            <div>{item.name}</div>
-            <div>{"剩余 : " + item.balance + "元"}</div>
-            <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
-          </div>
-          <div className={styles.checkContain}>
-          </div>
-        </div>
-      </div>)
-    }
+    const isCanPress = this.itemCanPress(item);
 
     return (<div key={index}>
-      <Flex className={styles.tabContentItem} onClick={() => this.onChoosePress(item)}>
+      <Flex className={isCanPress ? styles.tabContentItem : styles.tabOverPayCash}
+        onClick={() => this.onChoosePress(item)}>
         <div className={styles.leftTabItem}>
           <span className={styles.leftText}>{item.faceValue + "元"}</span>
         </div>
@@ -210,41 +215,23 @@ class StoredCard extends Component {
     </div>)
   }
 
-  renderUnPressCardItem = (item, index) => {
-    const { overPayCash } = this.state;
-    return (<div key={index}>
-      <Flex className={overPayCash ? styles.tabOverPayCash : styles.tabContentItem}>
-        <div className={styles.leftTabItem}>
-          <span className={styles.leftText}>{item.faceValue + "元"}</span>
-        </div>
-        <div className={styles.rightTabItem}>
-          <div>{item.name}</div>
-          <div>{"剩余 : " + item.balance + "元"}</div>
-          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
-        </div>
-      </Flex>
-    </div>);
-  }
-
   renderCardList = () => {
     const { storedCardList } = this.state;
     if (!storedCardList || !storedCardList.length) return;
 
     return (<div className={styles.tabContent}>
-      {storedCardList.map((item, index) =>
-        globalVal.routeIsFromPay
-          ? this.renderCardItem(item, index) : this.renderUnPressCardItem(item, index))}
+      {storedCardList.map((item, index) => this.renderCardItem(item, index))}
       <div className={styles.margin}></div>
-    </div>);
+    </div >);
   }
 
   renderFooter = () => {
-    const { moreText, title } = this.state;
+    const { isScanExpiry } = this.state;
     return <div className={styles.footer}>
-      <div className={styles.moreText} onClick={() => this.onMorePress(moreText)}>
-        <span>{moreText}</span>
+      <div className={styles.moreText} onClick={() => this.onMorePress()}>
+        <span>{isScanExpiry ? '查看有效的储值卡' : '查看失效的储值卡'}</span>
       </div>
-      {(RegExp(/选择/).test(title)) ?
+      {globalVal.routeIsFromPay ?
         <div className={styles.exchangeBtn} onClick={this.onSubmit}>
           <div>
             <span className={styles.exchangeText}>{"确定"}</span>
@@ -267,7 +254,7 @@ class StoredCard extends Component {
           ], 'default', null, ['兑换码'])}
         >
           <div>
-            <span className={styles.exchangeText}>{"兑换" + this.state.title}</span>
+            <span className={styles.exchangeText}>{"兑换储值卡"}</span>
           </div>
         </div>
       }
@@ -275,7 +262,7 @@ class StoredCard extends Component {
   }
 
   render() {
-    const { title } = this.state;
+    const { title } = this.props.location.state;
     return (
       <div className={styles.container}>
         <NavBar

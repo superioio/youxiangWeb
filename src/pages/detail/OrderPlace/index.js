@@ -218,7 +218,7 @@ class OrderPlace extends Component {
     globalVal.routeOrderInfo = this.state.orderInfo;
     globalVal.routePayCash = this.state.payCash;
     globalVal.routeIsFromProductDetail = null;
-    globalVal.routeIsFromPay = true;// 是从订单页进入代金劵或积分卡界面的
+    globalVal.routeIsFromPay = true;// 是从订单页进入
 
     let needPayCash;
     if (type === 0) {
