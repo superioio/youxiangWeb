@@ -4,7 +4,7 @@ import {Toast} from "antd-mobile";
 import globalVal from '@/utils/global_val';
 
 export async function getJsTicket(clientKey,timestamp,nonceStr,url) {
-
+  console.log('getJsTicket');
   return await axios.get('/api/wechatpublic/getsignature',{
         params: {
           clientKey: clientKey,
@@ -37,9 +37,7 @@ function randomStrCode(len) {
 }
 
 export async function initWX() {
-
-  if (window.wx) {
-
+  //if (window.wx) {
     if(globalVal.wxInitParams.signature === ''){
       const clientKey = '7a4dd7faa7f3ce1613581703c5e264e4';
       const timestamp = new Date().getTime();
@@ -60,14 +58,12 @@ export async function initWX() {
         };
     }
     window.wx.config({
-      debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
       appId:  globalVal.wxInitParams.appid, // 必填，公众号的唯一标识
       timestamp:  globalVal.wxInitParams.timestamp, // 必填，生成签名的时间戳
       nonceStr:  globalVal.wxInitParams.nonceStr, // 必填，生成签名的随机串
       signature:  globalVal.wxInitParams.signature,// 必填，签名
       jsApiList: ['scanQRCode'] // 必填，需要使用的JS接口列表
     });
-
-
-  }
+ // }
 }

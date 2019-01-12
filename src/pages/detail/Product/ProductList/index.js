@@ -67,7 +67,7 @@ class ProductList extends Component {
               <div className={styles.titleText}>{item.name}</div>
               <div className={styles.nameText}>{item.description}</div>
               <div className={styles.priceText}>
-                {price + "元/" + item.unitName}</div>
+                {price + "积分/" + item.unitName}</div>
             </div>
           </Flex>
         </div>);
