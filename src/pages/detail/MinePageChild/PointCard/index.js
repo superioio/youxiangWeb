@@ -70,6 +70,11 @@ class PointCard extends Component {
     Toast.loading("请稍后...", 3);
 
     const pointCardList = await getPointList(1, globalVal.userInfo.customerId);
+    Toast.hide();
+    if (pointCardList.error) {
+      Toast.fail(pointCardList.error);
+      return;
+    }
 
     this.setState({
       title: '失效的积分卡',
@@ -78,10 +83,7 @@ class PointCard extends Component {
       pointCardList,
       overPayCash: true,
     });
-    Toast.hide();
-    if (pointCardList.error) {
-      Toast.fail(pointCardList.error);
-    }
+
   }
 
   //计算其他 代金券/储值卡/积分卡 是否仍然可选,储值卡直接计算余额，代金券计算个数*单价

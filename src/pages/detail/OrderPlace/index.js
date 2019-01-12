@@ -15,8 +15,8 @@ class OrderPlace extends Component {
         productResp: {}
       },
       address: {},
-      cardInfo: [],
-      voucherInfo: [],
+      selectedStoredCardList: [],
+      selectedVoucherList: [],
       selectedPointCardList: [],
       saveMoneyByPoint: 0,
       saveMoneyByCard: 0,
@@ -108,15 +108,18 @@ class OrderPlace extends Component {
 
   //从积分卡/代金券/储值卡 选择页面返回
   getDiscountInfo = () => {
-    let cardInfoList = [];
-    let voucherInfoList = [];
+    let selectedStoredCardList = [];
+    let selectedVoucherList = [];
     let selectedPointCardList = [];
-    if (globalVal.routeDiscount) {
-      cardInfoList = globalVal.routeDiscount.cardInfoList;
-      voucherInfoList = globalVal.routeDiscount.voucherInfoList;
-    }
+
     if (globalVal.routePointCard) {
       selectedPointCardList = globalVal.routePointCard.selectedPointCardList;
+    }
+    if (globalVal.routeStoredCard) {
+      selectedStoredCardList = globalVal.routeStoredCard.selectedStoredCardList;
+    }
+    if (globalVal.routeVoucher) {
+      selectedVoucherList = globalVal.routeVoucher.selectedVoucherList;
     }
 
     const orderInfo = globalVal.routeOrderInfo;
@@ -127,12 +130,12 @@ class OrderPlace extends Component {
     let voucherIds = '';
     let pointsCardIds = '';
     var payCash = 0;
-    for (const i of cardInfoList) {
+    for (const i of selectedStoredCardList) {
       cardAmount += i.balance;
       cardIds += i.id + ",";//储值卡ID 字符串
     }
 
-    for (const i of voucherInfoList) {
+    for (const i of selectedVoucherList) {
       voucherAmount += i.count * orderInfo.productPrice;
       voucherIds += i.id + ",";//代金券ID 字符串
     }
@@ -147,7 +150,7 @@ class OrderPlace extends Component {
     if (voucherAmount === payCash) {
       cardAmount = 0;
       pointAmount = 0;
-      cardInfoList = [];
+      selectedStoredCardList = [];
       selectedPointCardList = [];
       cardIds = '';
       pointsCardIds = '';
@@ -163,8 +166,8 @@ class OrderPlace extends Component {
     this.setState({
       saveMoneyByCard: cardAmount,
       saveMoneyByVoucher: voucherAmount,
-      cardInfo: cardInfoList,
-      voucherInfo: voucherInfoList,
+      selectedStoredCardList: selectedStoredCardList,
+      selectedVoucherList: selectedVoucherList,
       saveMoneyByPoint: pointAmount,
       selectedPointCardList,
     });
@@ -195,7 +198,13 @@ class OrderPlace extends Component {
       hasPlace: true
     });
     this.props.history.push({ pathname: '/OrderDetail', state: { order: orderInfo, isFromPay: isFromPay, isUnpaid: true } });
-    // this.props.navigation.navigate('OrderDetail', { order: orderInfo, isFromPay: isFromPay, isUnpaid: true })
+
+
+    globalVal.routeOrderInfo = null;
+    globalVal.routePayCash = null;
+    globalVal.routePointCard = null;
+    globalVal.routeStoredCard = null;
+    globalVal.routeVoucher = null;
   }
 
   onAddrPress = () => {
@@ -211,32 +220,27 @@ class OrderPlace extends Component {
     globalVal.routeIsFromProductDetail = null;
     globalVal.routeIsFromPay = true;// 是从订单页进入代金劵或积分卡界面的
 
-    var tag = "";
     let needPayCash;
     if (type === 0) {
-      tag = "选择储值卡";
       needPayCash = this.state.payCash + this.state.saveMoneyByCard;
-
+      globalVal.routeStoredCard = {
+        selectedStoredCardList: this.state.selectedStoredCardList,
+      }
       this.props.history.push({
-        pathname: '/CardAndDiscount', state: {
-          tag: tag,
-          needPayCash: needPayCash,//还需支付的金额 + 已选 积分卡/储值卡/代金券 的金额
-          cardInfoList: this.state.cardInfo,//已经添加的储值卡
-          voucherInfoList: this.state.voucherInfo,//已经添加的代金券
-          selectedPointCardList: this.state.selectedPointCardList,//已经添加的积分卡
+        pathname: '/StoredCard', state: {
+          title: '选择储值卡',
+          needPayCash,//还需支付的金额 + 已选 积分卡/储值卡/代金券 的金额
         }
       });
     } else if (type === 1) {
-      tag = "选择代金券";
       needPayCash = this.state.payCash + this.state.saveMoneyByVoucher;
-
+      globalVal.routeVoucher = {
+        selectedVoucherList: this.state.selectedVoucherList,
+      }
       this.props.history.push({
-        pathname: '/CardAndDiscount', state: {
-          tag: tag,
-          needPayCash: needPayCash,//还需支付的金额 + 已选 积分卡/储值卡/代金券 的金额
-          cardInfoList: this.state.cardInfo,//已经添加的储值卡
-          voucherInfoList: this.state.voucherInfo,//已经添加的代金券
-          selectedPointCardList: this.state.selectedPointCardList,//已经添加的积分卡
+        pathname: '/Voucher', state: {
+          title: '选择代金券',
+          needPayCash,//还需支付的金额 + 已选 积分卡/储值卡/代金券 的金额
         }
       });
     } else if (type === 2) {
@@ -255,14 +259,14 @@ class OrderPlace extends Component {
 
   //修改商品数量的时候，重置所有已选的代金券/储值卡/积分卡
   resetPayment(count, payCash) {
-    if (this.state.cardInfo.length > 0 || this.state.voucherInfo.length > 0 || this.state.selectedPointCardList.length > 0) {
+    if (this.state.selectedStoredCardList.length > 0 || this.state.selectedVoucherList.length > 0 || this.state.selectedPointCardList.length > 0) {
       Toast.show('已选的代金券/储值卡/积分卡已被重置，请重新选择。', 2);
       payCash = count * this.state.orderInfo.productPrice;
     }
 
     this.setState({
-      cardInfo: [],//已经添加的储值卡
-      voucherInfo: [],//已经添加的代金券
+      selectedStoredCardList: [],//已经添加的储值卡
+      selectedVoucherList: [],//已经添加的代金券
       selectedPointCardList: [],//已经添加的积分卡
       voucherIds: '',//选中的代金券ID  1,2,3
       rechargeCardIds: '',//选中的储值卡ID  1,2,3
@@ -487,7 +491,7 @@ class OrderPlace extends Component {
     </div>);
   }
   renderPointCard() {
-    return this.state.cardInfo.length > 0 ?
+    return this.state.selectedStoredCardList.length > 0 ?
       (<div className={`${styles.card} ${styles.cardDisabled}`}>
         <div className={styles.label}>
           <span
@@ -522,7 +526,9 @@ class OrderPlace extends Component {
           onLeftClick={() => {
             globalVal.routeOrderInfo = null;
             globalVal.routePayCash = null;
-            globalVal.routeDiscount = null;
+            globalVal.routePointCard = null;
+            globalVal.routeStoredCard = null;
+            globalVal.routeVoucher = null;
             this.props.history.goBack()
           }}
         >下 单</NavBar>

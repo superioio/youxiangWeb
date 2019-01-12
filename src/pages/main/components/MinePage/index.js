@@ -74,7 +74,7 @@ class MinePage extends Component {
         break;
       case 1:
         globalVal.routeIsFromPay = false;
-        this.props.history.push({ pathname: '/CardAndDiscount', state: { tag: "代金券" } });
+        this.props.history.push({ pathname: '/Voucher', state: { title: "我的代金券" } });
         break;
       case 2:
         globalVal.routeIsFromPay = false;
@@ -82,7 +82,7 @@ class MinePage extends Component {
         break;
       case 3:
         globalVal.routeIsFromPay = false;
-        this.props.history.push({ pathname: '/CardAndDiscount', state: { tag: "储值卡" } });
+        this.props.history.push({ pathname: '/StoredCard', state: { title: "我的储值卡" } });
         break;
       case 4:
         globalVal.routeIsFromPay = false;

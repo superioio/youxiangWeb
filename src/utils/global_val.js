@@ -55,8 +55,9 @@ const globalVal = {
   routePayCash: null,
   routeIsFromProductDetail: null,
 
-  routeDiscount: null,
   routePointCard: null,
+  routeStoredCard: null,
+  routeVoucher: null,
 
   homePageRef: null,
   orderPageRef: null,

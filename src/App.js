@@ -8,8 +8,10 @@ import ProductDetail from './pages/detail/Product/ProductDetail';
 import OrderDetail from './pages/detail/OrderDetail';
 import OrderPlace from './pages/detail/OrderPlace';
 import CitySelector from './pages/detail/CitySelector';
-import CardAndDiscount from './pages/detail/MinePageChild/CardAndDiscount';
 import PointCard from './pages/detail/MinePageChild/PointCard';
+import StoredCard from './pages/detail/MinePageChild/StoredCard';
+import Voucher from './pages/detail/MinePageChild/Voucher';
+
 
 import AddressEdit from './pages/detail/MinePageChild/AddressEdit';
 import AddressList from './pages/detail/MinePageChild/AddressList';
@@ -27,8 +29,9 @@ class App extends Component {
           <Route path="/" exact component={MainPage} />
           <Route path="/LoginPage" exact component={LoginPage} />
           <Route path="/RegPage" exact component={RegPage} />
-          <Route path="/CardAndDiscount" exact component={CardAndDiscount} />
           <Route path="/PointCard" exact component={PointCard} />
+          <Route path="/StoredCard" exact component={StoredCard} />
+          <Route path="/Voucher" exact component={Voucher} />
           <Route path="/AddressEdit" exact component={AddressEdit} />
           <Route path="/AddressList" exact component={AddressList} />
           <Route path="/Contact" exact component={Contact} />
