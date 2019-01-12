@@ -204,7 +204,7 @@ class PointCard extends Component {
         <div className={styles.rightTabItem}>
           <div>{item.name}</div>
           <div>{"剩余 : " + item.balance + "积分"}</div>
-          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
+          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "-" + dateFormat(item.expiryTime)}</div>
         </div>
         <div className={styles.checkContain}>
           {this.renderCheck(isSelect)}

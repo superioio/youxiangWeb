@@ -20,26 +20,26 @@ class OrderDetail extends Component {
           <span className={styles.nameText}>下单时间</span>
           <span className={styles.contentText}> {datetimeFormat(order.orderTime)}</span>
         </div>
-        { order.productResp.productType === 0 ?
-            <div className={styles.contentRow}>
-              <span className={styles.nameText}>服务时间</span>
-              <span className={styles.contentText}> {datetimeFormat(order.serviceTime)}</span>
-            </div>: <div></div>}
-         { order.productResp.productType === 0 ?
-            <div className={styles.contentRow}>
-          <span className={styles.nameText}>服务地点</span>
-          <span className={styles.contentText}> {order.customerCityName + order.customerAddress}</span>
+        {order.productResp.productType === 0 ?
+          <div className={styles.contentRow}>
+            <span className={styles.nameText}>服务时间</span>
+            <span className={styles.contentText}> {datetimeFormat(order.serviceTime)}</span>
+          </div> : <div></div>}
+        {order.productResp.productType === 0 ?
+          <div className={styles.contentRow}>
+            <span className={styles.nameText}>服务地点</span>
+            <span className={styles.contentText}> {order.customerCityName + order.customerAddress}</span>
           </div>
           : <div></div>}
         <div className={styles.contentRow}>
           <span className={styles.nameText}>商品名称</span >
           <span className={styles.contentText}> {order.productResp.name}</span>
         </div>
-        { order.productResp.productType === 0 ?
-        <div className={styles.contentRow}>
-          <span className={styles.nameText}>服务电话</span>
-          <span className={styles.contentText}> {order.customerMobile}</span>
-        </div>  : <div></div>}
+        {order.productResp.productType === 0 ?
+          <div className={styles.contentRow}>
+            <span className={styles.nameText}>服务电话</span>
+            <span className={styles.contentText}> {order.customerMobile}</span>
+          </div> : <div></div>}
         {!isFromPay ? <div className={styles.contentRow}>
           <span className={styles.nameText}>订单状态</span>
           <span className={[styles.contentText, styles.importantText]}> {getStatus(order.status)}</span>
@@ -88,12 +88,12 @@ class OrderDetail extends Component {
           <Flex.Item className={styles.nameText}>积分支付</Flex.Item>
           <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payPoint + "积分"}</Flex.Item>
         </Flex>
-          <Flex className={styles.contentRow}>
-              <Flex.Item className={styles.nameText}>储值卡支付</Flex.Item>
-              <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payRechargeCard + "积分"}</Flex.Item>
-          </Flex>
         <Flex className={styles.contentRow}>
-          <Flex.Item className={styles.nameText}>尚需支付</Flex.Item>
+          <Flex.Item className={styles.nameText}>储值卡支付</Flex.Item>
+          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payRechargeCard + "积分"}</Flex.Item>
+        </Flex>
+        <Flex className={styles.contentRow}>
+          <Flex.Item className={styles.nameText}>现金支付</Flex.Item>
           <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payment + "积分"}</Flex.Item>
         </Flex>
       </div>
@@ -104,9 +104,9 @@ class OrderDetail extends Component {
     const alert = Modal.alert;
 
     alert('取消订单', '确认取消订单吗？',
-        [{ text: "取消", onPress: () => { return null } },
-          { text: "确认", onPress: () => this.confirm() },
-        ]
+      [{ text: "取消", onPress: () => { return null } },
+      { text: "确认", onPress: () => this.confirm() },
+      ]
     );
   }
 
@@ -133,11 +133,11 @@ class OrderDetail extends Component {
 
   renderBackToList() {
     return (
-        <div className={styles.buttonsColumn}>
-          <Flex className={`${styles.payButton} ${styles.wechatPayButton}`} onClick={this.onBackListPress}>
-            <span className={styles.centerText}>返回首页</span>
-          </Flex>
-        </div>
+      <div className={styles.buttonsColumn}>
+        <Flex className={`${styles.payButton} ${styles.wechatPayButton}`} onClick={this.onBackListPress}>
+          <span className={styles.centerText}>返回首页</span>
+        </Flex>
+      </div>
     );
   }
   renderCancelButton(isUnpaid) {
@@ -146,7 +146,7 @@ class OrderDetail extends Component {
         <span className={styles.centerText}>取消订单</span>
       </div>
       {/*<Flex.Item className={`${styles.button} ${styles.payBtn}`} onClick={this.onPayPress}>*/}
-        {/*<span className={styles.centerText}>支付订单</span>*/}
+      {/*<span className={styles.centerText}>支付订单</span>*/}
       {/*</Flex.Item>*/}
     </div>) : null;
   }
@@ -162,11 +162,11 @@ class OrderDetail extends Component {
   }
 
   renderECodes(eCodes) {
-    return( <div className={styles.eCodeRow}>
-        {eCodes.map((item, index) =>
-          <div className={styles.eCodeText}>{item}</div>
-        )}
-        </div>
+    return (<div className={styles.eCodeRow}>
+      {eCodes.map((item, index) =>
+        <div className={styles.eCodeText}>{item}</div>
+      )}
+    </div>
     )
   }
 

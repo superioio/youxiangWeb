@@ -207,7 +207,7 @@ class Voucher extends Component {
         </div>
         <div className={styles.rightTabItem}>
           <div>{item.name}</div>
-          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
+          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "-" + dateFormat(item.expiryTime)}</div>
         </div>
         <div className={styles.checkContain}>
           {this.renderCheck(isSelect)}

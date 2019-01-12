@@ -35,6 +35,9 @@ class OrderPage extends Component {
   componentDidMount() {
     this.didFocus();
   }
+  componentWillUnmount() {
+    globalVal.orderPageRef = null;
+  }
 
   didFocus = async () => {
     if (globalVal.userInfo.customerId === -1) {

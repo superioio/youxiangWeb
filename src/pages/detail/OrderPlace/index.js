@@ -321,7 +321,7 @@ class OrderPlace extends Component {
     // console.log('orderInfo', orderInfo);
     return (<div className={styles.label}>
       <span>单价：</span>
-      <span>{orderInfo.productResp.price + "分/" + orderInfo.productResp.unitName}</span>
+      <span>{orderInfo.productResp.price + "积分/" + orderInfo.productResp.unitName}</span>
     </div>)
   }
 

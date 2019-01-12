@@ -23,6 +23,11 @@ class MinePage extends Component {
     this.didFocus();
   }
 
+  componentWillUnmount() {
+    globalVal.minePageRef = null;
+  }
+
+
   didFocus = () => {
     if (globalVal.userInfo.customerId === -1) {
       this.setState({

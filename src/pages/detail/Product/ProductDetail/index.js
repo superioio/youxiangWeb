@@ -54,7 +54,7 @@ class ProductDetail extends Component {
     const { product } = this.state;
     return (<div className={styles.price}>
       <div className={styles.nameText} >{product.name}</div>
-      <div className={styles.priceText}>{product.productPriceList[0].price + "分/" + product.unitName}</div>
+      <div className={styles.priceText}>{product.productPriceList[0].price + "积分/" + product.unitName}</div>
     </div>);
   }
   // src={require("@/assets/images/washingMachineDesc.png")}

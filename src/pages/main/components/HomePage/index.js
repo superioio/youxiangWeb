@@ -29,6 +29,10 @@ class HomePage extends Component {
     this.didFocus();
   }
 
+  componentWillUnmount() {
+    globalVal.homePageRef = null;
+  }
+
   didFocus = async () => {
     if (globalVal.routeSelectCity) {
       this.setState({
