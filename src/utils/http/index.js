@@ -1,13 +1,13 @@
 import axios from 'axios';
-import {Toast }from "antd-mobile";
-import globalVal from '@/utils/global_val';
+import { Toast } from "antd-mobile";
+// import globalVal from '@/utils/global_val';
 
 var instance = axios.create({
   timeout: 5000,
   headers: {
     'X-Custom-Header': 'foobar',
     "Access-Control-Allow-Headers": "Authorization,Origin, X-Requested-With, Content-Type, Accept",
-    'Cookie': 'JSESSIONID=' + globalVal.userInfo.sessionId
+    // 'Cookie': 'JSESSIONID=' + globalVal.userInfo.sessionId
   },
   withCredentials: true,
   // `transformResponse` allows changes to the response data to be made before
@@ -39,7 +39,7 @@ instance.interceptors.response.use((response) => {
   }
   catch (e) {
     //Toast.fail(e);
-    return {error: e};
+    return { error: e };
   }
 }, errorCallback);
 

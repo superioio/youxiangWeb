@@ -56,12 +56,13 @@ const globalVal = {
   routeIsFromProductDetail: null,
 
   routeDiscount: null,
+  routePointCard: null,
 
   homePageRef: null,
   orderPageRef: null,
   minePageRef: null,
 
-  wxInitParams :{
+  wxInitParams: {
     appId: '',
     timestamp: '',
     nonceStr: '',

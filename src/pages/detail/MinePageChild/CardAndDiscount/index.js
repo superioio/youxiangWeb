@@ -275,7 +275,7 @@ class CardAndDiscount extends Component {
           <div className={styles.rightTabItem}>
             <div>{item.name}</div>
             <div>{"剩余 : " + item.balance + "元"}</div>
-            <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至"+ dateFormat(item.expiryTime)}</div>
+            <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
           </div>
           <div className={styles.checkContain}>
           </div>
@@ -291,7 +291,7 @@ class CardAndDiscount extends Component {
         <div className={styles.rightTabItem}>
           <div>{item.name}</div>
           <div>{"剩余 : " + item.balance + "元"}</div>
-          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至"+ dateFormat(item.expiryTime)}</div>
+          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
         </div>
         <div className={styles.checkContain}>
           {this.renderCheck(isSelect)}
@@ -310,7 +310,7 @@ class CardAndDiscount extends Component {
         <div className={styles.rightTabItem}>
           <div>{item.name}</div>
           <div>{"剩余 : " + item.balance + "元"}</div>
-          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至"+ dateFormat(item.expiryTime)}</div>
+          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
         </div>
       </Flex>
     </div>);
@@ -339,7 +339,7 @@ class CardAndDiscount extends Component {
           </div>
           <div className={styles.rightTabItem}>
             <div className={styles.line}>{item.name}</div>
-            <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至"+ dateFormat(item.expiryTime)}</div>
+            <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
           </div>
           <div className={styles.checkContain}>
           </div>
@@ -354,7 +354,7 @@ class CardAndDiscount extends Component {
         </div>
         <div className={styles.rightTabItem}>
           <div>{item.name}</div>
-          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至"+ dateFormat(item.expiryTime)}</div>
+          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
         </div>
         <div className={styles.checkContain}>
           {this.renderCheck(isSelect)}
@@ -371,7 +371,7 @@ class CardAndDiscount extends Component {
         </div>
         <div className={styles.rightTabItem}>
           <div>{item.name}</div>
-          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至"+ dateFormat(item.expiryTime)}</div>
+          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
         </div>
       </Flex>
     </div>);
@@ -401,7 +401,7 @@ class CardAndDiscount extends Component {
           <div className={styles.rightTabItem}>
             <div>{item.name}</div>
             <div>{"剩余 : " + item.balance + "积分"}</div>
-            <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至"+ dateFormat(item.expiryTime)}</div>
+            <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
           </div>
           <div className={styles.checkContain}>
           </div>
@@ -417,7 +417,7 @@ class CardAndDiscount extends Component {
         <div className={styles.rightTabItem}>
           <div>{item.name}</div>
           <div>{"剩余 : " + item.balance + "积分"}</div>
-          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至"+ dateFormat(item.expiryTime)}</div>
+          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
         </div>
         <div className={styles.checkContain}>
           {this.renderCheck(isSelect)}
@@ -435,7 +435,7 @@ class CardAndDiscount extends Component {
         <div className={styles.rightTabItem}>
           <div>{item.name}</div>
           <div>{"剩余 : " + item.balance + "积分"}</div>
-          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至"+ dateFormat(item.expiryTime)}</div>
+          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
         </div>
       </Flex>
     </div>);
@@ -488,8 +488,8 @@ class CardAndDiscount extends Component {
                 {
                   text: '确定',
                   onPress: exchangeCode => new Promise((resolve, reject) => {
-                    if(exchangeCode == ''){
-                      Toast.fail('请填写正确的兑换码。',1);
+                    if (exchangeCode === '') {
+                      Toast.fail('请填写正确的兑换码。', 1);
                       return;
                     }
                     this.onExchangePress(exchangeCode, resolve);

@@ -3,8 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Toast } from 'antd-mobile';
 import globalVal from '@/utils/global_val';
 import styles from './styles.module.css';
-import {logout} from './api'
-import {getCategoryList} from "../HomePage/api";
+import { logout } from './api'
 
 class MinePage extends Component {
   // #region 构造器
@@ -79,7 +78,7 @@ class MinePage extends Component {
         break;
       case 2:
         globalVal.routeIsFromPay = false;
-        this.props.history.push({ pathname: '/CardAndDiscount', state: { tag: "积分卡" } });
+        this.props.history.push({ pathname: '/PointCard', state: { title: "我的积分卡" } });
         break;
       case 3:
         globalVal.routeIsFromPay = false;

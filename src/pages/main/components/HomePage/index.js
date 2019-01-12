@@ -3,7 +3,6 @@ import { Flex, Carousel, Toast } from 'antd-mobile';
 import styles from './styles.module.css';
 import { getCategoryList, getProductList, getRechargeByQRCode } from './api';
 import globalVal from '@/utils/global_val';
-import {initWX} from '@/utils/global_api';
 import { withRouter } from "react-router-dom";
 
 let barcode = null;
