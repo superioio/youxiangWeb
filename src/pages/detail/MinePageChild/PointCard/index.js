@@ -16,14 +16,12 @@ class PointCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pointCardList: [],
+      pointCardList: [],// 积分卡
+      selectedPointCardList: [], // 选中积分卡
       exchangeCode: '1234',
-      selectedPointCardList: [], //选中的代金券/积分卡/储值卡列表
-      showMore: true,
-      overPayCash: false,
 
-      moreText: '查看失效的积分卡',
-      title: '',
+      overPayCash: false,
+      isScanExpiry: false, // 查看失效积分卡或是查看有效积分卡
     };
   }
 
@@ -39,7 +37,8 @@ class PointCard extends Component {
 
   // #region 方法
   loadEffectiveData = async () => {
-    const { selectedPointCardList } = globalVal.routePointCard;
+    const { selectedPointCardList } = globalVal.routePointCard ? globalVal.routePointCard
+      : { selectedPointCardList: [] };
     const { title } = this.props.location.state;
     let pointCardList;
     Toast.loading("请稍后...", 3);
@@ -56,7 +55,7 @@ class PointCard extends Component {
     Toast.hide();
 
     this.setState({
-      title,
+      isScanExpiry: false,
       pointCardList,
       selectedPointCardList,
     }, this.checkChooseStatus);
@@ -77,13 +76,22 @@ class PointCard extends Component {
     }
 
     this.setState({
-      title: '失效的积分卡',
-      moreText: '查看有效的积分卡',
-
+      isScanExpiry: true,
       pointCardList,
-      overPayCash: true,
     });
 
+  }
+
+  itemCanPress = (item) => {
+    const { isScanExpiry } = this.state;
+    const { overPayCash } = this.state;
+    const isSelect = this.state.selectedPointCardList.some(n => n.id === item.id);
+    if (isScanExpiry) {
+      return false;
+    } else if (overPayCash && !isSelect) {
+      return false;
+    }
+    return styles.tabContentItem;
   }
 
   //计算其他 代金券/储值卡/积分卡 是否仍然可选,储值卡直接计算余额，代金券计算个数*单价
@@ -120,17 +128,24 @@ class PointCard extends Component {
   }
 
   // 选中一个积分卡
-  onChoosePress = (info) => {
-    const isSelect = this.state.selectedPointCardList.some(n => n.id === info.id);
+  onChoosePress = (item) => {
+    if (!globalVal.routeIsFromPay) {
+      return;
+    }
+    if (!this.itemCanPress(item)) {
+      return;
+    }
+
+    const isSelect = this.state.selectedPointCardList.some(n => n.id === item.id);
     if (isSelect) {
       this.setState({//移除到选中列表中
-        selectedPointCardList: this.state.selectedPointCardList.filter(n => n.id !== info.id),
+        selectedPointCardList: this.state.selectedPointCardList.filter(n => n.id !== item.id),
       }, () => {
         this.checkChooseStatus();
       });
     } else {
       this.setState(prevState => ({//添加到选中列表中
-        selectedPointCardList: [...prevState.selectedPointCardList, info],
+        selectedPointCardList: [...prevState.selectedPointCardList, item],
       }), () => {
         this.checkChooseStatus();
       });
@@ -151,9 +166,9 @@ class PointCard extends Component {
     this.loadEffectiveData();
   }
 
-  //点击  “查看更多”  按钮，此时应该隐藏 “查看更多”
-  onMorePress = async (moreText) => {
-    if (RegExp(/有效/).test(moreText)) {
+  onMorePress = () => {
+    const { isScanExpiry } = this.state;
+    if (isScanExpiry) {
       this.loadEffectiveData();
     } else {
       this.loadUnEffectiveData();
@@ -172,29 +187,13 @@ class PointCard extends Component {
     </div>);
   }
 
+
   renderPointItem = (item, index) => {
-    const { overPayCash } = this.state;
     const isSelect = this.state.selectedPointCardList.some(n => n.id === item.id);
-
-    if (overPayCash && !isSelect) {
-      return (<div key={index}>
-        <div className={styles.tabOverPayCash}>
-          <div className={styles.leftTabItem}>
-            <span className={styles.leftText}>{item.faceValue + "积分"}</span>
-          </div>
-          <div className={styles.rightTabItem}>
-            <div>{item.name}</div>
-            <div>{"剩余 : " + item.balance + "积分"}</div>
-            <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
-          </div>
-          <div className={styles.checkContain}>
-          </div>
-        </div>
-      </div>)
-    }
-
+    const isCanPress = this.itemCanPress(item);
     return (<div key={index}>
-      <Flex className={styles.tabContentItem} onClick={() => this.onChoosePress(item, 2)}>
+      <Flex className={isCanPress ? styles.tabContentItem : styles.tabOverPayCash}
+        onClick={() => this.onChoosePress(item)}>
         <div className={styles.leftTabItem}>
           <span className={styles.leftText}>{item.faceValue + "积分"}</span>
         </div>
@@ -207,21 +206,6 @@ class PointCard extends Component {
           {this.renderCheck(isSelect)}
         </div>
       </Flex>
-    </div>)
-  }
-  renderUnPressPointItem = (item, index) => {
-    const { overPayCash } = this.state;
-    return (<div key={index}>
-      <Flex className={overPayCash ? styles.tabOverPayCash : styles.tabContentItem}>
-        <div className={styles.leftTabItem}>
-          <span className={styles.leftText}>{item.faceValue + "积分"}</span>
-        </div>
-        <div className={styles.rightTabItem}>
-          <div>{item.name}</div>
-          <div>{"剩余 : " + item.balance + "积分"}</div>
-          <div className={styles.expireDateText}>{"有效期：" + dateFormat(item.effectiveTime) + "至" + dateFormat(item.expiryTime)}</div>
-        </div>
-      </Flex>
     </div>);
   }
 
@@ -230,19 +214,18 @@ class PointCard extends Component {
     if (!pointCardList || !pointCardList.length) return;
 
     return (<div className={styles.tabContent}>
-      {pointCardList.map((item, index) => globalVal.routeIsFromPay
-        ? this.renderPointItem(item, index) : this.renderUnPressPointItem(item, index))}
+      {pointCardList.map((item, index) => this.renderPointItem(item, index))}
       <div className={styles.margin}></div>
     </div>);
   }
 
   renderFooter = () => {
-    const { moreText, title } = this.state;
+    const { isScanExpiry } = this.state;
     return <div className={styles.footer}>
-      <div className={styles.moreText} onClick={() => this.onMorePress(moreText)}>
-        <span>{moreText}</span>
+      <div className={styles.moreText} onClick={() => this.onMorePress()}>
+        <span>{isScanExpiry ? '查看有效的积分卡' : '查看失效的积分卡'}</span>
       </div>
-      {(RegExp(/选择/).test(title)) ?
+      {global.routeIsFromPay ?
         <div className={styles.exchangeBtn} onClick={this.onSubmit}>
           <div>
             <span className={styles.exchangeText}>{"确定"}</span>
@@ -265,7 +248,7 @@ class PointCard extends Component {
           ], 'default', null, ['兑换码'])}
         >
           <div>
-            <span className={styles.exchangeText}>{"兑换" + this.state.title}</span>
+            <span className={styles.exchangeText}>{"兑换积分卡"}</span>
           </div>
         </div>
       }
@@ -273,7 +256,7 @@ class PointCard extends Component {
   }
 
   render() {
-    const { title } = this.state;
+    const { title } = this.props.location.state;
     return (
       <div className={styles.container}>
         <NavBar

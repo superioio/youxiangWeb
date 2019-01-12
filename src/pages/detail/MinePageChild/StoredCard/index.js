@@ -42,7 +42,7 @@ class StoredCard extends Component {
     const { title } = this.props.location.state;
     let storedCardList;
     Toast.loading("请稍后...", 3);
-    switch (this.props.location.state.title) {
+    switch (title) {
       case "我的储值卡":
         storedCardList = await getCardList(2, globalVal.userInfo.customerId);
         break;
@@ -56,6 +56,7 @@ class StoredCard extends Component {
 
     this.setState({
       title,
+      moreText: '查看失效的储值卡',
       storedCardList,
       selectedStoredCardList,
     }, this.checkChooseStatus);
@@ -77,7 +78,6 @@ class StoredCard extends Component {
     }
 
     this.setState({
-      title: '失效的储值卡',
       moreText: '查看有效的储值卡',
 
       storedCardList,

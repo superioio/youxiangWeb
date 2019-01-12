@@ -61,6 +61,7 @@ class Voucher extends Component {
 
     this.setState({
       title,
+      moreText: '查看失效的代金劵',
       voucherList,
       selectedVoucherList,
     }, this.checkChooseStatus);
@@ -77,7 +78,6 @@ class Voucher extends Component {
     }
 
     this.setState({
-      title: '失效的代金券',
       moreText: '查看有效的代金券',
       voucherList,
       overPayCash: true,
