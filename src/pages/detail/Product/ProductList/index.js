@@ -49,8 +49,8 @@ class ProductList extends Component {
   renderList() {
     const { list } = this.state;
     if (!list || list.length === 0) {
-      return (<div className={styles.producList}>
-        <div className={styles.noProduct}>暂无商品</div>
+      return (<div className={styles.producBlank}>
+        <span className={styles.noProduct}>当前城市未开通服务</span>
       </div>);
     }
 

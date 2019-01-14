@@ -12,6 +12,15 @@
   overflow: scroll;
   height: 100%;
 }
+.producBlank{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eee;
+  overflow: scroll;
+  height: 100%;
+  flex-direction: column;
+}
 .product {
   height: 160px;
   margin-bottom: 10px;
@@ -50,9 +59,6 @@
 }
 
 .noProduct{
-  font-size: 16px;
-  padding-top: 10px;
-  padding-left: 10px;
-  height: 97%;
+  font-size: 18px;
   background-color:#eeeeee;
 }
