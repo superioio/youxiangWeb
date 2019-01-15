@@ -30,8 +30,8 @@ class LoginPage extends Component {
   onLogin = async () => {
     Toast.loading("", 3);
     const { phoneNum, vetifyCode } = this.props.form.getFieldsValue();
-    if (!phoneNum) {
-      Toast.info('请先填写电话号码', 1);
+    if (!this.checkMobile(phoneNum)) {
+      Toast.info('请填写正确的电话号码', 1);
       return;
     }
     if (!vetifyCode) {
@@ -54,11 +54,20 @@ class LoginPage extends Component {
     }
   }
 
+  checkMobile(str) {
+    var re = /^1\d{10}$/
+    if (re.test(str)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   onGetVCode = async () => {
     const { getFieldProps } = this.props.form;
     const phoneNum = getFieldProps('phoneNum').value;
-    if (!phoneNum) {
-      Toast.info('请先填写电话号码', 1);
+    if (!this.checkMobile(phoneNum)) {
+      Toast.info('请填写正确的电话号码', 1);
       return;
     }
 

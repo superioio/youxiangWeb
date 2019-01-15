@@ -144,17 +144,17 @@ class HomePage extends Component {
           success: async (result) => {
             const resultStr = result.resultStr; // 当needResult 为 1 时，扫码返回的结果
 
-            alert('resultStr', resultStr);
+            //alert('resultStr', resultStr);
 
             const res = await getRechargeByQRCode(resultStr);
 
-            alert('res', JSON.stringify(res));
+            //alert('res', JSON.stringify(res));
 
             if (res.error) {
               Toast.fail(res.error);
               return;
             }
-            Toast.success('添加成功');
+            Toast.success('兑换成功');
           }
         });
       });
