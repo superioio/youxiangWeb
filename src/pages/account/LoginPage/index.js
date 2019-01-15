@@ -55,6 +55,7 @@ class LoginPage extends Component {
   }
 
   checkMobile(str) {
+    str = str.replace(/\s*/g,"");
     var re = /^1\d{10}$/
     if (re.test(str)) {
       return true;
