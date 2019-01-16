@@ -49,6 +49,7 @@ class MinePage extends Component {
   }
 
   onClick = async (index) => {
+    if(index === 5) return;
     const { isLogined } = this.state;
     if (index === 6) {
       this.setState({
@@ -146,11 +147,15 @@ class MinePage extends Component {
     return (<div onClick={() => this.onClick(index)}>
       <div className={styles.button}>
         <div>{text}</div>
-        <img
-          className={styles.arrowImage}
-          src={require('../../../../assets/images/arrow-right.png')}
-          alt="箭头"
-        />
+        {index === 5 ?
+          < a href="tel://4000852818"  >400-0852-818</a>
+         : <img
+                className={styles.arrowImage}
+                src={require('../../../../assets/images/arrow-right.png')}
+                alt="箭头"
+            />
+           }
+
       </div>
     </div>);
   }

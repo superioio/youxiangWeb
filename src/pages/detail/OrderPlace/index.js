@@ -277,8 +277,8 @@ class OrderPlace extends Component {
         ...this.state.orderInfo,
         count: count,
       },
-      payCash: payCash
     });
+    return payCash;
   }
   // #endregion
 
@@ -355,29 +355,6 @@ class OrderPlace extends Component {
     );
   }
 
-  renderVisitTimeButton = () => {
-    // const { orderInfo } = this.state;
-    // const { date, time } = orderInfo;
-    return (<div>
-      <div className={styles.label}>
-        <span>上门时间：</span>
-        {/*<TimePicker*/}
-        {/*date={date}*/}
-        {/*time={time}*/}
-        {/*confrim={(time) => {*/}
-        {/*this.setState({*/}
-        {/*orderInfo: {*/}
-        {/*...orderInfo,*/}
-        {/*time,*/}
-        {/*serviceTime: moment(`${date} ${time}`).unix() * 1000,*/}
-        {/*}*/}
-        {/*});*/}
-        {/*}}*/}
-        {/*/>*/}
-      </div>
-    </div>);
-  }
-
   renderNumberButton() {
     const { orderInfo } = this.state;
     if (!orderInfo) return null;
@@ -392,8 +369,8 @@ class OrderPlace extends Component {
               return null;
             } else {
               count -= 1;
-              const payCash = this.state.payCash - this.state.orderInfo.productPrice;
-              this.resetPayment(count, payCash);
+              let payCash = this.state.payCash - this.state.orderInfo.productPrice;
+              payCash = this.resetPayment(count, payCash);
               this.setState({
                 orderInfo: {
                   ...this.state.orderInfo,
@@ -410,9 +387,9 @@ class OrderPlace extends Component {
           <span className={styles.numberText}>{orderInfo.count}</span>
           <div onClick={() => {
             const count = this.state.orderInfo.count + 1;
-            const payCash = this.state.payCash + this.state.orderInfo.productPrice;
+            let payCash = this.state.payCash + this.state.orderInfo.productPrice;
 
-            this.resetPayment(count, payCash);
+            payCash = this.resetPayment(count, payCash);
             this.setState({
               orderInfo: {
                 ...this.state.orderInfo,
