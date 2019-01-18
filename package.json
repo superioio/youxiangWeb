@@ -120,5 +120,6 @@
     "react-app-rewired": "^1.6.2"
   },
   "proxy": "https://admin.offline.ue-link.cn"
+
 }
 
