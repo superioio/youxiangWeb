@@ -530,8 +530,8 @@ class OrderPlace extends Component {
 
           {this.renderTitle('代金券')}
           {this.renderVoucher()}
-          {this.renderTitle('储值卡')}
-          {this.renderRechargeCard()}
+          {/*{this.renderTitle('储值卡')}*/}
+          {/*{this.renderRechargeCard()}*/}
           {this.renderTitle('积分卡')}
           {this.renderPointCard()}
         </div>
