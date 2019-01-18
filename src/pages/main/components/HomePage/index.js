@@ -250,15 +250,15 @@ class HomePage extends Component {
         <div>
           <img
             className={styles.carousel}
-            src={require('../../../../assets/images/Carouse1.png')}
-            alt="广告"
+            src={require('../../../../assets/images/Carouse1.jpg')}
+            alt="广告1"
           />
         </div>
         <div>
           <img
             className={styles.carousel}
             src={require('../../../../assets/images/Carouse2.png')}
-            alt="广告"
+            alt="广告2"
           />
         </div>
       </Carousel>);
@@ -284,7 +284,7 @@ class HomePage extends Component {
   renderAd = () => {
     return (<img
       className={styles.carousel}
-      src={require('../../../../assets/images/ad.png')}
+      src={require('../../../../assets/images/ad.jpg')}
       alt="广告"
     />
     );
