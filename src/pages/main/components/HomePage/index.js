@@ -254,13 +254,13 @@ class HomePage extends Component {
             alt="广告1"
           />
         </div>
-        <div>
-          <img
-            className={styles.carousel}
-            src={require('../../../../assets/images/Carouse2.png')}
-            alt="广告2"
-          />
-        </div>
+        {/*<div>*/}
+          {/*<img*/}
+            {/*className={styles.carousel}*/}
+            {/*src={require('../../../../assets/images/Carouse2.png')}*/}
+            {/*alt="广告2"*/}
+          {/*/>*/}
+        {/*</div>*/}
       </Carousel>);
   }
 
