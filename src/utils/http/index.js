@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Toast } from "antd-mobile";
-// import globalVal from '@/utils/global_val';
+import globalVal from '@/utils/global_val';
 
 var instance = axios.create({
   timeout: 5000,
@@ -33,8 +33,15 @@ instance.interceptors.response.use((response) => {
   try {
     const { data } = response;
     if (JSON.parse(data).error) {
-      if (JSON.parse(data).error.code == 112010) {
-        window.location.href = window.location.host + "/LoginPage";
+      if (JSON.parse(data).error.code === 112010) {
+        globalVal.userInfo = {
+          customerId: -1,
+          customerName: '',
+          customerMobile: '',
+          sessionId: '',
+        };
+        globalVal.setUserInfo(globalVal.userInfo);
+        window.location.href = `${window.location.protocol}//${window.location.host}/LoginPage`;
       }
       throw JSON.parse(data).error.message || '接口发生错误';
     }
