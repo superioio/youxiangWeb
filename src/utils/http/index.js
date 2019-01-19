@@ -33,8 +33,8 @@ instance.interceptors.response.use((response) => {
   try {
     const { data } = response;
     if (JSON.parse(data).error) {
-      if(JSON.parse(data).error.code == 112010){
-         window.location.href =  window.location.href    + "LoginPage";
+      if (JSON.parse(data).error.code == 112010) {
+        window.location.href = window.location.host + "/LoginPage";
       }
       throw JSON.parse(data).error.message || '接口发生错误';
     }
