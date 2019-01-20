@@ -102,3 +102,17 @@
 .expireDateText{
   color: #f18036
 }
+.scanButton{
+  width: 20px;
+  height: 36px;
+  margin-right: 10px;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+.scanButtonImage {
+  width: 20px;
+  height: 20px;
+}

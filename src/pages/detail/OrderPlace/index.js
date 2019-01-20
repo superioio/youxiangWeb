@@ -21,8 +21,7 @@ class OrderPlace extends Component {
       saveMoneyByPoint: 0,
       saveMoneyByCard: 0,
       saveMoneyByVoucher: 0,
-      payCash: 0,
-      hasPlace: false
+      payCash: 0
     };
   }
 
@@ -54,7 +53,7 @@ class OrderPlace extends Component {
     } else {
       const address = await getDefaultAddress(globalVal.userInfo.customerId);
       if (address.error) {
-        Toast.fail(address.error);
+        if(this.state.orderInfo.productResp.productType === 0) Toast.fail(address.error);
         return;
       }
       globalVal.routeAddress = address;
@@ -178,8 +177,24 @@ class OrderPlace extends Component {
 
   //确认下单按钮
   onOrderPress = async () => {
+    let citycode = this.state.orderInfo.customerCityCode;
+    if(!this.state.orderInfo.customerCityCode || this.state.orderInfo.customerCityCode.length < 4){
+      if(this.state.orderInfo.productResp.productType === 0){//服务类商品，必须选择地址
+        Toast.fail('请选择一个收货地址。');
+        return;
+      } else {//电子卡，使用商品地址
+        citycode = globalVal.selectCity.code;
+        this.setState({
+          orderInfo: {
+            ...this.state.orderInfo,
+            customerCityCode: globalVal.selectCity.code,
+          }
+        });
+      }
+    }
+
     Toast.loading("请稍后...", 3);
-    const order = await placeOrder(this.state.orderInfo, globalVal.userInfo.customerId);
+    const order = await placeOrder(this.state.orderInfo, globalVal.userInfo.customerId, citycode);
     Toast.hide();
     if (order.error) {
       Toast.fail(order.error);
@@ -193,9 +208,7 @@ class OrderPlace extends Component {
     orderInfo.payPoint = this.state.saveMoneyByPoint;
     orderInfo.totalAmount = orderInfo.productPrice * orderInfo.count;
     orderInfo.orderTime = new Date();
-    this.setState({
-      hasPlace: true
-    });
+
     this.props.history.push({ pathname: '/OrderDetail', state: { order: orderInfo, isFromPay: true, isUnpaid: true } });
 
 

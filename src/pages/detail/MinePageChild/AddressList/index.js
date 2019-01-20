@@ -58,9 +58,7 @@ class AddressList extends Component {
     if (timeOutEvent !== 0 && longClick === 0) {//点击
       if (isFromPay) {
         globalVal.routeAddress = item;
-        this.props.history.push({
-          pathname: '/OrderPlace'
-        });
+        this.props.history.goBack();
       }
     }
     e.preventDefault();

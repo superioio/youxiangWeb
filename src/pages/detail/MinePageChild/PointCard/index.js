@@ -11,7 +11,9 @@ import { Flex, Icon, NavBar, Toast, Modal } from "antd-mobile";
 import { withRouter } from "react-router-dom";
 import styles from './styles.module.css';
 import globalVal from '@/utils/global_val';
-
+import {getRechargeByQRCode} from "../../../main/components/HomePage/api";
+import { initWX } from '@/utils/global_api';
+let barcode = null;
 class PointCard extends Component {
   constructor(props) {
     super(props);
@@ -178,6 +180,81 @@ class PointCard extends Component {
     }
   }
 
+  onMarked = async (type, resultStr) => {
+    var text = '未知: ';
+    switch (type) {
+      case window.plus.barcode.QR:
+        text = 'QR: ';
+        break;
+      case window.plus.barcode.EAN13:
+        text = 'EAN13: ';
+        break;
+      case window.plus.barcode.EAN8:
+        text = 'EAN8: ';
+        break;
+      default:
+        break;
+    }
+    alert(text + resultStr);
+
+    barcode.cancel();
+    barcode.close();
+
+    const res = await getRechargeByQRCode(resultStr);
+    if (res.error) {
+      Toast.fail(res.error);
+      return;
+    }
+    Toast.success('添加成功');
+
+  }
+  onScanPress = () => {
+
+    if (window.plus && window.plus.barcode) {
+      if (!barcode) {
+        barcode = window.plus.barcode.create('barcode', [window.plus.barcode.QR], {
+          top: '100px',
+          left: '0px',
+          width: '100%',
+          height: '200px',
+          position: 'static'
+        });
+        barcode.onmarked = this.onMarked;
+        window.plus.webview.currentWebview().append(barcode);
+      }
+      barcode.start();
+    }
+    if (window.wx) {
+      initWX();
+      window.wx.ready( () => {
+        // alert('wx ready0');
+        window.wx.scanQRCode({
+          needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+          scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+          success: async (result) => {
+            const resultStr = result.resultStr; // 当needResult 为 1 时，扫码返回的结果
+
+            //alert('resultStr', resultStr);
+
+            const res = await getRechargeByQRCode(resultStr);
+
+            //alert('res', JSON.stringify(res));
+
+            if (res.error) {
+              Toast.fail(res.error);
+              return;
+            }
+            Toast.success('兑换成功');
+          }
+        });
+      });
+      window.wx.error(function(res){
+        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+        //alert("wxerror :" +JSON.stringify(res));
+      });
+    }
+  }
+
   // #endregion
 
   // #region render
@@ -260,6 +337,11 @@ class PointCard extends Component {
       }
     </div>
   }
+  renderScanCode = () => {
+    return (<div className={styles.scanButton} >
+
+    </div>)
+  }
 
   render() {
     const { title } = this.props.location.state;
@@ -269,9 +351,19 @@ class PointCard extends Component {
           mode="light"
           icon={<Icon type="left" />}
           onLeftClick={() => this.props.history.goBack()}
+          rightContent={[
+              <img
+                  onClick={this.onScanPress}
+                  className={styles.scanButtonImage}
+                  src={require('../../../../assets/images/scan.png')}
+                  alt="扫一扫"
+              />
+          ]}
         >
           {title}
         </NavBar>
+
+
         {this.renderPointList()}
         {this.renderFooter()}
       </div>

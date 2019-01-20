@@ -17,11 +17,11 @@ export async function getDefaultAddress(customerId) {
     });
 }
 //下单
-export async function placeOrder(orderInfo, customerId) {
+export async function placeOrder(orderInfo, customerId, cidycode) {
   const voucherIds = orderInfo.voucherIds.substring(0, orderInfo.voucherIds.length - 1);
   const rechargeCardIds = orderInfo.rechargeCardIds.substring(0, orderInfo.rechargeCardIds.length - 1);
   const pointIds =  orderInfo.pointsCardIds.substring(0, orderInfo.pointsCardIds.length - 1);
-  const cityCode = orderInfo.customerCityCode.substr(0,4) + '00';
+  const cityCode = cidycode.substr(0,4) + '00';
   return await axios.post('/api/orderinfo/customerplaceorder',
     Qs.stringify({
       customerId: customerId,
