@@ -178,20 +178,21 @@ class OrderPlace extends Component {
   //确认下单按钮
   onOrderPress = async () => {
     let citycode = this.state.orderInfo.customerCityCode;
-    if(!this.state.orderInfo.customerCityCode || this.state.orderInfo.customerCityCode.length < 4){
-      if(this.state.orderInfo.productResp.productType === 0){//服务类商品，必须选择地址
+    if(this.state.orderInfo.productResp.productType === 0){//服务类商品，必须选择地址
+      if(!this.state.orderInfo.customerCityCode || this.state.orderInfo.customerCityCode.length < 4){
         Toast.fail('请选择一个收货地址。');
         return;
-      } else {//电子卡，使用商品地址
-        citycode = globalVal.selectCity.code;
-        this.setState({
-          orderInfo: {
-            ...this.state.orderInfo,
-            customerCityCode: globalVal.selectCity.code,
-          }
-        });
       }
+    } else {//电子卡，使用商品地址
+      citycode = globalVal.selectCity.code;
+      this.setState({
+        orderInfo: {
+          ...this.state.orderInfo,
+          customerCityCode: globalVal.selectCity.code,
+        }
+      });
     }
+
 
     Toast.loading("请稍后...", 3);
     const order = await placeOrder(this.state.orderInfo, globalVal.userInfo.customerId, citycode);
