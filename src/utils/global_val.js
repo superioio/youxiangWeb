@@ -42,7 +42,7 @@ const globalVal = {
     return JSON.parse(userInfo);
   },
  // imgUrl: `${window.location.protocol}//${window.location.host}/static/`,
-   imgUrl: 'ue-link.cn/static/',
+   imgUrl: '/cn/static/',
   // imgUrl: 'http://148.70.110.127:8080/static/',
 
   routeIsFromPay: null,
