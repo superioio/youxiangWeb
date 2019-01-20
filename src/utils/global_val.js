@@ -41,7 +41,7 @@ const globalVal = {
     }
     return JSON.parse(userInfo);
   },
-  imgUrl: `${window.location.protocol}//${window.location.host}/static/`,
+  imgUrl: `/static/`,
   // imgUrl: 'http://admin.offline.ue-link.cn/static/',
   // imgUrl: 'http://148.70.110.127:8080/static/',
 
