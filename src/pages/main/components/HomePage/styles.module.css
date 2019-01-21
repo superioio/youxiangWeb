@@ -6,7 +6,7 @@
 }
 .cityContainer {
   display: flex;
-  height: 36px;
+  height: 48px;
   justify-content: center;
   text-align: center;
 }
@@ -37,18 +37,17 @@
 .cityButtonText {
 }
 .scanButton{
-  width: 20px;
-  height: 36px;
   margin-right: 10px;
 
   display: flex;
-  
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-size: 4px;
 }
 .scanButtonImage {
-  width: 20px;
-  height: 20px;
+  width: 26px;
+  height: 26px;
 }
 
 .carousel {

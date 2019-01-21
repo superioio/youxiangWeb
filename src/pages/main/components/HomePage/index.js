@@ -233,11 +233,12 @@ class HomePage extends Component {
 
   renderScanCode = () => {
     return (<div className={styles.scanButton} onClick={this.onScanPress}>
-      <img
-        className={styles.scanButtonImage}
-        src={require('../../../../assets/images/scan.png')}
-        alt="扫一扫"
-      />
+      <div><img
+          className={styles.scanButtonImage}
+          src={require('../../../../assets/images/scan.png')}
+          alt="扫一扫"
+      /></div>
+      <div>扫一扫</div>
     </div>)
   }
 
