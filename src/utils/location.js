@@ -1,4 +1,4 @@
-const BaiduMap_URL = 'http://api.map.baidu.com/geocoder/v2/?output=json&ak=ERnx6GkAYqRUaygi0XCEzVI6Ht0PnxAs&location=';
+const BaiduMap_URL = 'https://api.map.baidu.com/geocoder/v2/?output=json&ak=ERnx6GkAYqRUaygi0XCEzVI6Ht0PnxAs&location=';
 
 const geolocation = new window.BMap.Geolocation();
 
