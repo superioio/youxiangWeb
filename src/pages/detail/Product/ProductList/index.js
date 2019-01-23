@@ -48,15 +48,18 @@ class ProductList extends Component {
 
   renderList() {
     const { list } = this.state;
+    const { code } = globalVal.selectCity;
     if (!list || list.length === 0) {
       return (<div className={styles.producBlank}>
         <span className={styles.noProduct}>当前城市未开通服务</span>
       </div>);
     }
 
+
+
     return (<div className={styles.producList}>
       {list.map((item, index) => {
-        const price = item.productPriceList ? item.productPriceList[0].price : 0;
+        const price = item.productPriceList ? item.productPriceList.find(i => i.cityCode == code).price : 0;
         return (<div key={index} >
           <Flex onClick={() => this.onProductPress(item)} className={styles.product}>
             <img

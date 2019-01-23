@@ -41,7 +41,9 @@ class OrderPlace extends Component {
   }
 
   getAddressInfo = async () => {
+    var price = 0;
     if (globalVal.routeAddress) {
+      price = globalVal.routeOrderInfo.productResp.productPriceList.find(i => i.cityCode == globalVal.routeAddress.cityCode);
       globalVal.routeOrderInfo = {
         ...globalVal.routeOrderInfo,
         customerName: globalVal.routeAddress.name,
@@ -53,7 +55,15 @@ class OrderPlace extends Component {
     } else {
       const address = await getDefaultAddress(globalVal.userInfo.customerId);
       if (address.error) {
-        if(this.state.orderInfo.productResp.productType === 0) Toast.fail(address.error);
+        if(globalVal.routeOrderInfo.productResp.productType === 0) {
+          Toast.fail(address.error);
+        }
+        return;
+      }
+      const {cityCode} = address;
+      price = globalVal.routeOrderInfo.productResp.productPriceList.find(i => i.cityCode == cityCode);
+      if(globalVal.routeOrderInfo.productResp.productType === 0 && !price){
+        Toast.fail('默认收货地址不在所选商品服务区，请重新选择地址。');
         return;
       }
       globalVal.routeAddress = address;
@@ -66,7 +76,14 @@ class OrderPlace extends Component {
         customerMobile: globalVal.routeAddress.mobile,
       }
     }
-  }
+
+    const payCash = price.price * globalVal.routeOrderInfo.count;
+    globalVal.routePayCash = payCash;
+    globalVal.routeOrderInfo = {
+      ...globalVal.routeOrderInfo,
+      productPrice:  price.price,
+    }
+  };
 
 
   //从商品详情页面进入
@@ -83,7 +100,7 @@ class OrderPlace extends Component {
         time: '',
         status: 1,
         customerRemark: "",
-        productPrice: product.productPriceList[0].price,
+        productPrice: product.price,
         lastNum: product.lastNum,//最小购买数量
         count: product.lastNum,
         totalAmount: 0,
@@ -316,7 +333,7 @@ class OrderPlace extends Component {
           </div>
           <div className={styles.itemSecondLine}>
             <span className={styles.secondLineText}>{orderInfo.customerName}</span>
-            <span className={[styles.secondLineText, styles.marginLeft20]}>{orderInfo.customerMobile}</span>
+            <span className={`${styles.secondLineText} ${styles.marginLeft20}`}>{orderInfo.customerMobile}</span>
           </div>
         </div>
         <img
