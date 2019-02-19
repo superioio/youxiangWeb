@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
-import { List, InputItem, NavBar, Icon, Checkbox, Button, TextareaItem, Toast } from 'antd-mobile';
+import {List, InputItem, NavBar, Icon, Checkbox, Button, TextareaItem, Toast, Modal} from 'antd-mobile';
 import { createForm } from 'rc-form';
 import globalVal from '@/utils/global_val';
 import { addAddr, editAddr } from './api';
 import styles from './styles.module.css';
+import {deleteAddress} from "../AddressList/api";
 
 const Item = List.Item;
 
@@ -68,6 +69,28 @@ class AddressEdit extends Component {
   }
 
   onBack = () => {
+    this.props.history.goBack();
+  }
+
+  onDelete = async () => {
+    const alert = Modal.alert;
+
+    alert('删除地址', '确认删除地址吗？',
+        [{ text: "取消", onPress: () => { return null } },
+          { text: "确认", onPress: () => this.deleteConfirm(this.state.id) },
+        ]
+    );
+  }
+
+  deleteConfirm = async (id) => {
+    Toast.loading("请稍后...", 3);
+    const data = await deleteAddress(id);
+    Toast.hide();
+    if (data.code === 100000) {
+      Toast.success('删除成功');
+    } else {
+      Toast.fail('删除失败');
+    }
     this.props.history.goBack();
   }
 
@@ -164,6 +187,9 @@ class AddressEdit extends Component {
       mode="light"
       icon={<Icon type="left" />}
       onLeftClick={this.onBack}
+      rightContent={
+      <div onClick={this.onDelete}>删除</div>
+      }
     >{title}</NavBar>);
   }
 

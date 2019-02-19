@@ -162,12 +162,12 @@ class AddressList extends Component {
     return (<div key={item.id} className={styles.itemContain}>
       {this.renderItemLeft(item, isFromPay)}
       <div className={styles.itemRight}>
-        <div
+      <div
           className={styles.itemRightButton}
           onClick={() => this.onNavAddressEdit(item)}>
-          <div className={styles.addText}>编辑</div>
-        </div>
+        <div className={styles.addText}>编辑</div>
       </div>
+    </div>
     </div>);
   }
 

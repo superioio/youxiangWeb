@@ -54,7 +54,7 @@ class ProductList extends Component {
         <span className={styles.noProduct}>当前城市未开通服务</span>
       </div>);
     }
-
+    const closingUnit = globalVal.config.closingUnit;
 
 
     return (<div className={styles.producList}>
@@ -70,7 +70,7 @@ class ProductList extends Component {
               <div className={styles.titleText}>{item.name}</div>
               <div className={styles.nameText}>{item.description}</div>
               <div className={styles.priceText}>
-                {price + "积分/" + item.unitName}</div>
+                {price + closingUnit + "/" + item.unitName}</div>
             </div>
           </Flex>
         </div>);

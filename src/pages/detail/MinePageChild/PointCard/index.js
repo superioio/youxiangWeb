@@ -273,8 +273,6 @@ class PointCard extends Component {
     const isSelect = this.state.selectedPointCardList.some(n => n.id === item.id);
     const isCanPress = this.itemCanPress(item);
 
-    const closingUnit = globalVal.config.closingUnit;
-
     return (<div key={index}>
       <Flex className={isCanPress ? styles.tabContentItem : styles.tabOverPayCash}
         onClick={() => this.onChoosePress(item)}>
@@ -284,7 +282,7 @@ class PointCard extends Component {
         </div>
         <div className={styles.rightTabItem}>
           <div>{item.name}</div>
-          <div>{"剩余 : " + item.balance + closingUnit}</div>
+          <div>{"剩余 : " + item.balance + "积分"}</div>
           <div className={styles.expireDateText}>{"有效期："}</div>
           <div className={styles.expireDateText}>{dateFormat(item.effectiveTime) + "-" + dateFormat(item.expiryTime)}</div>
         </div>
