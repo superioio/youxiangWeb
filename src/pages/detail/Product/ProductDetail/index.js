@@ -52,10 +52,9 @@ class ProductDetail extends Component {
   }
   renderPrice() {
     const { product } = this.state;
-    const closingUnit = globalVal.config.closingUnit;
     return (<div className={styles.price}>
       <div className={styles.nameText} >{product.name}</div>
-      <div className={styles.priceText}>{product.productPriceList[0].price + closingUnit + "/" + product.unitName}</div>
+      <div className={styles.priceText}>{product.productPriceList[0].price + "积分/" + product.unitName}</div>
     </div>);
   }
   // src={require("@/assets/images/washingMachineDesc.png")}
