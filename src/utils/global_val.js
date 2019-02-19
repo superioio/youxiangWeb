@@ -41,8 +41,8 @@ const globalVal = {
     }
     return JSON.parse(userInfo);
   },
- // imgUrl: `${window.location.protocol}//${window.location.host}/static/`,
-   imgUrl: '/cn/static/',
+  // imgUrl: `${window.location.protocol}//${window.location.host}/static/`,
+  imgUrl: '/cn/static/',
   // imgUrl: 'http://148.70.110.127:8080/static/',
 
   routeIsFromPay: null,
@@ -69,6 +69,10 @@ const globalVal = {
     timestamp: '',
     nonceStr: '',
     signature: '',
-  }
+  },
+
+  config: {
+    closingUnit: '积分',
+  },
 };
 export default globalVal;

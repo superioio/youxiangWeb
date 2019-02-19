@@ -26,7 +26,7 @@ class HomePage extends Component {
 
   // #region 生命周期
 
-  componentDidMount() {
+  async componentDidMount() {
     this.didFocus();
   }
 
@@ -136,8 +136,8 @@ class HomePage extends Component {
     }
     if (window.wx) {
       initWX();
-      window.wx.ready( () => {
-       // alert('wx ready0');
+      window.wx.ready(() => {
+        // alert('wx ready0');
         window.wx.scanQRCode({
           needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
           scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
@@ -158,9 +158,9 @@ class HomePage extends Component {
           }
         });
       });
-      window.wx.error(function(res){
+      window.wx.error(function (res) {
         // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-       //alert("wxerror :" +JSON.stringify(res));
+        //alert("wxerror :" +JSON.stringify(res));
       });
     }
   }
@@ -256,11 +256,11 @@ class HomePage extends Component {
           />
         </div>
         {/*<div>*/}
-          {/*<img*/}
-            {/*className={styles.carousel}*/}
-            {/*src={require('../../../../assets/images/Carouse2.png')}*/}
-            {/*alt="广告2"*/}
-          {/*/>*/}
+        {/*<img*/}
+        {/*className={styles.carousel}*/}
+        {/*src={require('../../../../assets/images/Carouse2.png')}*/}
+        {/*alt="广告2"*/}
+        {/*/>*/}
         {/*</div>*/}
       </Carousel>);
   }
