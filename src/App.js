@@ -16,10 +16,16 @@ import Voucher from './pages/detail/MinePageChild/Voucher';
 import AddressEdit from './pages/detail/MinePageChild/AddressEdit';
 import AddressList from './pages/detail/MinePageChild/AddressList';
 import Contact from './pages/detail/MinePageChild/Contact';
-
+import { getConfig } from '@/utils/global_api';
+import globalVal from '@/utils/global_val';
 
 import 'antd-mobile/dist/antd-mobile.css';
 import './App.css';
+
+getConfig().then(config => {
+  globalVal.config = config;
+});
+
 
 class App extends Component {
   render() {
