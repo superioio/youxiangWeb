@@ -11,8 +11,9 @@ import { Flex, Icon, NavBar, Toast, Modal } from "antd-mobile";
 import { withRouter } from "react-router-dom";
 import styles from './styles.module.css';
 import globalVal from '@/utils/global_val';
-import {getRechargeByQRCode} from "../../../main/components/HomePage/api";
+import { getRechargeByQRCode } from "../../../main/components/HomePage/api";
 import { initWX } from '@/utils/global_api';
+
 let barcode = null;
 class PointCard extends Component {
   constructor(props) {
@@ -163,7 +164,7 @@ class PointCard extends Component {
     Toast.hide();
 
     if (result.error) {
-      Toast.fail(result.error,1);
+      Toast.fail(result.error, 1);
       return;
     }
     Toast.loading("兑换成功", 2);
@@ -226,7 +227,7 @@ class PointCard extends Component {
     }
     if (window.wx) {
       initWX();
-      window.wx.ready( () => {
+      window.wx.ready(() => {
         // alert('wx ready0');
         window.wx.scanQRCode({
           needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
@@ -248,7 +249,7 @@ class PointCard extends Component {
           }
         });
       });
-      window.wx.error(function(res){
+      window.wx.error(function (res) {
         // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
         //alert("wxerror :" +JSON.stringify(res));
       });
@@ -352,12 +353,12 @@ class PointCard extends Component {
           icon={<Icon type="left" />}
           onLeftClick={() => this.props.history.goBack()}
           rightContent={[
-              <img
-                  onClick={this.onScanPress}
-                  className={styles.scanButtonImage}
-                  src={require('../../../../assets/images/scan.png')}
-                  alt="扫一扫"
-              />
+            <img
+              onClick={this.onScanPress}
+              className={styles.scanButtonImage}
+              src={require('../../../../assets/images/scan.png')}
+              alt="扫一扫"
+            />
           ]}
         >
           {title}

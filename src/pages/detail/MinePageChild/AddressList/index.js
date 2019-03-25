@@ -57,6 +57,10 @@ class AddressList extends Component {
     clearTimeout(timeOutEvent);
     if (timeOutEvent !== 0 && longClick === 0) {//点击
       if (isFromPay) {
+        if(globalVal.routeOrderInfo.productResp.productType === 0 && !globalVal.routeOrderInfo.productResp.productPriceList.find( i =>  i.cityCode == item.cityCode)){
+          Toast.fail('该城市不在所选商品服务区。')
+          return;
+        }
         globalVal.routeAddress = item;
         this.props.history.goBack();
       }
@@ -158,12 +162,12 @@ class AddressList extends Component {
     return (<div key={item.id} className={styles.itemContain}>
       {this.renderItemLeft(item, isFromPay)}
       <div className={styles.itemRight}>
-        <div
+      <div
           className={styles.itemRightButton}
           onClick={() => this.onNavAddressEdit(item)}>
-          <div className={styles.addText}>编辑</div>
-        </div>
+        <div className={styles.addText}>编辑</div>
       </div>
+    </div>
     </div>);
   }
 

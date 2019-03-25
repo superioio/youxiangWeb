@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import styles from './styles.module.css';
 import { datetimeFormat, getStatus } from '@/utils';
-import { cancelOrder } from './api'
+import { cancelOrder } from './api';
+import globalVal from '@/utils/global_val';
 import { Flex, Icon, NavBar, Toast, Modal } from "antd-mobile";
 import { withRouter } from "react-router-dom";
 
 class OrderDetail extends Component {
 
   renderContent(order, isFromPay) {
+    const closingUnit = globalVal.config.closingUnit;
     // const eCodes = (!isFromPay && order.productResp.productType === 1) ? order.extInfo.split(';') : [];
     return (<div className={styles.contentContain}>
       <span className={styles.titleText}>订单信息</span>
@@ -68,7 +70,7 @@ class OrderDetail extends Component {
         <span className={styles.titleText}>订单明细</span>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>单价</Flex.Item>
-          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.productPrice + "积分/" + order.productResp.unitName}</Flex.Item>
+          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.productPrice + closingUnit + "/" + order.productResp.unitName}</Flex.Item>
         </Flex>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>购买数量</Flex.Item>
@@ -76,13 +78,13 @@ class OrderDetail extends Component {
         </Flex>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>金额</Flex.Item>
-          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.totalAmount + "积分"}</Flex.Item>
+          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.totalAmount + closingUnit}</Flex.Item>
         </Flex>
       </div>
       <div className={`${styles.content} ${styles.noBorderBottom}`}>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>代金券支付</Flex.Item>
-          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payVoucher + "积分"}</Flex.Item>
+          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payVoucher + closingUnit}</Flex.Item>
         </Flex>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>积分支付</Flex.Item>
@@ -90,11 +92,11 @@ class OrderDetail extends Component {
         </Flex>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>储值卡支付</Flex.Item>
-          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payRechargeCard + "积分"}</Flex.Item>
+          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payRechargeCard + closingUnit}</Flex.Item>
         </Flex>
         <Flex className={styles.contentRow}>
           <Flex.Item className={styles.nameText}>现金支付</Flex.Item>
-          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payment + "积分"}</Flex.Item>
+          <Flex.Item className={`${styles.contentTextRight} ${styles.importantText}`}> {order.payment + closingUnit}</Flex.Item>
         </Flex>
       </div>
     </div>);
