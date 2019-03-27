@@ -347,11 +347,12 @@ class OrderPlace extends Component {
 
   renderUnitPriceLabel() {
     const { orderInfo } = this.state;
+    const closingUnit = globalVal.config.closingUnit;
     if (!orderInfo) return null;
     // console.log('orderInfo', orderInfo);
     return (<div className={styles.label}>
       <span>单价：</span>
-      <span>{orderInfo.productResp.price + "积分/" + orderInfo.productResp.unitName}</span>
+      <span>{orderInfo.productResp.price + closingUnit + "/" + orderInfo.productResp.unitName}</span>
     </div>)
   }
 
