@@ -251,7 +251,8 @@ class HomePage extends Component {
         <div>
           <img
             className={styles.carousel}
-            src={require('../../../../assets/images/Carouse1.jpg')}
+            src={globalVal.config.imageUrl + 'banner1.jpg'}
+            // src={require('../../../../assets/images/Carouse1.jpg')}
             alt="广告1"
           />
         </div>
@@ -285,7 +286,8 @@ class HomePage extends Component {
   renderAd = () => {
     return (<img
       className={styles.carousel}
-      src={require('../../../../assets/images/ad.jpg')}
+      src={globalVal.config.imageUrl + 'waist1.jpg'}
+      // src={require('../../../../assets/images/ad.jpg')}
       alt="广告"
     />
     );
