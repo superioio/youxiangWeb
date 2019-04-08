@@ -73,6 +73,7 @@ const globalVal = {
 
   config: {
     closingUnit: '积分',
+    imageUrl: ''
   },
 };
 export default globalVal;
