@@ -234,9 +234,9 @@ class HomePage extends Component {
   renderScanCode = () => {
     return (<div className={styles.scanButton} onClick={this.onScanPress}>
       <div><img
-          className={styles.scanButtonImage}
-          src={require('../../../../assets/images/scan.png')}
-          alt="扫一扫"
+        className={styles.scanButtonImage}
+        src={require('../../../../assets/images/scan.png')}
+        alt="扫一扫"
       /></div>
       <div>扫一扫</div>
     </div>)
@@ -252,6 +252,9 @@ class HomePage extends Component {
           <img
             className={styles.carousel}
             src={globalVal.config.imageUrl + 'banner1.jpg'}
+            onLoad={() => {
+              window.dispatchEvent(new Event('resize'));
+            }}
             // src={require('../../../../assets/images/Carouse1.jpg')}
             alt="广告1"
           />
