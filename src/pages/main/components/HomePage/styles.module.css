@@ -67,8 +67,7 @@
     text-align: center;
 }
 .menuButtonImage {
-    width: 70%;
-    height: 70%;
+    width: 18vw;
     background-color: white;
 }
 .menuButtonText {
@@ -105,8 +104,7 @@
     /*margin-horizontal: 20px;*/
 }
 .acceptButtonImage {
-    width: 77px;
-    height: 86px;
+    width: 23vw;
     background-color: white;
 }
 
