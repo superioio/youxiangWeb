@@ -228,25 +228,24 @@ class OrderPlace extends Component {
         },
         {
           text: "去支付", onPress: async () => {
-            const payResult = await this.wxPay(order);
+            const payResult = await this.wxPay(this.state.orderInfo, order.needPayCash);
             if (payResult.error) {
               Toast.fail(order.error);
             } else {
-              this.afterOrder(order);
+              this.afterOrder(this.state.orderInfo);
             }
           }
         },
         ]
       );
     } else {
-      this.afterOrder(order);
+      this.afterOrder(this.state.orderInfo);
     }
   }
 
-  afterOrder = (order) => {
-    let orderInfo = this.state.orderInfo;
-    orderInfo.id = order.orderId;
-    orderInfo.payment = order.payCash;
+  afterOrder = (orderInfo) => {
+    orderInfo.id = orderInfo.orderId;
+    orderInfo.payment = orderInfo.payCash;
     orderInfo.payVoucher = this.state.saveMoneyByVoucher;
     orderInfo.payRechargeCard = this.state.saveMoneyByCard;
     orderInfo.payPoint = this.state.saveMoneyByPoint;
@@ -263,19 +262,26 @@ class OrderPlace extends Component {
     globalVal.routeVoucher = null;
   }
 
-  wxPay = async (order) => {
-    const { prepay_id, paySign } = await createPayOrder();
+  wxPay = async (orderInfo, needPayCash) => {
+    const params = {
+      body: '',
+      orderId: orderInfo.orderId,
+      orderNo: '',
+      totalFee: needPayCash,
+      openId: globalVal.wxInitParams.openId
+    };
+    const { prepayId, paySign } = await createPayOrder(params);
     // 调起微信支付
     window.wx.chooseWXPay({
       appId: globalVal.wxInitParams.appId,
       timeStamp: globalVal.wxInitParams.timestamp,
       nonceStr: globalVal.wxInitParams.nonceStr,
-      package: prepay_id,
+      package: prepayId,
       signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
       paySign: paySign, // 支付签名
       success: function (res) {
         Toast.info('支付成功');
-        this.afterOrder(order);
+        this.afterOrder(orderInfo);
         // 支付成功后的回调函数
       }
     });

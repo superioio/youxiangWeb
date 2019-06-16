@@ -87,9 +87,9 @@ export async function getCardList(customerId, productId, cityCode, ) {
 
 
 // 创建微信支付订单
-export async function createPayOrder() {
-  return { prepay_id: 1, paySign: 2 };
-  return await axios.get('/api/payorder')
+export async function createPayOrder(params) {
+  // return { prepay_id: 1, paySign: 2 }; // mock数据
+  return await axios.post('/api/wxpay/unifiedorder', Qs.stringify(params))
     .then(function (response) {
       return response;
     })

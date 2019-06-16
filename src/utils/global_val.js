@@ -69,6 +69,7 @@ const globalVal = {
     timestamp: '',
     nonceStr: '',
     signature: '',
+    openId: '',
   },
 
   config: {

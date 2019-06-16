@@ -12,13 +12,12 @@ export async function getJsTicket(clientKey, timestamp, nonceStr, url) {
       nonceStr: nonceStr,
       url: url
     }
-  }
-  )
+  })
     .then(function (response) {
       return response;
     })
     .catch(function (error) {
-      console.log("login error" + error);
+      console.log("getJsTicket error" + error);
       return null;
     });
 }
@@ -75,5 +74,27 @@ export async function getConfig() {
     })
     .then(function (json) {
       return json;
+    });
+}
+
+export function getQueryString(name) {
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+  var r = window.location.search.substr(1).match(reg);
+  if (r != null) return unescape(r[2]);
+  return null;
+}
+
+export async function getOpenId(code) {
+  return await axios.get('/api/getOpenId', {
+    params: {
+      code: code,
+    }
+  })
+    .then(function (response) {
+      return response;
+    })
+    .catch(function (error) {
+      console.log("getOpenId error" + error);
+      return null;
     });
 }
