@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import globalVal from '@/utils/global_val';
 import styles from './styles.module.css';
 import { getDefaultAddress, placeOrder } from './api';
-import { Toast, DatePicker, List, TextareaItem, NavBar, Icon } from "antd-mobile";
+import {Toast, DatePicker, List, TextareaItem, NavBar, Icon, Modal} from "antd-mobile";
 import moment from 'moment';
 import { withRouter } from "react-router-dom";
 
@@ -194,6 +194,22 @@ class OrderPlace extends Component {
 
   //确认下单按钮
   onOrderPress = async () => {
+    const alert = Modal.alert;
+
+    if(this.state.payCash == 0)
+      return this.onOrderConfirm();
+    alert('提示', '您还需支付'+ this.state.payCash + '元',
+        [{
+          text: "取消", onPress: () => {
+            return null
+          }
+        },
+          {text: "去支付", onPress: () => this.onOrderConfirm()},
+        ]
+    );
+  }
+
+  onOrderConfirm = async () => {
     let citycode = this.state.orderInfo.customerCityCode;
     if(this.state.orderInfo.productResp.productType === 0){//服务类商品，必须选择地址
       if(!this.state.orderInfo.customerCityCode || this.state.orderInfo.customerCityCode.length < 4){
@@ -562,8 +578,8 @@ class OrderPlace extends Component {
 
           {this.renderTitle('代金券')}
           {this.renderVoucher()}
-          {/*{this.renderTitle('储值卡')}*/}
-          {/*{this.renderRechargeCard()}*/}
+          {this.renderTitle('储值卡')}
+          {this.renderRechargeCard()}
           {this.renderTitle('积分卡')}
           {this.renderPointCard()}
         </div>
