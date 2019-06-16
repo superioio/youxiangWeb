@@ -16,7 +16,7 @@ class MinePage extends Component {
     };
 
     this.prepay_id = null;
-    this.signSgin = null;
+    this.paySign = null;
   }
   // #endregion
 
@@ -42,9 +42,9 @@ class MinePage extends Component {
       });
     };
 
-    const { prepay_id, signSgin } = await createPayOrder();
+    const { prepay_id, paySign } = await createPayOrder();
     this.prepay_id = prepay_id;
-    this.signSgin = signSgin;
+    this.paySign = paySign;
   }
 
   // #endregion
@@ -65,7 +65,7 @@ class MinePage extends Component {
         nonceStr: globalVal.wxInitParams.nonceStr,
         package: this.prepay_id,
         signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-        paySign: this.signSgin, // 支付签名
+        paySign: this.paySign, // 支付签名
         success: function (res) {
           Toast.info('支付成功');
           // 支付成功后的回调函数

@@ -14,7 +14,7 @@ export async function logout() {
 
 
 export async function createPayOrder() {
-  return { prepay_id: 1, signSgin: 2 };
+  return { prepay_id: 1, paySign: 2 };
   return await axios.get('/api/payorder')
     .then(function (response) {
       return response;
