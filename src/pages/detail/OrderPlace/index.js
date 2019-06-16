@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import globalVal from '@/utils/global_val';
 import styles from './styles.module.css';
 import { getDefaultAddress, placeOrder, createPayOrder } from './api';
-import { Toast, DatePicker, List, TextareaItem, NavBar, Icon } from "antd-mobile";
+import { Toast, DatePicker, List, TextareaItem, NavBar, Icon, Modal } from "antd-mobile";
 import moment from 'moment';
 import { withRouter } from "react-router-dom";
 
@@ -193,7 +193,7 @@ class OrderPlace extends Component {
   // #region 相应方法
 
   //确认下单按钮
-  onOrderPress = async () => {
+  onOrderConfirm = async () => {
     let citycode = this.state.orderInfo.customerCityCode;
     if (this.state.orderInfo.productResp.productType === 0) {//服务类商品，必须选择地址
       if (!this.state.orderInfo.customerCityCode || this.state.orderInfo.customerCityCode.length < 4) {
@@ -213,30 +213,34 @@ class OrderPlace extends Component {
     Toast.loading("请稍后...", 3);
     const order = await placeOrder(this.state.orderInfo, globalVal.userInfo.customerId, citycode);
     Toast.hide();
-    // 如果积分/代金劵等不足以支付订单，则开启微信支付
-    if (order.needWXPay) {
-      const { prepay_id, paySign } = await createPayOrder();
-      // 调起微信支付
-      window.wx.chooseWXPay({
-        appId: globalVal.wxInitParams.appId,
-        timeStamp: globalVal.wxInitParams.timestamp,
-        nonceStr: globalVal.wxInitParams.nonceStr,
-        package: prepay_id,
-        signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-        paySign: paySign, // 支付签名
-        success: function (res) {
-          Toast.info('支付成功');
-          this.afterOrder(order);
-          // 支付成功后的回调函数
-        }
-      });
-      return;
-    }
     if (order.error) {
       Toast.fail(order.error);
       return;
     }
-    this.afterOrder(order);
+
+    // 如果积分/代金劵等不足以支付订单，则开启微信支付
+    if (order.needWXPay) {
+      Modal.alert('提示', '您还需支付' + order.needPayCash + '元',
+        [{
+          text: "取消", onPress: () => {
+            return null
+          }
+        },
+        {
+          text: "去支付", onPress: async () => {
+            const payResult = await this.wxPay(order);
+            if (payResult.error) {
+              Toast.fail(order.error);
+            } else {
+              this.afterOrder(order);
+            }
+          }
+        },
+        ]
+      );
+    } else {
+      this.afterOrder(order);
+    }
   }
 
   afterOrder = (order) => {
@@ -257,6 +261,24 @@ class OrderPlace extends Component {
     globalVal.routePointCard = null;
     globalVal.routeStoredCard = null;
     globalVal.routeVoucher = null;
+  }
+
+  wxPay = async (order) => {
+    const { prepay_id, paySign } = await createPayOrder();
+    // 调起微信支付
+    window.wx.chooseWXPay({
+      appId: globalVal.wxInitParams.appId,
+      timeStamp: globalVal.wxInitParams.timestamp,
+      nonceStr: globalVal.wxInitParams.nonceStr,
+      package: prepay_id,
+      signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+      paySign: paySign, // 支付签名
+      success: function (res) {
+        Toast.info('支付成功');
+        this.afterOrder(order);
+        // 支付成功后的回调函数
+      }
+    });
   }
 
   onAddrPress = () => {
@@ -584,8 +606,8 @@ class OrderPlace extends Component {
 
           {this.renderTitle('代金券')}
           {this.renderVoucher()}
-          {/*{this.renderTitle('储值卡')}*/}
-          {/*{this.renderRechargeCard()}*/}
+          {this.renderTitle('储值卡')}
+          {this.renderRechargeCard()}
           {this.renderTitle('积分卡')}
           {this.renderPointCard()}
         </div>
@@ -596,7 +618,7 @@ class OrderPlace extends Component {
           <div className={styles.placeRight}>
             <div
               className={styles.placeRightButton}
-              onClick={this.onOrderPress}
+              onClick={this.onOrderConfirm}
             >
               <span className={styles.placeRightText}>下单</span>
             </div>
