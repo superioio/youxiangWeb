@@ -72,7 +72,7 @@ const globalVal = {
   },
 
   config: {
-    closingUnit: '积分',
+    closingUnit: '元',
     imageUrl: ''
   },
 };

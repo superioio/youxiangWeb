@@ -11,16 +11,3 @@ export async function logout() {
       return [];
     });
 }
-
-
-export async function createPayOrder() {
-  return { prepay_id: 1, paySign: 2 };
-  return await axios.get('/api/payorder')
-    .then(function (response) {
-      return response;
-    })
-    .catch(function (error) {
-      console.log("createPayOrder error" + error);
-      return null;
-    });
-}

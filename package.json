@@ -119,6 +119,5 @@
     "babel-plugin-import": "^1.11.0",
     "react-app-rewired": "^1.6.2"
   },
-  "proxy": "https://admin.offline.ue-link.cn"
+  "proxy": "https://h5.ue-link.com"
 }
-

@@ -20,8 +20,8 @@ export async function getDefaultAddress(customerId) {
 export async function placeOrder(orderInfo, customerId, cidycode) {
   const voucherIds = orderInfo.voucherIds.substring(0, orderInfo.voucherIds.length - 1);
   const rechargeCardIds = orderInfo.rechargeCardIds.substring(0, orderInfo.rechargeCardIds.length - 1);
-  const pointIds =  orderInfo.pointsCardIds.substring(0, orderInfo.pointsCardIds.length - 1);
-  const cityCode = cidycode.substr(0,4) + '00';
+  const pointIds = orderInfo.pointsCardIds.substring(0, orderInfo.pointsCardIds.length - 1);
+  const cityCode = cidycode.substr(0, 4) + '00';
   return await axios.post('/api/orderinfo/customerplaceorder',
     Qs.stringify({
       customerId: customerId,
@@ -85,3 +85,16 @@ export async function getCardList(customerId, productId, cityCode, ) {
     });
 }
 
+
+// 创建微信支付订单
+export async function createPayOrder() {
+  return { prepay_id: 1, paySign: 2 };
+  return await axios.get('/api/payorder')
+    .then(function (response) {
+      return response;
+    })
+    .catch(function (error) {
+      console.log("createPayOrder error" + error);
+      return null;
+    });
+}

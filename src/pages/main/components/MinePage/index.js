@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Toast } from 'antd-mobile';
 import globalVal from '@/utils/global_val';
 import styles from './styles.module.css';
-import { logout, createPayOrder } from './api';
+import { logout } from './api';
 
 class MinePage extends Component {
   // #region 构造器
@@ -14,9 +14,6 @@ class MinePage extends Component {
     this.state = {
       isLogined: false,
     };
-
-    this.prepay_id = null;
-    this.paySign = null;
   }
   // #endregion
 
@@ -41,10 +38,6 @@ class MinePage extends Component {
         isLogined: true,
       });
     };
-
-    const { prepay_id, paySign } = await createPayOrder();
-    this.prepay_id = prepay_id;
-    this.paySign = paySign;
   }
 
   // #endregion
@@ -56,24 +49,6 @@ class MinePage extends Component {
   }
 
   onClick = async (index) => {
-    if (index === 7) {
-      // 调起微信支付
-      console.log(' window.wx', window.wx);
-      window.wx.chooseWXPay({
-        appId: globalVal.wxInitParams.appId,
-        timeStamp: globalVal.wxInitParams.timestamp,
-        nonceStr: globalVal.wxInitParams.nonceStr,
-        package: this.prepay_id,
-        signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-        paySign: this.paySign, // 支付签名
-        success: function (res) {
-          Toast.info('支付成功');
-          // 支付成功后的回调函数
-        }
-      });
-      return;
-    }
-
     if (index === 5) return;
     const { isLogined } = this.state;
     if (index === 6) {
@@ -198,7 +173,6 @@ class MinePage extends Component {
           {this.renderButton('我的地址', 4)}
           {this.renderButton('联系客服', 5)}
           {isLogined ? this.renderButton('退出登录', 6) : null}
-          {this.renderButton('微信支付', 7)}
         </div>
       </div>
     );

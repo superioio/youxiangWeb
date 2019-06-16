@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import globalVal from '@/utils/global_val';
 import styles from './styles.module.css';
-import { getDefaultAddress, placeOrder } from './api';
+import { getDefaultAddress, placeOrder, createPayOrder } from './api';
 import { Toast, DatePicker, List, TextareaItem, NavBar, Icon } from "antd-mobile";
 import moment from 'moment';
 import { withRouter } from "react-router-dom";
@@ -55,14 +55,14 @@ class OrderPlace extends Component {
     } else {
       const address = await getDefaultAddress(globalVal.userInfo.customerId);
       if (address.error) {
-        if(globalVal.routeOrderInfo.productResp.productType === 0) {
+        if (globalVal.routeOrderInfo.productResp.productType === 0) {
           Toast.fail(address.error);
         }
         return;
       }
-      const {cityCode} = address;
+      const { cityCode } = address;
       price = globalVal.routeOrderInfo.productResp.productPriceList.find(i => i.cityCode == cityCode);
-      if(globalVal.routeOrderInfo.productResp.productType === 0 && !price){
+      if (globalVal.routeOrderInfo.productResp.productType === 0 && !price) {
         Toast.fail('默认收货地址不在所选商品服务区，请重新选择地址。');
         return;
       }
@@ -81,7 +81,7 @@ class OrderPlace extends Component {
     globalVal.routePayCash = payCash;
     globalVal.routeOrderInfo = {
       ...globalVal.routeOrderInfo,
-      productPrice:  price.price,
+      productPrice: price.price,
     }
   };
 
@@ -195,8 +195,8 @@ class OrderPlace extends Component {
   //确认下单按钮
   onOrderPress = async () => {
     let citycode = this.state.orderInfo.customerCityCode;
-    if(this.state.orderInfo.productResp.productType === 0){//服务类商品，必须选择地址
-      if(!this.state.orderInfo.customerCityCode || this.state.orderInfo.customerCityCode.length < 4){
+    if (this.state.orderInfo.productResp.productType === 0) {//服务类商品，必须选择地址
+      if (!this.state.orderInfo.customerCityCode || this.state.orderInfo.customerCityCode.length < 4) {
         Toast.fail('请选择一个收货地址。');
         return;
       }
@@ -210,14 +210,36 @@ class OrderPlace extends Component {
       });
     }
 
-
     Toast.loading("请稍后...", 3);
     const order = await placeOrder(this.state.orderInfo, globalVal.userInfo.customerId, citycode);
     Toast.hide();
+    // 如果积分/代金劵等不足以支付订单，则开启微信支付
+    if (order.needWXPay) {
+      const { prepay_id, paySign } = await createPayOrder();
+      // 调起微信支付
+      window.wx.chooseWXPay({
+        appId: globalVal.wxInitParams.appId,
+        timeStamp: globalVal.wxInitParams.timestamp,
+        nonceStr: globalVal.wxInitParams.nonceStr,
+        package: prepay_id,
+        signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+        paySign: paySign, // 支付签名
+        success: function (res) {
+          Toast.info('支付成功');
+          this.afterOrder(order);
+          // 支付成功后的回调函数
+        }
+      });
+      return;
+    }
     if (order.error) {
       Toast.fail(order.error);
       return;
     }
+    this.afterOrder(order);
+  }
+
+  afterOrder = (order) => {
     let orderInfo = this.state.orderInfo;
     orderInfo.id = order.orderId;
     orderInfo.payment = order.payCash;
@@ -556,9 +578,9 @@ class OrderPlace extends Component {
           {/*{this.renderVisitTimeButton()}*/}
           {this.renderNumberButton()}
           {this.state.orderInfo.productResp.productType === 0 ?
-              this.renderTitle('备注') : null}
+            this.renderTitle('备注') : null}
           {this.state.orderInfo.productResp.productType === 0 ?
-              this.renderReMark() : null}
+            this.renderReMark() : null}
 
           {this.renderTitle('代金券')}
           {this.renderVoucher()}
@@ -576,7 +598,7 @@ class OrderPlace extends Component {
               className={styles.placeRightButton}
               onClick={this.onOrderPress}
             >
-              <span className={styles.placeRightText}>确认订单</span>
+              <span className={styles.placeRightText}>下单</span>
             </div>
           </div>
         </div>
