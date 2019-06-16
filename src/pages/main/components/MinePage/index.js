@@ -61,7 +61,7 @@ class MinePage extends Component {
       console.log(' window.wx', window.wx);
       window.wx.chooseWXPay({
         appId: globalVal.wxInitParams.appId,
-        timestamp: globalVal.wxInitParams.timestamp,
+        timeStamp: globalVal.wxInitParams.timestamp,
         nonceStr: globalVal.wxInitParams.nonceStr,
         package: this.prepay_id,
         signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
